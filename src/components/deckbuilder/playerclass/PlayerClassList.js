@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
+import React, { useContext, useEffect } from "react"
+// import { useHistory } from "react-router-dom"
 import "./PlayerClassList.css"
 import { PlayerClassContext } from "./PlayerClassProvider"
 import { PlayerClassCard} from "./PlayerClassCard"
@@ -8,18 +8,14 @@ import { PlayerClassCard} from "./PlayerClassCard"
 
 export const PlayerClassList = () => {
     
-    const { getPlayerClasses } = useContext(PlayerClassContext)
-    const [ playerClassesState, setPlayerClassesState ] = useState()
+    const { playerClasses, getPlayerClasses } = useContext(PlayerClassContext)
 
     useEffect(() => {
         getPlayerClasses()
-            .then((pc) => {
-                setPlayerClassesState(pc)
-            })
     
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const history = useHistory()
+    // const history = useHistory()
 
     return (
         <>
@@ -27,8 +23,7 @@ export const PlayerClassList = () => {
 
             <div className="playerClasses">
                 {
-                    playerClassesState?.map(playerClass => {
-                        console.log(`Inside PlayerClassList Map: `, playerClass.name + " " + playerClass.id)
+                    playerClasses.map(playerClass => {
                         return <PlayerClassCard key={playerClass.id} 
                                     playerclass={playerClass} />
                     })

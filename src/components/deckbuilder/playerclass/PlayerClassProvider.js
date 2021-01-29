@@ -25,9 +25,14 @@ export const PlayerClassProvider = (props) => {
         .then(getPlayerClasses)
     }
 
+    const getPlayerClassById = (id) => {
+        return fetch(`http://localhost:8088/playerclass/${id}`)
+            .then(res => res.json())
+    }
+
     return (
         <PlayerClassContext.Provider value={{
-            playerClasses, getPlayerClasses, addPlayerClass
+            playerClasses, getPlayerClasses, addPlayerClass, getPlayerClassById
         }}>
             {props.children}
         </PlayerClassContext.Provider>

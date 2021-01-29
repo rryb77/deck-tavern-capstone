@@ -1,0 +1,10 @@
+.cardViewer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cardViewerCards {
+    flex-basis: 20%;
+    list-style-type: none;
+}
