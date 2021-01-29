@@ -1,5 +1,7 @@
 import React from "react"
 import { Route } from "react-router-dom"
+import { PlayerClassProvider } from "./deckbuilder/playerclass/PlayerClassProvider"
+import { PlayerClassList} from "./deckbuilder/playerclass/PlayerClassList"
 import { Home } from "./Home"
 
 export const ApplicationViews = () => {
@@ -10,6 +12,12 @@ export const ApplicationViews = () => {
             <Route exact path="/">
                 <Home />
             </Route>
+
+            <PlayerClassProvider>
+                <Route path="/deckbuilder">
+                    <PlayerClassList />
+                </Route>
+            </PlayerClassProvider>
         </>
     )
 }

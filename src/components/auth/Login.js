@@ -11,8 +11,8 @@ export const Login = props => {
     const history = useHistory()
 
     const existingUserCheck = () => {
-        // TODO: Change this!
-        return fetch(`http://localhost:8088/customers?email=${email.current.value}`)
+        
+        return fetch(`http://localhost:8088/users?email=${email.current.value}`)
             .then(res => res.json())
             .then(user => user.length ? user[0] : false)
     }

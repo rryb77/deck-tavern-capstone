@@ -1,0 +1,11 @@
+.playerClasses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.playerClassOptions {
+    flex-basis: 20%;
+    list-style-type: none;
+    
+}
