@@ -20,26 +20,42 @@ export const CardOptionList = () => {
             .then(getCardOptions)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // const history = useHistory()
-
-    const playerClass = "MAGE"
-    const playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
-    console.log(playerClassCards)
-    console.log(playerClassId)
-    console.log(pClass)
+    const playerClass = pClass.name
+    let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+    
+    playerClassCards.sort((a, b) => {
+        return a.cost - b.cost
+    })
 
     return (
         <>
-            <h2>{playerClass}</h2>
+            <main className="container">
 
-            <div className="cardViewer">
-                {
-                    playerClassCards.map(card => {
-                        return <CardOptionCard key={card.dbfId} 
-                                    card={card} />
-                    })
-                }
-            </div>
+                <section className="leftContainer">
+                    
+                    <h2>{playerClass}</h2>
+
+                    <div className="cardViewer">
+                    {
+                        playerClassCards.map(card => {
+                            return <CardOptionCard key={card.dbfId} 
+                                        card={card} />
+                        })
+                    }
+                    </div>
+
+                </section>
+
+                <section className="rightContainer">
+                    
+                    <div className="deckSidebar">
+                        <h2>Sidebar</h2>
+                    </div>
+
+                </section>
+                
+            </main>
+            
         </>
     )
 }
