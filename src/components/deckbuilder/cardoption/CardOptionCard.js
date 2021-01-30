@@ -11,7 +11,7 @@ export const CardOptionCard = ({card}) => {
 
     return (
         
-        <section className="cardViewerCards">
+        <section className="cardViewerOptions">
               <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`card--${card?.dbfId}`} onClick={event => cardOptionChosen()} alt={`${card?.name}`}/>
         </section>
         

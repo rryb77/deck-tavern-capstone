@@ -22,9 +22,11 @@ export const ApplicationViews = () => {
             </PlayerClassProvider>
 
             <CardOptionProvider>
-                <Route exact path="/deckbuilder/create/">
-                    <CardOptionList />
-                </Route>
+                <PlayerClassProvider>
+                    <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
+                        <CardOptionList />
+                    </Route>
+                </PlayerClassProvider>
             </CardOptionProvider>
         </>
     )

@@ -1,14 +1,23 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { CardOptionContext } from './CardOptionProvider'
 import { CardOptionCard } from './CardOptionCard'
-import './CardOptionList.css'
+import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
+import "./CardOptionList.css"
+import { useParams } from "react-router-dom"
+
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
+    const { getPlayerClassById } = useContext(PlayerClassContext)
+    const [pClass, setPClass] = useState({})
+    const {playerClassId} = useParams()
 
     useEffect(() => {
-        getCardOptions()
-    
+        getPlayerClassById(playerClassId)
+            .then((response) => {
+                setPClass(response)
+            })
+            .then(getCardOptions)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     // const history = useHistory()
@@ -16,6 +25,8 @@ export const CardOptionList = () => {
     const playerClass = "MAGE"
     const playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
     console.log(playerClassCards)
+    console.log(playerClassId)
+    console.log(pClass)
 
     return (
         <>
