@@ -39,7 +39,8 @@ export const CardOptionList = () => {
                     {
                         playerClassCards.map(card => {
                             return <CardOptionCard key={card.dbfId} 
-                                        card={card} />
+                                        card={card} 
+                                        hero={playerClassId}/>
                         })
                     }
                     </div>
@@ -50,6 +51,9 @@ export const CardOptionList = () => {
                     
                     <div className="deckSidebar">
                         <h2>Sidebar</h2>
+                        <div className="cardTileHolder">
+
+                        </div>
                     </div>
 
                 </section>
