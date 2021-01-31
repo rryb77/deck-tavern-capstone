@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { encode, decode, FormatType } from "deckstrings";
+// import { encode, decode, FormatType } from "deckstrings";
 
 // import { useHistory } from 'react-router-dom';
 
@@ -16,7 +16,6 @@ export const CardOptionCard = ({card, hero}) => {
     let [countCards, setCountCards] = useState(0)
     let [totalCards, setTotalCards] = useState(0)
     deck.heroes = [parseInt(hero)]
-    console.log(deck)
 
     const addCardsToDeck = (card) => {
         
