@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.leftContainer {
+    width: 80%;
+}
+
+.rightContainer {
+    width: 20%;
+}
+
+.cardViewer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cardViewerOptions {
+    flex-basis: 20%;
+    list-style-type: none;
+}
+
+.cardCount {
+    text-align: center;
+}
+
+/* .deckSidebar {
+    
+} */

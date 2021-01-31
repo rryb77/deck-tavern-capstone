@@ -6,7 +6,7 @@ import "./Login.css"
 
 export const Login = props => {
     const email = useRef()
-    const password = useRef()
+    // const password = useRef()
     const existDialog = useRef()
     const history = useHistory()
 
