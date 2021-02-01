@@ -5,6 +5,13 @@ import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
 import "./CardOptionList.css"
 import { useParams } from "react-router-dom"
 
+const deck = {
+    cards: [], // [dbfId, count] pairs
+    heroes: [], // passed in value
+    format: 2, // or 1 for Wild, 2 for Standard
+}
+
+
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions, deckCards } = useContext(CardOptionContext)
@@ -47,8 +54,7 @@ export const CardOptionList = () => {
                     {
                         playerClassCards.map(card => {
                             return <CardOptionCard key={card.dbfId} 
-                                        card={card} 
-                                        hero={playerClassId}/>
+                                        card={card}/>
                         })
                     }
                     </div>
