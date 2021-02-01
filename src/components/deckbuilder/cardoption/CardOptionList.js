@@ -7,10 +7,12 @@ import { useParams } from "react-router-dom"
 
 export const CardOptionList = () => {
     
-    const { cardOptions, getCardOptions } = useContext(CardOptionContext)
+    const { cardOptions, getCardOptions, deckCards } = useContext(CardOptionContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
+
+    const [currentDeck, setCurrentDeck] = useState([])
 
     useEffect(() => {
         getPlayerClassById(playerClassId)
@@ -20,12 +22,18 @@ export const CardOptionList = () => {
             .then(getCardOptions)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        setCurrentDeck(deckCards)
+    }, [deckCards])
+
     const playerClass = pClass.name
     let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
     
     playerClassCards.sort((a, b) => {
         return a.cost - b.cost
     })
+
+    console.log(currentDeck)
 
     return (
         <>
@@ -52,7 +60,7 @@ export const CardOptionList = () => {
                     <div className="deckSidebar">
                         <h2>Sidebar</h2>
                         <div className="cardTileHolder">
-                            
+                           
                         </div>
                     </div>
 

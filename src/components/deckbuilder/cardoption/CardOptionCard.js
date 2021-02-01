@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { CardOptionContext } from "./CardOptionProvider"
 // import { encode, decode, FormatType } from "deckstrings";
 
 // import { useHistory } from 'react-router-dom';
@@ -12,11 +13,13 @@ const deck = {
 
 export const CardOptionCard = ({card, hero}) => {
     
+    const {setDeckCards} = useContext(CardOptionContext)
+    deck.heroes = [parseInt(hero)]
+
     // const history = useHistory()
     let [countCards, setCountCards] = useState(0)
     let [totalCards, setTotalCards] = useState(0)
-    deck.heroes = [parseInt(hero)]
-
+    
     const addCardsToDeck = (card) => {
         
         let cardId = card.dbfId
@@ -36,32 +39,47 @@ export const CardOptionCard = ({card, hero}) => {
 
             if(cardFinder[1] === 1){
                 if(totalCards < 30){
-                    deck.cards[cardIndex] = [cardId, 2]
-                    console.log(deck.cards)
-                    const deckCardCount = ++totalCards
-                    setTotalCards(deckCardCount)
-                    console.log('Total Cards: ',totalCards)
+                    if(card.rarity === "LEGENDARY") {
+                        
+                        return
+
+                    } else if (card.rarity !== "LEGENDARY" && countCards < 2) {
+                        
+                        const perCardCount = ++countCards
+                        setCountCards(perCardCount)
+                        console.log(countCards)
+                        setDeckCards([cardId, 2])
+                        deck.cards[cardIndex] = [cardId, 2]
+                        console.log(deck.cards)
+                        const deckCardCount = ++totalCards
+                        setTotalCards(deckCardCount)
+                        console.log('Total Cards: ', totalCards)
+                    }
                 }
-                
             }
         } else if (totalCards < 30){
-            deck.cards.push([cardId, 1])
-            console.log(deck.cards)
-            const deckCardCount = ++totalCards
-            setTotalCards(deckCardCount)
-            console.log('Total Cards: ',totalCards)
-        }
+            if(card.rarity === "LEGENDARY" && countCards < 1){
+                const perCardCount = ++countCards
+                setCountCards(perCardCount)
+                setDeckCards([cardId, 1])
+                deck.cards.push([cardId, 1])
+                console.log(deck.cards)
+                const deckCardCount = ++totalCards
+                setTotalCards(deckCardCount)
+                console.log('Total Cards: ', totalCards)
 
-        if (card.rarity === "LEGENDARY") {
-            if (countCards < 1) {
+            } else if (card.rarity !== "LEGENDARY" && countCards < 2) {
+                
                 const perCardCount = ++countCards
                 setCountCards(perCardCount)
-            } 
-        } else {
-            if (countCards < 2) {
-                const perCardCount = ++countCards
-                setCountCards(perCardCount)
-            } 
+                setDeckCards([cardId, 1])
+                deck.cards.push([cardId, 1])
+                console.log(deck.cards)
+                const deckCardCount = ++totalCards
+                setTotalCards(deckCardCount)
+                console.log('Total Cards: ', totalCards)
+            }
+            
         }        
     }
 
@@ -71,7 +89,7 @@ export const CardOptionCard = ({card, hero}) => {
               <div className="cardImage">
                 <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => addCardsToDeck(card)} alt={`${card?.name}`}/>
               </div>
-              <div className="cardCount">{countCards} /2</div>
+              <div className="cardCount">{countCards}</div>
         </section>
         
     )
