@@ -5,6 +5,8 @@ export const DeckContext = createContext()
 export const DeckProvider = (props) => {
     const [deckCart, setDeckCart] = useState([])
     const [localCards, setLocalCards] = useState([])
+    let [cardCountForDecks, setCardCountForDecks] = useState(0)
+    let [cardCountIndividually, setCardCountIndividually] = useState(0)
 
     const getDeckCart = (userId) => {
         return fetch(`http://localhost:8088/deckcart?_expand=userId=${userId}`)
@@ -21,6 +23,10 @@ export const DeckProvider = (props) => {
             body: JSON.stringify(deckCartObj)
         })
             .then(getDeckCart)
+            .then(() => {
+                let deckCounter = ++cardCountForDecks
+                setCardCountForDecks(deckCounter)
+            })
     }
 
     const destroyDeckCart = (deckCartUserId) => {
@@ -31,11 +37,24 @@ export const DeckProvider = (props) => {
     }
 
     const removeDeckCartCard = id => {
-        console.log(id)
         return fetch(`http://localhost:8088/deckcart/${id}`, {
             method: "DELETE"
         })
             .then(getDeckCart)
+            .then(() => {
+                let deckCounter = --cardCountForDecks
+                setCardCountForDecks(deckCounter)
+            })
+    }
+
+    const addDeck = (deckObj) => {
+        return fetch(`http://localhost:8088/userdecks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(deckObj)
+        })
     }
 
     const getLocalCards = () => {
@@ -46,7 +65,7 @@ export const DeckProvider = (props) => {
 
     return (
         <DeckContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, cardCountIndividually, setCardCountIndividually
         }}>
             {props.children}
         </DeckContext.Provider>
