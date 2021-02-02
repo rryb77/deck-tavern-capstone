@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
+import { encode, decode, FormatType } from "deckstrings";
 import { CardOptionContext } from './CardOptionProvider'
 import { CardOptionCard } from './CardOptionCard'
 import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
@@ -6,12 +7,6 @@ import "./CardOptionList.css"
 import { useParams } from "react-router-dom"
 import { DeckContext } from "../decksidebar/DeckProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
-
-// const deck = {
-//     cards: [], // [dbfId, count] pairs
-//     heroes: [], // passed in value
-//     format: 2, // or 1 for Wild, 2 for Standard
-// }
 
 
 export const CardOptionList = () => {
@@ -24,8 +19,14 @@ export const CardOptionList = () => {
     const {playerClassId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
 
-    const [deckName, setDeckName] = useState({
+    const [deck, setDeck] = useState({
         name: "",
+        deck_name: "",
+        deck_info: "",
+        playerClassId: 0,
+        dust_cost: 0,
+        userId: userId,
+        deck_code: ""
     })
 
     useEffect(() => {
@@ -50,13 +51,45 @@ export const CardOptionList = () => {
     const handleControlledInputChange = (event) => {
         //When changing a state object or array,
         //always create a copy make changes, and then set state.
-        const newDeckName = { ...deckName }
+        const newDeck = { ...deck }
         //animal is an object with properties.
         //set the property to the new value
-        newDeckName[event.target.id] = event.target.value
+        newDeck[event.target.id] = event.target.value
         //update state
-        setDeckName(newDeckName)
+        setDeck(newDeck)
       }
+
+    const saveTheDeck = () => {
+        const deck = {
+            cards: [], // [dbfId, count] pairs
+            heroes: [pClass.classId], // hero id
+            format: 1, // or 1 for Wild, 2 for Standard
+        }
+
+        for (let card of deckCart){
+            
+            console.log(card.carddbfId)
+            let cardChosen = deck.cards.find(c => c[0] === card.carddbfId)
+            console.log(`Card found: `,cardChosen)
+
+            let cardIndex = deck.cards.indexOf(cardChosen)
+            console.log(`Card Index: `, cardIndex)
+            
+            if (cardChosen !== undefined) {
+                console.log(card.carddbfId)
+                if (cardChosen[1] === 1) {
+                    deck.cards[cardIndex] = [card.carddbfId, 2]
+                }
+            } else {
+                deck.cards.push([card.carddbfId, 1])
+            }
+        }
+        
+        console.log(deck.cards)
+        let deckstring = encode(deck)
+        console.log(deckstring)
+       
+    }
 
     return (
         <>
@@ -82,7 +115,7 @@ export const CardOptionList = () => {
                     <div className="deckSidebar">
                         <h2>Sidebar</h2>
                         <div className="cardTileHolder">
-                        <input type="text" id="name" onChange={handleControlledInputChange} required autoFocus className="form-control" placeholder="Deck Name" value={deckName.name}/>
+                        <input type="text" id="name" onChange={handleControlledInputChange} required autoFocus className="form-control" placeholder="Deck Name" value={deck.name}/>
                         <div>Total Cards: {cardCountForDecks}</div>
                            {
                                deckCart.map(card => {
@@ -90,7 +123,7 @@ export const CardOptionList = () => {
                                                 card={card}/>
                                })
                            }
-                        <button className="btnSave">Save</button>
+                        <button className="btnSave" onClick={saveTheDeck}>Save</button>
                         </div>
                     </div>
 

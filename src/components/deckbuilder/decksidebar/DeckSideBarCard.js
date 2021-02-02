@@ -10,7 +10,7 @@ const deck = {
 
 export const DeckSideBarCard = ({card}) => {
     
-    const { localCards, removeDeckCartCard, cardCountForDecks, setCardCountForDecks } = useContext(DeckContext)
+    const { localCards, deckCart, removeDeckCartCard, cardCountForDecks, setCardCountForDecks } = useContext(DeckContext)
     
     // Match the local cards to the card object being passed in by dbfId
     const cardObj = localCards.find(c => c.dbfId === card.carddbfId)

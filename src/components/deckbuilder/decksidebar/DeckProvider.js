@@ -48,7 +48,7 @@ export const DeckProvider = (props) => {
     }
 
     const addDeck = (deckObj) => {
-        return fetch(`http://localhost:8088/userdecks`, {
+        return fetch(`http://localhost:8088/decks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
