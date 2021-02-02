@@ -30,7 +30,7 @@ export const DeckProvider = (props) => {
     }
 
     const destroyDeckCart = (deckCartUserId) => {
-        return fetch(`http://localhost:8088/deckcart/${deckCartUserId}`, {
+        return fetch(`http://localhost:8088/deckcart?_expand=userId=${deckCartUserId}`, {
             method: "DELETE"
         })
             .then(getDeckCart)

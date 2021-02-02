@@ -12,21 +12,15 @@ import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
-    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks } = useContext(DeckContext)
+    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, destroyDeckCart } = useContext(DeckContext)
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
 
-    const [deck, setDeck] = useState({
-        name: "",
-        deck_name: "",
-        deck_info: "",
-        playerClassId: 0,
-        dust_cost: 0,
-        userId: userId,
-        deck_code: ""
+    const [theDeckName, setTheDeckName] = useState({
+        name: ""
     })
 
     useEffect(() => {
@@ -51,12 +45,12 @@ export const CardOptionList = () => {
     const handleControlledInputChange = (event) => {
         //When changing a state object or array,
         //always create a copy make changes, and then set state.
-        const newDeck = { ...deck }
+        const newDeckName = { ...theDeckName }
         //animal is an object with properties.
         //set the property to the new value
-        newDeck[event.target.id] = event.target.value
+        newDeckName[event.target.id] = event.target.value
         //update state
-        setDeck(newDeck)
+        setTheDeckName(newDeckName)
       }
 
     const saveTheDeck = () => {
@@ -91,6 +85,10 @@ export const CardOptionList = () => {
        
     }
 
+    const clearTheDeck = () => {
+        
+    }
+
     return (
         <>
             <main className="container">
@@ -115,7 +113,7 @@ export const CardOptionList = () => {
                     <div className="deckSidebar">
                         <h2>Sidebar</h2>
                         <div className="cardTileHolder">
-                        <input type="text" id="name" onChange={handleControlledInputChange} required autoFocus className="form-control" placeholder="Deck Name" value={deck.name}/>
+                        <input type="text" id="name" onChange={handleControlledInputChange} required autoFocus className="form-control" placeholder="Deck Name" value={theDeckName.name}/>
                         <div>Total Cards: {cardCountForDecks}</div>
                            {
                                deckCart.map(card => {
@@ -123,7 +121,7 @@ export const CardOptionList = () => {
                                                 card={card}/>
                                })
                            }
-                        <button className="btnSave" onClick={saveTheDeck}>Save</button>
+                        <button className="btnSave" onClick={saveTheDeck}>Save</button><button className="btnClear" onClick={clearTheDeck}>Clear</button>
                         </div>
                     </div>
 
