@@ -1,0 +1,21 @@
+.cardTileImage {
+    position: relative;
+    text-align: center;
+    color: white;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: black;
+    font-size: 150%;
+}
+
+.cardTileInfo__cardName {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+.cardTileInfo__cardCost {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }

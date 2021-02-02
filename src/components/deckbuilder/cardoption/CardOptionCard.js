@@ -1,20 +1,48 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { DeckContext } from "../decksidebar/DeckProvider"
+// import { encode, decode, FormatType } from "deckstrings";
+
 // import { useHistory } from 'react-router-dom';
 
 export const CardOptionCard = ({card}) => {
     
-    // const history = useHistory()
+    const userId = parseInt(localStorage.getItem("decktavern_user"))
+    const {updateDeckCart, localCards} = useContext(DeckContext)
     let [countCards, setCountCards] = useState(0)
 
-    const cardOptionChosen = (card) => {
-        console.log('Card clicked')
-        // console.log(event.target.id)
+    const cardWasClicked = (card) => {
         console.log(card)
+        if (card.rarity !== "LEGENDARY" && countCards < 2){
+            const perCardCount = ++countCards
+            setCountCards(perCardCount)
+            
+            const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
+            const cardId = cardFinder.dbfId
+            console.log(cardId)
+            
+            let deckCartObj = {
+                userId: userId,
+                carddbfId: cardId
+            }
 
-        if (countCards < 2) {
-            const newCardCount = ++countCards
-            setCountCards(newCardCount)
-        } 
+            updateDeckCart(deckCartObj)
+
+
+        } else if (card.rarity === "LEGENDARY" && countCards < 1){
+            const perCardCount = ++countCards
+            setCountCards(perCardCount)
+
+            const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
+            const cardId = cardFinder.id
+            console.log(cardId)
+            
+            let deckCartObj = {
+                userId: userId,
+                carddbfId: cardId
+            }
+
+            updateDeckCart(deckCartObj)
+        }
         
     }
 
@@ -22,9 +50,9 @@ export const CardOptionCard = ({card}) => {
         
         <section className="cardViewerOptions">
               <div className="cardImage">
-                <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardOptionChosen(card.dbfId)} alt={`${card?.name}`}/>
+                <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardWasClicked(card)} alt={`${card?.name}`}/>
               </div>
-              <div className="cardCount">{countCards} /2</div>
+              <div className="cardCount">Added: {countCards}</div>
         </section>
         
     )

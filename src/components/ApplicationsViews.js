@@ -5,6 +5,7 @@ import { PlayerClassList} from "./deckbuilder/playerclass/PlayerClassList"
 import { CardOptionProvider } from "./deckbuilder/cardoption/CardOptionProvider"
 import { CardOptionList } from "./deckbuilder/cardoption/CardOptionList"
 import { Home } from "./Home"
+import { DeckProvider } from "./deckbuilder/decksidebar/DeckProvider"
 
 export const ApplicationViews = () => {
     
@@ -23,9 +24,11 @@ export const ApplicationViews = () => {
 
             <CardOptionProvider>
                 <PlayerClassProvider>
-                    <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
-                        <CardOptionList />
-                    </Route>
+                    <DeckProvider>
+                        <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
+                            <CardOptionList />
+                        </Route>
+                    </DeckProvider>
                 </PlayerClassProvider>
             </CardOptionProvider>
         </>
