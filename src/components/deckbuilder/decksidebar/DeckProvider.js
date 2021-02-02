@@ -23,14 +23,15 @@ export const DeckProvider = (props) => {
             .then(getDeckCart)
     }
 
-    const destroyDeckCart = (deckCartUser) => {
-        return fetch(`http://localhost:8088/deckcart/${deckCartUser}`, {
+    const destroyDeckCart = (deckCartUserId) => {
+        return fetch(`http://localhost:8088/deckcart/${deckCartUserId}`, {
             method: "DELETE"
         })
             .then(getDeckCart)
     }
 
-    const removeDeckCartItem = (id) => {
+    const removeDeckCartCard = id => {
+        console.log(id)
         return fetch(`http://localhost:8088/deckcart/${id}`, {
             method: "DELETE"
         })
@@ -45,7 +46,7 @@ export const DeckProvider = (props) => {
 
     return (
         <DeckContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartItem
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard
         }}>
             {props.children}
         </DeckContext.Provider>

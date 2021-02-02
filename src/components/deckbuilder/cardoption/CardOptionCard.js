@@ -22,11 +22,11 @@ export const CardOptionCard = ({card}) => {
             
             let deckCartObj = {
                 userId: userId,
-                cardId: cardId
+                carddbfId: cardId
             }
 
             updateDeckCart(deckCartObj)
-            
+
 
         } else if (card.rarity === "LEGENDARY" && countCards < 1){
             const perCardCount = ++countCards
@@ -38,7 +38,7 @@ export const CardOptionCard = ({card}) => {
             
             let deckCartObj = {
                 userId: userId,
-                cardId: cardId
+                carddbfId: cardId
             }
 
             updateDeckCart(deckCartObj)
