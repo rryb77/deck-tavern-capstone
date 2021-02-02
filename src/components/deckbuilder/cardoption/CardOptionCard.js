@@ -1,24 +1,47 @@
 import React, { useContext, useEffect, useState } from "react"
-import { CardOptionContext } from "./CardOptionProvider"
+import { DeckContext } from "../decksidebar/DeckProvider"
 // import { encode, decode, FormatType } from "deckstrings";
 
 // import { useHistory } from 'react-router-dom';
 
 export const CardOptionCard = ({card}) => {
     
-    const {setDeckCards} = useContext(CardOptionContext)
+    const userId = parseInt(localStorage.getItem("decktavern_user"))
+    const {updateDeckCart, localCards} = useContext(DeckContext)
     let [countCards, setCountCards] = useState(0)
 
     const cardWasClicked = (card) => {
-        
+        console.log(card)
         if (card.rarity !== "LEGENDARY" && countCards < 2){
             const perCardCount = ++countCards
             setCountCards(perCardCount)
-            setDeckCards(card)
+            
+            const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
+            const cardId = cardFinder.dbfId
+            console.log(cardId)
+            
+            let deckCartObj = {
+                userId: userId,
+                cardId: cardId
+            }
+
+            updateDeckCart(deckCartObj)
+            
+
         } else if (card.rarity === "LEGENDARY" && countCards < 1){
             const perCardCount = ++countCards
             setCountCards(perCardCount)
-            setDeckCards(card)
+
+            const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
+            const cardId = cardFinder.id
+            console.log(cardId)
+            
+            let deckCartObj = {
+                userId: userId,
+                cardId: cardId
+            }
+
+            updateDeckCart(deckCartObj)
         }
         
     }

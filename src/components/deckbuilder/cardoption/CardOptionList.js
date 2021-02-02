@@ -4,6 +4,8 @@ import { CardOptionCard } from './CardOptionCard'
 import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
 import "./CardOptionList.css"
 import { useParams } from "react-router-dom"
+import { DeckContext } from "../decksidebar/DeckProvider"
+import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 
 const deck = {
     cards: [], // [dbfId, count] pairs
@@ -15,9 +17,12 @@ const deck = {
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions, deckCards } = useContext(CardOptionContext)
+    const { getLocalCards, getDeckCart, deckCart } = useContext(DeckContext)
+
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
+    const userId = parseInt(localStorage.getItem("decktavern_user"))
 
     const [currentDeck, setCurrentDeck] = useState([])
 
@@ -27,11 +32,9 @@ export const CardOptionList = () => {
                 setPClass(response)
             })
             .then(getCardOptions)
+            .then(getLocalCards)
+            .then(() => getDeckCart(userId))
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        setCurrentDeck(deckCards)
-    }, [deckCards])
 
     const playerClass = pClass.name
     let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
@@ -40,7 +43,7 @@ export const CardOptionList = () => {
         return a.cost - b.cost
     })
 
-    console.log(currentDeck)
+    // console.log(currentDeck)
 
     return (
         <>
@@ -66,7 +69,12 @@ export const CardOptionList = () => {
                     <div className="deckSidebar">
                         <h2>Sidebar</h2>
                         <div className="cardTileHolder">
-                           
+                           {
+                               deckCart.map(card => {
+                                   return <DeckSideBarCard key={card.id}
+                                                card={card}/>
+                               })
+                           }
                         </div>
                     </div>
 

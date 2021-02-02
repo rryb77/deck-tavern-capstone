@@ -2,11 +2,12 @@ import React, { useState, createContext } from "react"
 
 export const DeckContext = createContext()
 
-export const Deckrovider = (props) => {
+export const DeckProvider = (props) => {
     const [deckCart, setDeckCart] = useState([])
+    const [localCards, setLocalCards] = useState([])
 
-    const getDeckCart = () => {
-        return fetch("http://localhost:8088/deckcart")
+    const getDeckCart = (userId) => {
+        return fetch(`http://localhost:8088/deckcart?_expand=userId=${userId}`)
         .then(res => res.json())
         .then(setDeckCart)
     }
@@ -17,19 +18,34 @@ export const Deckrovider = (props) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(deckCart)
+            body: JSON.stringify(deckCartObj)
         })
+            .then(getDeckCart)
     }
 
     const destroyDeckCart = (deckCartUser) => {
         return fetch(`http://localhost:8088/deckcart/${deckCartUser}`, {
             method: "DELETE"
         })
+            .then(getDeckCart)
+    }
+
+    const removeDeckCartItem = (id) => {
+        return fetch(`http://localhost:8088/deckcart/${id}`, {
+            method: "DELETE"
+        })
+            .then(getDeckCart)
+    }
+
+    const getLocalCards = () => {
+        return fetch(`http://localhost:8088/cards`)
+        .then(res => res.json())
+        .then(setLocalCards)
     }
 
     return (
         <DeckContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartItem
         }}>
             {props.children}
         </DeckContext.Provider>
