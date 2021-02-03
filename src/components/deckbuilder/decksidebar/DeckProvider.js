@@ -7,7 +7,7 @@ export const DeckProvider = (props) => {
     const [localCards, setLocalCards] = useState([])
     let [cardCountForDecks, setCardCountForDecks] = useState(0)
     let [cardCountIndividually, setCardCountIndividually] = useState(0)
-    let [deckPosted, setDeckPosted] = useState(0)
+    let [deckPosted, setDeckPosted] = useState()
 
     const getDeckCart = (userId) => {
         return fetch(`http://localhost:8088/deckcart?_expand=userId=${userId}`)
@@ -58,7 +58,8 @@ export const DeckProvider = (props) => {
         })
             .then(response => response.json())
             .then(theDeck => {
-                setDeckPosted(theDeck)
+                console.log(theDeck.id)
+                setDeckPosted(theDeck.id)
             })
     }
 

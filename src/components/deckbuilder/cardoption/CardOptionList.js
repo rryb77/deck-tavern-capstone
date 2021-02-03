@@ -111,23 +111,29 @@ export const CardOptionList = () => {
 
         addDeck(userCreatedDeck)
             .then(() => {
+                
+                setTimeout(() => {
+                    console.log(deckPosted)
+                }, 1000)
+
                 let userDeckTable = {
-                    deckId: deckPosted.id,
-                    userId: deckPosted.userId
+                    deckId: deckPosted,
+                    userId: userId
                 }
-                console.log(deckPosted.id)
-                console.log(userDeckTable)
-                addUserDeckTable(userDeckTable)
+                console.log('User Deck Table: ',userDeckTable)
+                // addUserDeckTable(userDeckTable)
             })
             .then(() => {
                 for (let obj of deckCart){
-                    console.log(deckPosted.id)
+                    
                     let deckCardsTable = {
                         cardId: obj.cardId,
-                        deckId: deckPosted.id
+                        deckId: deckPosted
                     }
 
-                    addCardDeckTable(deckCardsTable)
+                    console.log('Deck Cards Table:',deckCardsTable)
+
+                    // addCardDeckTable(deckCardsTable)
 
                 }
             })
