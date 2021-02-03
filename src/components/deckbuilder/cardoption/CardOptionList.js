@@ -16,7 +16,7 @@ import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
-    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, destroyDeckCart, addDeck, deckPostedId } = useContext(DeckContext)
+    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, destroyDeckCart, addDeck, deckPosted, addUserDeckTable, addCardDeckTable } = useContext(DeckContext)
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
@@ -94,6 +94,8 @@ export const CardOptionList = () => {
                 deck.cards.push([card.carddbfId, 1])
             }
         }
+
+        console.log(deckCart)
         
         console.log(deck.cards)
         let deckstring = encode(deck)
@@ -109,9 +111,26 @@ export const CardOptionList = () => {
 
         addDeck(userCreatedDeck)
             .then(() => {
-                
+                let userDeckTable = {
+                    deckId: deckPosted.id,
+                    userId: deckPosted.userId
+                }
+                console.log(deckPosted.id)
+                console.log(userDeckTable)
+                addUserDeckTable(userDeckTable)
             })
+            .then(() => {
+                for (let obj of deckCart){
+                    console.log(deckPosted.id)
+                    let deckCardsTable = {
+                        cardId: obj.cardId,
+                        deckId: deckPosted.id
+                    }
 
+                    addCardDeckTable(deckCardsTable)
+
+                }
+            })
     }
 
     

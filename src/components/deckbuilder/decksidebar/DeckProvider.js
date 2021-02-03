@@ -7,7 +7,7 @@ export const DeckProvider = (props) => {
     const [localCards, setLocalCards] = useState([])
     let [cardCountForDecks, setCardCountForDecks] = useState(0)
     let [cardCountIndividually, setCardCountIndividually] = useState(0)
-    let [deckPostedId, setDeckPostedId] = useState(0)
+    let [deckPosted, setDeckPosted] = useState(0)
 
     const getDeckCart = (userId) => {
         return fetch(`http://localhost:8088/deckcart?_expand=userId=${userId}`)
@@ -57,9 +57,29 @@ export const DeckProvider = (props) => {
             body: JSON.stringify(deckObj)
         })
             .then(response => response.json())
-            .then(data => {
-                setDeckPostedId(data.id)
+            .then(theDeck => {
+                setDeckPosted(theDeck)
             })
+    }
+
+    const addUserDeckTable = (theUserDeckTable) => {
+        return fetch(`http://localhost:8088/userdecks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(theUserDeckTable)
+        })
+    }
+
+    const addCardDeckTable = (theCardDeckTable) => {
+        return fetch(`http://localhost:8088/deckcards`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(theCardDeckTable)
+        })
     }
 
     const getLocalCards = () => {
@@ -70,7 +90,7 @@ export const DeckProvider = (props) => {
 
     return (
         <DeckContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, cardCountIndividually, setCardCountIndividually, addDeck, deckPostedId
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, cardCountIndividually, setCardCountIndividually, addDeck, deckPosted, addUserDeckTable, addCardDeckTable
         }}>
             {props.children}
         </DeckContext.Provider>
