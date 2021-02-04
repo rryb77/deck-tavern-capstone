@@ -28,6 +28,9 @@ export const ApplicationViews = () => {
                         <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
                             <CardOptionList />
                         </Route>
+                        <Route exact path="">
+                            
+                        </Route>
                     </DeckProvider>
                 </PlayerClassProvider>
             </CardOptionProvider>

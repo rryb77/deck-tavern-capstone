@@ -13,7 +13,6 @@ export const CardByHeroClassCard = ({card}) => {
 
     const cardWasClicked = (card) => {
 
-        console.log(card)
 
         if (card.rarity !== "LEGENDARY" && countCards < 2){
             if (cardCountForDecks < 30) {
@@ -21,8 +20,8 @@ export const CardByHeroClassCard = ({card}) => {
                 setCountCards(perCardCount)
                 
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
-                const carddbfId = cardFinder.dbfId
-                const cardId = cardFinder.id
+                const carddbfId = cardFinder?.dbfId
+                const cardId = cardFinder?.id
                 
                 let deckCartObj = {
                     userId: userId,
