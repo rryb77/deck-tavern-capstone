@@ -102,7 +102,7 @@ export const DeckProvider = (props) => {
 
     return (
         <DeckContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, setCardCountForDecks, cardCountIndividually, setCardCountIndividually, addDeck, deckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, setCardCountForDecks, cardCountIndividually, setCardCountIndividually, addDeck, deckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, setDeckPosted
         }}>
             {props.children}
         </DeckContext.Provider>

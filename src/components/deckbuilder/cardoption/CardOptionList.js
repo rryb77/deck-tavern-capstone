@@ -8,7 +8,7 @@ import { CardByHeroClassCard } from './CardByHeroClassCard'
 import { CardByNeutralClassCard } from './CardByNeutralClassCard'
 import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
 import "./CardOptionList.css"
-import { useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { DeckContext } from "../decksidebar/DeckProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 
@@ -16,12 +16,15 @@ import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
-    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
+    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
+
+    const history = useHistory()
+    const {deckId} = useParams()
 
     // modal state
     const [modal, setModal] = useState(false);
@@ -57,10 +60,6 @@ export const CardOptionList = () => {
     }, [cardCountForDecks])
 
     useEffect(() => {
-        console.log(deckPosted)
-        
-        let entryFinder = deckCards.find(entry => entry.id === deckPosted)
-        console.log('Entry finder: ', entryFinder)
 
         if(deckPosted > 0) {
             let userDeckTable = {
@@ -97,6 +96,8 @@ export const CardOptionList = () => {
                 })
                 .then(() => {
                     setCardCountForDecks(0)
+                    setDeckPosted(0)
+                    history.push(`/decks/${deckId}`)
                 })
         }
     }, [deckPosted])
