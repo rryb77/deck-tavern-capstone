@@ -24,7 +24,6 @@ export const CardOptionList = () => {
     const userId = parseInt(localStorage.getItem("decktavern_user"))
 
     const history = useHistory()
-    const {deckId} = useParams()
 
     // modal state
     const [modal, setModal] = useState(false);
@@ -66,39 +65,35 @@ export const CardOptionList = () => {
                 deckId: deckPosted,
                 userId: userId
             }
-    
-            console.log('User Deck Table: ',userDeckTable)
-            
-            addUserDeckTable(userDeckTable)
-                .then(() => {
-                    
-                    for (let obj of deckCart){
-                        console.log('Deck Cart Items: ',obj)
-                        if (obj.userId === userId){
-                            
-                            let deckCardsTable = {
-                                cardId: obj.cardId,
-                                deckId: deckPosted
-                            }
         
-                            console.log('Deck Cards Tables:',deckCardsTable)
+        addUserDeckTable(userDeckTable)
+            .then(() => {
+                
+                for (let obj of deckCart){
+                    console.log('Deck Cart Items: ',obj)
+                    if (obj.userId === userId){
+                        
+                        let deckCardsTable = {
+                            cardId: obj.cardId,
+                            deckId: deckPosted
+                        }
         
-                            addCardDeckTable(deckCardsTable)
-                        }  
-                    }
-                })
-                .then(() => {
-                    let userCart = deckCart.filter(c => c.userId === userId)
+                        addCardDeckTable(deckCardsTable)
+                    }  
+                }
+            })
+            .then(() => {
+                let userCart = deckCart.filter(c => c.userId === userId)
 
-                    for (let cartItem of userCart){
-                        destroyDeckCart(cartItem.id)
-                    }          
-                })
-                .then(() => {
-                    setCardCountForDecks(0)
-                    setDeckPosted(0)
-                    history.push(`/decks/${deckId}`)
-                })
+                for (let cartItem of userCart){
+                    destroyDeckCart(cartItem.id)
+                }          
+            })
+            .then(() => {
+                setCardCountForDecks(0)
+                history.push(`/decks/${deckPosted}`)
+                setDeckPosted(0)
+            })
         }
     }, [deckPosted])
 
@@ -117,14 +112,11 @@ export const CardOptionList = () => {
         return a.cost - b.cost
     })
 
-    // console.log(currentDeck)
-
     const handleControlledInputChange = (event) => {
         const newDeck = { ...userCreatedDeck }
         newDeck[event.target.id] = event.target.value
         setUserCreatedDeck(newDeck)
     }
-
 
     const saveTheDeck = () => {
         
