@@ -8,7 +8,7 @@ import { CardByHeroClassCard } from './CardByHeroClassCard'
 import { CardByNeutralClassCard } from './CardByNeutralClassCard'
 import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
 import "./CardOptionList.css"
-import { useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { DeckContext } from "../decksidebar/DeckProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 
@@ -16,12 +16,14 @@ import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
-    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, destroyDeckCart, addDeck, deckPosted, addUserDeckTable, addCardDeckTable } = useContext(DeckContext)
+    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
+
+    const history = useHistory()
 
     // modal state
     const [modal, setModal] = useState(false);
@@ -44,8 +46,56 @@ export const CardOptionList = () => {
             })
             .then(getCardOptions)
             .then(getLocalCards)
-            .then(() => getDeckCart(userId))
+            .then(getDeckCart)
+            .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (cardCountForDecks === 30){
+            document.getElementById("btnSave").disabled = false
+        } else {
+            document.getElementById("btnSave").disabled = true
+        }
+    }, [cardCountForDecks])
+
+    useEffect(() => {
+
+        if(deckPosted > 0) {
+            let userDeckTable = {
+                deckId: deckPosted,
+                userId: userId
+            }
+        
+        addUserDeckTable(userDeckTable)
+            .then(() => {
+                
+                for (let obj of deckCart){
+                    console.log('Deck Cart Items: ',obj)
+                    if (obj.userId === userId){
+                        
+                        let deckCardsTable = {
+                            cardId: obj.cardId,
+                            deckId: deckPosted
+                        }
+        
+                        addCardDeckTable(deckCardsTable)
+                    }  
+                }
+            })
+            .then(() => {
+                let userCart = deckCart.filter(c => c.userId === userId)
+
+                for (let cartItem of userCart){
+                    destroyDeckCart(cartItem.id)
+                }          
+            })
+            .then(() => {
+                setCardCountForDecks(0)
+                history.push(`/decks/${deckPosted}`)
+                setDeckPosted(0)
+            })
+        }
+    }, [deckPosted])
 
     // Get the name of the player class ex: "MAGE"
     const playerClass = pClass.name
@@ -62,14 +112,11 @@ export const CardOptionList = () => {
         return a.cost - b.cost
     })
 
-    // console.log(currentDeck)
-
     const handleControlledInputChange = (event) => {
         const newDeck = { ...userCreatedDeck }
         newDeck[event.target.id] = event.target.value
         setUserCreatedDeck(newDeck)
     }
-
 
     const saveTheDeck = () => {
         
@@ -95,11 +142,7 @@ export const CardOptionList = () => {
             }
         }
 
-        console.log(deckCart)
-        
-        console.log(deck.cards)
         let deckstring = encode(deck)
-        console.log(deckstring)
 
         userCreatedDeck.published = Date.now()
         userCreatedDeck.userId = userId
@@ -107,37 +150,21 @@ export const CardOptionList = () => {
         userCreatedDeck.deck_code = deckstring
         userCreatedDeck.dust_cost = 0
 
-        console.log(userCreatedDeck)
-
-        addDeck(userCreatedDeck)
-            .then(() => {
-                let userDeckTable = {
-                    deckId: deckPosted.id,
-                    userId: deckPosted.userId
-                }
-                console.log(deckPosted.id)
-                console.log(userDeckTable)
-                addUserDeckTable(userDeckTable)
-            })
-            .then(() => {
-                for (let obj of deckCart){
-                    console.log(deckPosted.id)
-                    let deckCardsTable = {
-                        cardId: obj.cardId,
-                        deckId: deckPosted.id
-                    }
-
-                    addCardDeckTable(deckCardsTable)
-
-                }
-            })
+        addDeck(userCreatedDeck) 
+           
     }
 
     
     const toggleModal = () => setModal(!modal);
 
     const clearTheDeck = () => {
-        
+        let userCart = deckCart.filter(u => u.userId === userId)
+        console.log(userCart)
+
+        for(let entry of userCart){
+            destroyDeckCart(entry.id)
+            // console.log(entry.id)
+        }
     }
 
     const [activeTab, setActiveTab] = useState('1');
@@ -145,6 +172,7 @@ export const CardOptionList = () => {
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
     }
+    
 
     return (
         <>
@@ -218,7 +246,10 @@ export const CardOptionList = () => {
                                                 card={card}/>
                                })
                            }
-                        <button className="btnSave" onClick={toggleModal}>Save</button><button className="btnClear" onClick={clearTheDeck}>Clear</button>
+                           <br></br>
+                        <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>Save</Button>{' '}
+                        <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
+                        
                         </div>
                     </div>
 

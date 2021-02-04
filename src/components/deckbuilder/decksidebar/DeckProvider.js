@@ -7,16 +7,24 @@ export const DeckProvider = (props) => {
     const [localCards, setLocalCards] = useState([])
     let [cardCountForDecks, setCardCountForDecks] = useState(0)
     let [cardCountIndividually, setCardCountIndividually] = useState(0)
-    let [deckPosted, setDeckPosted] = useState(0)
+    const [deckPosted, setDeckPosted] = useState(0)
+    const [deckCards, setDeckCards] = useState([])
 
-    const getDeckCart = (userId) => {
-        return fetch(`http://localhost:8088/deckcart?_expand=userId=${userId}`)
+    const getDeckCart = () => {
+        return fetch(`http://localhost:8088/deckcart`)
         .then(res => res.json())
         .then(setDeckCart)
     }
 
+    const getDeckCards = () => {
+        return fetch(`http://localhost:8088/deckcards`)
+        .then(res => res.json())
+        .then(setDeckCards)
+    }
+
     const updateDeckCart = (deckCartObj) => {
-        return fetch("http://localhost:8088/deckcart", {
+        if(deckCartObj.carddbfId !== undefined){
+            return fetch("http://localhost:8088/deckcart", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -28,10 +36,14 @@ export const DeckProvider = (props) => {
                 let deckCounter = ++cardCountForDecks
                 setCardCountForDecks(deckCounter)
             })
+        } else {
+            console.log("Card was undefined...?", deckCartObj)
+        }
+        
     }
 
-    const destroyDeckCart = (deckCartUserId) => {
-        return fetch(`http://localhost:8088/deckcart?_expand=userId=${deckCartUserId}`, {
+    const destroyDeckCart = (id) => {
+        return fetch(`http://localhost:8088/deckcart/${id}`, {
             method: "DELETE"
         })
             .then(getDeckCart)
@@ -58,7 +70,7 @@ export const DeckProvider = (props) => {
         })
             .then(response => response.json())
             .then(theDeck => {
-                setDeckPosted(theDeck)
+                setDeckPosted(theDeck.id)
             })
     }
 
@@ -90,7 +102,7 @@ export const DeckProvider = (props) => {
 
     return (
         <DeckContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, cardCountIndividually, setCardCountIndividually, addDeck, deckPosted, addUserDeckTable, addCardDeckTable
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, getLocalCards, localCards, removeDeckCartCard, cardCountForDecks, setCardCountForDecks, cardCountIndividually, setCardCountIndividually, addDeck, deckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, setDeckPosted
         }}>
             {props.children}
         </DeckContext.Provider>
