@@ -2,11 +2,6 @@ import React, { useEffect, useState, useContext } from "react"
 import { DeckContext } from './DeckProvider'
 import "./DeckSideBar.css"
 
-const deck = {
-    cards: [], // [dbfId, count] pairs
-    heroes: [], // passed in value
-    format: 2, // or 1 for Wild, 2 for Standard
-}
 
 export const DeckSideBarCard = ({card}) => {
     

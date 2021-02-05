@@ -8,10 +8,7 @@ export const PlayerClassProvider = (props) => {
     const getPlayerClasses = () => {
         return fetch("http://localhost:8088/playerclass")
         .then(res => res.json())
-        .then((pc) => {
-            setPlayerClasses(pc)
-            return pc
-        })
+        .then(setPlayerClasses)
     }
 
     const addPlayerClass = playerClassObj => {

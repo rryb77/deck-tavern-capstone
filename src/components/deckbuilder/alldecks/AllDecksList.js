@@ -2,16 +2,18 @@ import React, { useContext, useEffect, useState } from "react"
 import { DeckViewContext } from '../deckview/DeckViewProvider'
 import { PlayerClassContext } from "../playerclass/PlayerClassProvider"
 import { AllDecksCard } from "./AllDecksCard"
+import "./AllDeckList.css"
 
 export const AllDeckList = () => {
     
     const { decks, getDecks } = useContext(DeckViewContext)
     const { getPlayerClasses } = useContext(PlayerClassContext)
+    
 
     useEffect(() => {
         getDecks()
             .then(getPlayerClasses)
-    })
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     let newestDecks = decks
 
