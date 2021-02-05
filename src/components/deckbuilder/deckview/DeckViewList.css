@@ -16,6 +16,19 @@
 
 .cardTileInfo__cardCost {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 20%;
+    left: 22%;
+  }
+
+  .classCards {
+    width: 33%;
+  }
+
+  .neutralCards {
+    width: 33%;
+  }
+
+  .bottomDeckContainer {
+    display: flex;
+    flex-wrap: nowrap;
   }
