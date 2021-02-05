@@ -6,10 +6,12 @@ import {DeckCardViewCard} from './DeckCardViewCard'
 import "./DeckViewList.css"
 import { UserContext } from "../../user/UserProvider"
 import { Button } from 'reactstrap';
+import { PlayerClassContext } from "../playerclass/PlayerClassProvider"
 
 export const DeckViewList = () => {
     const { deck, getDeckById, deleteDeckById } = useContext(DeckViewContext)
     const {getLocalCards, getDeckCards, deckCards, localCards } = useContext(DeckContext)
+    const {playerClasses, getPlayerClasses } = useContext(PlayerClassContext)
     const { getUsers, users } = useContext(UserContext)
     const {deckId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
@@ -20,6 +22,7 @@ export const DeckViewList = () => {
             .then(getLocalCards)
             .then(getDeckCards)
             .then(getUsers)
+            .then(getPlayerClasses)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -30,8 +33,8 @@ export const DeckViewList = () => {
         }
     }, [deck])
 
-    console.log(deck)
-
+    const theClass = playerClasses.find(p => p.id === deck.playerClassId)
+    console.log(theClass)
     let currentUser = users.find(u => u.id === userId)
     let thisDeck = deckCards.filter(c => c.deckId === parseInt(deckId))
 
@@ -61,6 +64,7 @@ export const DeckViewList = () => {
                 <div className="deckInfo">
                 <h3>{deck.deck_name}</h3>
                 <b>Created By:</b> {currentUser?.username} <br></br>
+                <b>Class:</b> {theClass?.name} <br></br>
                 <b>Date Published:</b> {new Date(deck.published).toLocaleDateString('en-US')} <br></br>
                 <b>Deck Info:</b> {deck.deck_info} <br></br><br></br>
                 <Button color="primary" id="delete" onClick={deleteDeck}>Delete Deck</Button>
