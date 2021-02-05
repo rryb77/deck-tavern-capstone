@@ -18,10 +18,17 @@ export const DeckViewProvider = (props) => {
         .then(setDeck)
     }
 
+    const deleteDeckById = (id) => {
+        return fetch(`http://localhost:8088/decks/${id}`, {
+            method: "DELETE"
+        })
+            .then(getDecks)
+    }
+
 
     return (
         <DeckViewContext.Provider value={{
-            decks, setDecks, getDecks, deck, setDeck, getDeckById
+            decks, setDecks, getDecks, deck, setDeck, getDeckById, deleteDeckById
         }}>
             {props.children}
         </DeckViewContext.Provider>
