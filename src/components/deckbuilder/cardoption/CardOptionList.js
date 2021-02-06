@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import { encode, decode, FormatType } from "deckstrings";
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col } from 'reactstrap';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Form, FormGroup } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label } from 'reactstrap';
 import classnames from 'classnames';
 import { CardOptionContext } from './CardOptionProvider'
 import { CardByHeroClassCard } from './CardByHeroClassCard'
@@ -11,12 +11,13 @@ import "./CardOptionList.css"
 import { useHistory, useParams } from "react-router-dom"
 import { DeckContext } from "../decksidebar/DeckProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
-
+import "../decksidebar/DeckSideBar.css"
 
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
     const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
+
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
@@ -70,7 +71,6 @@ export const CardOptionList = () => {
             .then(() => {
                 
                 for (let obj of deckCart){
-                    console.log('Deck Cart Items: ',obj)
                     if (obj.userId === userId){
                         
                         let deckCardsTable = {
@@ -163,8 +163,9 @@ export const CardOptionList = () => {
 
         for(let entry of userCart){
             destroyDeckCart(entry.id)
-            // console.log(entry.id)
         }
+
+        setCardCountForDecks(0)
     }
 
     const [activeTab, setActiveTab] = useState('1');
@@ -180,7 +181,7 @@ export const CardOptionList = () => {
 
                 <section className="leftContainer">
                     
-                    <h2>{playerClass}</h2>
+                    <h2 className="playerClassName">{playerClass}</h2>
                     <div>
                     <Nav tabs>
                         <NavItem>
@@ -217,8 +218,8 @@ export const CardOptionList = () => {
                         </TabPane>
                         <TabPane tabId="2">
                         <Row>
-                            <Col sm="6">
-                            <div className="cardViewer">
+                            <Col sm="12">
+                            <div className="neutralCardViewer">
                                 {
                                     neutralClassCards.map(card => {
                                         return <CardByNeutralClassCard key={card.dbfId} 
@@ -236,20 +237,24 @@ export const CardOptionList = () => {
 
                 <section className="rightContainer">
                     
-                    <div className="deckSidebar">
-                        <h2>Sidebar</h2>
+                    <div className="deckSidebar sticky-top">
+                        <h2 className="currentDeck">Current Deck</h2>
                         <div className="cardTileHolder">
-                        <div>Total Cards: {cardCountForDecks}</div>
-                           {
-                               deckCart.map(card => {
-                                   return <DeckSideBarCard key={card.id}
-                                                card={card}/>
-                               })
-                           }
-                           <br></br>
-                        <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>Save</Button>{' '}
-                        <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
-                        
+                            <div className="totalCards">Total Cards: {cardCountForDecks}</div>
+                            <div className="listContainer">
+                                <ul className="deckSideBarCards" id="deckSideBarCards">
+                                {
+                                    deckCart.map(card => {
+                                        return <DeckSideBarCard key={card.id}
+                                                        card={card}/>
+                                    })
+                                }
+                                </ul>
+                            </div>
+                            <div>
+                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>Save</Button>{' '} <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
+                            </div>
+                           
                         </div>
                     </div>
 

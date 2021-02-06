@@ -1,14 +1,17 @@
+body {
+    background-color: rgb(255, 255, 255);
+}
 .container {
     display: flex;
     flex-wrap: wrap;
 }
 
 .leftContainer {
-    width: 80%;
+    width: 70%;
 }
 
 .rightContainer {
-    width: 20%;
+    width: 30%;
 }
 
 .cardViewer {
@@ -22,10 +25,92 @@
     list-style-type: none;
 }
 
+.neutralCardViewer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.neutralCardViewerOptions {
+    flex-basis: 20%;
+    list-style-type: none;
+}
+
+
+
 .cardCount {
     text-align: center;
 }
 
-/* .deckSidebar {
-    
-} */
+.deckSideBarCards {
+    list-style-type:none;
+    height: auto;
+    max-height: 500px;
+    width: 420px;
+    overflow-y: scroll;
+    text-align-last: left;
+}
+
+img{
+    /* width: 256px; */
+    cursor: pointer;
+        border: 0px solid #ffffff;
+}
+
+img.card_image:hover{
+    /* opacity: 0.7; */
+    /* width: 100;
+    height: 100; */
+    border: -1000px;
+    border-radius: 5%;
+    box-shadow:
+        inset 0 0 50px #fff,      
+        inset 20px 0 80px rgb(9, 255, 0),   
+        inset -20px 0 80px #0ff,  
+        inset 20px 0 300px rgb(120, 105, 206),  
+        inset -20px 0 300px #0ff, 
+        0 0 50px #fff,            
+        -10px 0 80px rgb(9, 255, 0),  
+        10px 0 80px #0ff;   
+}
+
+ul {
+    list-style-type:none;
+}
+
+li {
+    list-style-type:none;
+}
+
+.greyscale {
+    filter: grayscale(100%);
+}
+
+.cardImage {
+    position: relative;
+
+}
+
+.redx {
+    width: 200px;
+
+    position: absolute;
+    top: 25%;
+    left: 10%;
+  }
+
+  .isVisible {
+      display: none;
+  }
+
+.currentDeck {
+    color: rgb(255, 255, 255);
+}
+
+.totalCards {
+    color: rgb(255, 255, 255);
+}
+
+.playerClassName {
+    color: rgb(255, 255, 255);
+}

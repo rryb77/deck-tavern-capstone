@@ -14,6 +14,10 @@ export const DeckProvider = (props) => {
         return fetch(`http://localhost:8088/deckcart`)
         .then(res => res.json())
         .then(setDeckCart)
+        .then(() => {
+            let sidebar = document.getElementById("deckSideBarCards")
+                sidebar.scrollTop = sidebar.scrollHeight
+        })
     }
 
     const getDeckCards = () => {
@@ -23,6 +27,7 @@ export const DeckProvider = (props) => {
     }
 
     const updateDeckCart = (deckCartObj) => {
+        console.log(deckCartObj)
         if(deckCartObj.carddbfId !== undefined){
             return fetch("http://localhost:8088/deckcart", {
             method: "POST",
@@ -57,6 +62,7 @@ export const DeckProvider = (props) => {
             .then(() => {
                 let deckCounter = --cardCountForDecks
                 setCardCountForDecks(deckCounter)
+
             })
     }
 
