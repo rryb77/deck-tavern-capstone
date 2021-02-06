@@ -11,13 +11,14 @@ import "./CardOptionList.css"
 import { useHistory, useParams } from "react-router-dom"
 import { DeckContext } from "../decksidebar/DeckProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
+import { RatingContext } from "../../rating/RatingProvider"
 import "../decksidebar/DeckSideBar.css"
 
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
     const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
-
+    const { addRating, ratings } = useContext(RatingContext)
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
@@ -83,16 +84,25 @@ export const CardOptionList = () => {
                 }
             })
             .then(() => {
-                let userCart = deckCart.filter(c => c.userId === userId)
-
-                for (let cartItem of userCart){
-                    destroyDeckCart(cartItem.id)
-                }          
+                let ratingObj = {
+                    deckId: deckPosted,
+                    userId: userId,
+                    rating: 0
+                }
+        
+                addRating(ratingObj)
             })
             .then(() => {
                 setCardCountForDecks(0)
                 history.push(`/decks/${deckPosted}`)
                 setDeckPosted(0)
+            })
+            .then(() => {
+                let userCart = deckCart.filter(c => c.userId === userId)
+
+                for (let cartItem of userCart){
+                    destroyDeckCart(cartItem.id)
+                }          
             })
         }
     }, [deckPosted])
@@ -150,8 +160,8 @@ export const CardOptionList = () => {
         userCreatedDeck.deck_code = deckstring
         userCreatedDeck.dust_cost = 0
 
-        addDeck(userCreatedDeck) 
-           
+        addDeck(userCreatedDeck)
+        
     }
 
     

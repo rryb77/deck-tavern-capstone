@@ -10,6 +10,7 @@ import { DeckViewList } from "./deckbuilder/deckview/DeckViewList"
 import { DeckViewProvider } from "./deckbuilder/deckview/DeckViewProvider"
 import { UserProvider } from "./user/UserProvider"
 import { AllDeckList } from "./deckbuilder/alldecks/AllDecksList"
+import { RatingProvider } from "./rating/RatingProvider"
 
 export const ApplicationViews = () => {
     
@@ -29,17 +30,21 @@ export const ApplicationViews = () => {
             <CardOptionProvider>
                 <PlayerClassProvider>
                     <DeckProvider>
-                        <DeckViewProvider>
-                            <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
-                                <CardOptionList />
-                            </Route>
-                            <Route exact path="/decks">
-                                <AllDeckList />
-                            </Route>
+                        <DeckViewProvider>                            
                             <UserProvider>
-                                <Route exact path="/decks/:deckId(\d+)">
-                                    <DeckViewList />
-                                </Route>
+                                <RatingProvider>
+                                    <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
+                                        <CardOptionList />
+                                    </Route>
+
+                                    <Route exact path="/decks">
+                                        <AllDeckList />
+                                    </Route>
+                                    
+                                    <Route exact path="/decks/:deckId(\d+)">
+                                        <DeckViewList />
+                                    </Route>
+                                </RatingProvider>
                             </UserProvider>
                         </DeckViewProvider>
                     </DeckProvider>
