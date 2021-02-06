@@ -29,8 +29,9 @@ export const CardByNeutralClassCard = ({card}) => {
                 updateDeckCart(deckCartObj)
                 if(countCards === 2){
                     let theCount = document.getElementById(`${card.dbfId}`)
+                    let theX = document.getElementById(`x--${card.dbfId}`)
                     theCount.classList.add("greyscale")
-                    console.log(theCount)
+                    theX.classList.remove('isVisible')
 
                 }
             }
@@ -52,8 +53,9 @@ export const CardByNeutralClassCard = ({card}) => {
                 updateDeckCart(deckCartObj)
                 if(countCards === 1){
                     let theCount = document.getElementById(`${card.dbfId}`)
+                    let theX = document.getElementById(`x--${card.dbfId}`)
                     theCount.classList.add("greyscale")
-                    console.log(theCount)
+                    theX.classList.remove('isVisible')
 
                 }
             }
@@ -65,6 +67,7 @@ export const CardByNeutralClassCard = ({card}) => {
         <section className="neutralCardViewerOptions">
               <div className="cardImage">
                 <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardWasClicked(card)} alt={`${card?.name}`}/>
+                <img src={'/images/redx.png'} className="redx isVisible" id={`x--${card.dbfId}`}/>
               </div>
               <div className="cardCount" id={`${card.name}`}>Added: {countCards}</div>
         </section>

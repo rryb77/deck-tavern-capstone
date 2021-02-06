@@ -14,9 +14,9 @@ export const DeckSideBarCard = ({card}) => {
         removeDeckCartCard(cardObj.id)
         console.log(cardObj)
         let theCard = document.getElementById(`${cardObj.carddbfId}`)
+        let theX = document.getElementById(`x--${cardObj.carddbfId}`)
         theCard.classList.remove("greyscale")
-        // let theCount = document.getElementById(`${cardObj.cardId}`)
-        // console.log(theCount)
+        theX.classList.add('isVisible')                    
 
     }
     
