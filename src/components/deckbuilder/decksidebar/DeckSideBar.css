@@ -1,21 +1,59 @@
-.cardTileImage {
-    position: relative;
-    text-align: center;
-    color: white;
-    -webkit-text-stroke-width: 0.5px;
-    -webkit-text-stroke-color: black;
-    font-size: 150%;
+.cardOptionTileImage {
+  position: relative;
+  color: rgb(21, 255, 0);
+  -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-color: rgb(0, 255, 0);
+  font-size: 100%;
+  border: 2px solid rgb(217, 255, 0);
+  background-color: black;
+  text-align-last: right;
+  margin-bottom: 2px;
+  margin-right: 5px;
+  width: 350px;
 }
 
-.cardTileInfo__cardName {
+.tileBlackSideBar {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  height: 59px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+.cardOptionTileInfo__cardName {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 30%;
+    left: 10%;
   }
 
-.cardTileInfo__cardCost {
+.cardOptionTileInfo__cardCost {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 30%;
+    left: 3%;
   }
+
+.btnSave {
+  position: absolute;
+  left: 41%;
+}
+
+.btnClear {
+  position: absolute;
+  left: 71%;
+}
+
+.totalCards {
+  position: relative;
+  left: 27%;
+}
+
+.currentDeck {
+  position: relative;
+  left: 26%;
+}
+
+.listContainer {
+  position: relative;
+  left: 15%;
+}

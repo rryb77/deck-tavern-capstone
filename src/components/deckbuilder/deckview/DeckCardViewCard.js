@@ -8,6 +8,7 @@ export const DeckCardViewCard = ({card}) => {
     return (
         <div className="cardTileImage">
             <img src={`https://art.hearthstonejson.com/v1/tiles/${card.art}.png`} className="card_TileImage" id={`${card?.dbfId}`} alt={`${card?.name}`}/>
+            <img src={'/images/tileBlack.png'} className="tileBlack"/>
             <div className="cardTileInfo__cardName">{card.name}</div>
             <div className="cardTileInfo__cardCost">{card.cost}</div>
         </div>

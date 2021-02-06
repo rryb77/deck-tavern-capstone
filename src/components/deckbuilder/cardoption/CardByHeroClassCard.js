@@ -1,8 +1,5 @@
 import React, { useContext, useState } from "react"
 import { DeckContext } from "../decksidebar/DeckProvider"
-// import { encode, decode, FormatType } from "deckstrings";
-
-// import { useHistory } from 'react-router-dom';
 
 export const CardByHeroClassCard = ({card}) => {
     
@@ -11,8 +8,12 @@ export const CardByHeroClassCard = ({card}) => {
 
     let [countCards, setCountCards] = useState(0)
 
+    const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
+    const cardId = cardFinder?.id
+
     const cardWasClicked = (card) => {
 
+        console.log(card)
 
         if (card.rarity !== "LEGENDARY" && countCards < 2){
             if (cardCountForDecks < 30) {
@@ -30,6 +31,12 @@ export const CardByHeroClassCard = ({card}) => {
                 }
 
                 updateDeckCart(deckCartObj)
+                if(countCards === 2){
+                    let theCount = document.getElementById(`${card.dbfId}`)
+                    theCount.classList.add("greyscale")
+                    console.log(theCount)
+
+                }
             }
         } else if (card.rarity === "LEGENDARY" && countCards < 1){
             if (cardCountForDecks < 30) {
@@ -37,7 +44,7 @@ export const CardByHeroClassCard = ({card}) => {
                 setCountCards(perCardCount)
 
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
-                const carddbfId = cardFinder.id
+                const carddbfId = cardFinder.dbfId
                 const cardId = cardFinder.id
                 
                 let deckCartObj = {
@@ -45,10 +52,18 @@ export const CardByHeroClassCard = ({card}) => {
                     cardId: cardId,
                     carddbfId: carddbfId
                 }
-
+                console.log(deckCartObj)
                 updateDeckCart(deckCartObj)
+                
+                if(countCards === 1){
+                    let theCount = document.getElementById(`${card.dbfId}`)
+                    theCount.classList.add("greyscale")
+
+                }
             }
         }   
+
+        
     }
 
     return (
@@ -57,7 +72,7 @@ export const CardByHeroClassCard = ({card}) => {
               <div className="cardImage">
                 <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardWasClicked(card)} alt={`${card?.name}`}/>
               </div>
-              <div className="cardCount" id={`${card.dbfId}`}>Added: {countCards}</div>
+              <div className="cardCount" id={`${cardId}`}>Added: {countCards}</div>
         </section>
         
     )
