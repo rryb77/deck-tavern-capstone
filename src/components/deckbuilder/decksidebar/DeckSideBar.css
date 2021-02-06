@@ -1,23 +1,25 @@
 .cardOptionTileImage {
   position: relative;
-  color: rgb(21, 255, 0);
-  -webkit-text-stroke-width: 0.3px;
-  -webkit-text-stroke-color: rgb(0, 255, 0);
-  font-size: 100%;
-  border: 2px solid rgb(217, 255, 0);
-  background-color: black;
+  color: rgb(255, 255, 255);
+  -webkit-text-stroke-width: 1.0px;
+  -webkit-text-stroke-color: rgb(0, 0, 0);
+  font-size: 130%;
+  /* border: 2px solid rgb(217, 255, 0); */
   text-align-last: right;
   margin-bottom: 2px;
   margin-right: 5px;
   width: 350px;
+  height: 50px;
+  margin-bottom: 7px;
+  font-weight: 800;
 }
 
 .cardOptionTileImage:hover{
   /* opacity: 0.7; */
   /* width: 100;
   height: 100; */
-  border: 3px solid rgb(217, 255, 0);
-  border-radius: 5%;
+  border: 3px;
+  border-radius: 80%;
   box-shadow:
       inset 0 0 10px #fff,      
       inset 50px 0 50px rgb(9, 255, 0),   
@@ -29,25 +31,54 @@
       0px 0 10px #0ff;   
 }
 
+.card_TileImage {
+  position: absolute;
+  left: 15%;
+  width: 72%;
+  height: 95%;
+}
+
 .tileBlackSideBar {
   position: absolute;
   top: 0%;
-  left: 0%;
-  height: 59px;
-  width: 200px;
+  left: 50%;
+  height: 10px;
+  width: 50px;
   border-radius: 0%;
+}
+
+.manaText {
+  position: absolute;
+  height: 55px;
+  left: 0%;
+}
+
+.cardMiddle {
+  position: absolute;
+  height: 55px;
+  width: 80%;
+  left: 12%;
+  top: 0%;
+}
+
+.cardRight {
+  position: absolute;
+  height: 55px;
+  
+  left: 80%;
+  top: 0%;
 }
 
 .cardOptionTileInfo__cardName {
     position: absolute;
-    top: 30%;
-    left: 10%;
+    top: 20%;
+    left: 18%;
   }
 
 .cardOptionTileInfo__cardCost {
     position: absolute;
-    top: 30%;
-    left: 3%;
+    top: 20%;
+    left: 7.5%;
   }
 
 .btnSave {

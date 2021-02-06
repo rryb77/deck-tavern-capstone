@@ -24,7 +24,9 @@ export const DeckSideBarCard = ({card}) => {
         <li>
             <div className="cardOptionTileImage" onClick={event => removeCard(card)}>
                 <img src={`https://art.hearthstonejson.com/v1/tiles/${cardObj?.art}.png`} className="card_TileImage" id={`${cardObj?.dbfId}`} alt={`${cardObj?.name}`}/>
-                <img src={'/images/tileBlack.png'} className="tileBlackSideBar"/>
+                <img src={'/images/cardMiddle.png'} className="cardMiddle"/>
+                <img src={'/images/manaText.png'} className="manaText"/>
+                <img src={'/images/cardRight.png'} className="cardRight"/>
                 <div className="cardOptionTileInfo__cardName">{cardObj?.name}</div>
                 <div className="cardOptionTileInfo__cardCost">{cardObj?.cost}</div>
             </div>

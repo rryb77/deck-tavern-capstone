@@ -44,8 +44,7 @@ body {
 
 .deckSideBarCards {
     list-style-type:none;
-    height: auto;
-    max-height: 500px;
+    height: 500px;
     width: 420px;
     overflow-y: scroll;
     text-align-last: left;
