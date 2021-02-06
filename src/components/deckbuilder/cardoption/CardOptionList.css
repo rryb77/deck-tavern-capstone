@@ -52,7 +52,7 @@ body {
 }
 
 img{
-    width: 256px;
+    /* width: 256px; */
     cursor: pointer;
         border: 0px solid #ffffff;
 }
@@ -61,12 +61,13 @@ img.card_image:hover{
     /* opacity: 0.7; */
     /* width: 100;
     height: 100; */
-    border-radius: 10%;
+    border: -1000px;
+    border-radius: 5%;
     box-shadow:
         inset 0 0 50px #fff,      
         inset 20px 0 80px rgb(9, 255, 0),   
         inset -20px 0 80px #0ff,  
-        inset 20px 0 300px rgb(38, 0, 255),  
+        inset 20px 0 300px rgb(120, 105, 206),  
         inset -20px 0 300px #0ff, 
         0 0 50px #fff,            
         -10px 0 80px rgb(9, 255, 0),  
@@ -91,11 +92,25 @@ li {
 }
 
 .redx {
+    width: 200px;
+
     position: absolute;
-    top: 15%;
-    left: 0%;
+    top: 25%;
+    left: 10%;
   }
 
   .isVisible {
       display: none;
   }
+
+.currentDeck {
+    color: rgb(255, 255, 255);
+}
+
+.totalCards {
+    color: rgb(255, 255, 255);
+}
+
+.playerClassName {
+    color: rgb(255, 255, 255);
+}

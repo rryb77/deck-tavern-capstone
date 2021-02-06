@@ -5,7 +5,7 @@ import {DeckViewContext} from './DeckViewProvider'
 import {DeckCardViewCard} from './DeckCardViewCard'
 import "./DeckViewList.css"
 import { UserContext } from "../../user/UserProvider"
-import { Button } from 'reactstrap';
+import { Button, ButtonGroup, Tooltip } from 'reactstrap';
 import { PlayerClassContext } from "../playerclass/PlayerClassProvider"
 
 export const DeckViewList = () => {
@@ -16,6 +16,10 @@ export const DeckViewList = () => {
     const {deckId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
     const history = useHistory()
+    
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+
+    const toggle = () => setTooltipOpen(!tooltipOpen);
 
     useEffect(() => {
         getDeckById(deckId)
@@ -32,6 +36,7 @@ export const DeckViewList = () => {
             document.getElementById("delete").disabled = true;
         }
     }, [deck])
+    
 
     const theClass = playerClasses.find(p => p.id === deck.playerClassId)
     console.log(theClass)
@@ -47,10 +52,17 @@ export const DeckViewList = () => {
     let neutralCards = theDeckCards.filter(c => c.cardClass === "NEUTRAL")
 
     const copyText = () => {
+        toggle()
+
         let deckCodeToCopy = document.getElementById("deckCode")
         deckCodeToCopy.select()
         document.execCommand("copy")
-        alert(deckCodeToCopy.value)
+        // alert(deckCodeToCopy.value)
+
+        setTimeout(() => {
+            setTooltipOpen(false)
+        }, 1500);
+        
     }
 
     const deleteDeck = () => {
@@ -97,15 +109,29 @@ export const DeckViewList = () => {
                         <br></br>
                         <h4>Extra Details</h4>
                         <br></br>
+                        <h5>Current Rating: </h5>
+                        <br></br>
+                        <h5>Rate This Deck:</h5>
+                        <ButtonGroup size="sm">
+                            <Button>Upvote</Button>
+                            <Button>Downvote</Button>
+                        </ButtonGroup>
+                        <br></br>
+                        <br></br>
                         <h5>Deck Code:</h5>
                         <textarea id="deckCode" name="deckCode" rows="2" cols="50" value={deck.deck_code} readOnly>
                         </textarea>
                         <br></br>
-                        <Button color="primary" onClick={copyText}>Copy Deck Code</Button>
+                        <Button color="primary" id={"btnCopy"} onClick={copyText}>Copy Deck Code</Button>
+                        <Tooltip placement="bottom" isOpen={tooltipOpen} autohide={false} target="btnCopy" trigger="click">
+                            Copied Deck Code!
+                        </Tooltip>
+                        
                     </div>
 
                 </div>
             </section>
+            
         </main>
     )
 }

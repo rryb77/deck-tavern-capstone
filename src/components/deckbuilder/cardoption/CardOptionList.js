@@ -18,6 +18,7 @@ export const CardOptionList = () => {
     const { cardOptions, getCardOptions } = useContext(CardOptionContext)
     const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
 
+
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
@@ -70,7 +71,6 @@ export const CardOptionList = () => {
             .then(() => {
                 
                 for (let obj of deckCart){
-                    console.log('Deck Cart Items: ',obj)
                     if (obj.userId === userId){
                         
                         let deckCardsTable = {
@@ -181,7 +181,7 @@ export const CardOptionList = () => {
 
                 <section className="leftContainer">
                     
-                    <h2>{playerClass}</h2>
+                    <h2 className="playerClassName">{playerClass}</h2>
                     <div>
                     <Nav tabs>
                         <NavItem>

@@ -1,6 +1,7 @@
 import React, {useContext} from "react"
 import { useHistory } from "react-router-dom"
 import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
+import { Table } from 'reactstrap';
 
 export const AllDecksCard = ({deck}) => {
     const { playerClasses } = useContext(PlayerClassContext)
@@ -14,10 +15,12 @@ export const AllDecksCard = ({deck}) => {
 
     return (
         <>
-            <div className="deck" onClick={goToDeck}>
-                <div className="deckInfo" id={deck.id}><b>Deck Name:</b> {deck.deck_name} <b>Class:</b> {theClass?.name} <b>Published:</b> {new Date(deck.published).toLocaleDateString('en-US')}</div>
-            </div>
-            <br></br>
+            <tr className="deck" onClick={goToDeck}>
+                <th scope="row">{deck.id}</th>
+                <td>{deck.deck_name}</td>
+                <td>{theClass?.name}</td>
+                <td>{new Date(deck.published).toLocaleDateString('en-US')}</td>
+            </tr>
         </>
     )
 
