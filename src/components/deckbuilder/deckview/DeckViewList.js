@@ -120,7 +120,7 @@ export const DeckViewList = () => {
         <main>
             <section className="deckContainer">
                 <div className="deckInfo">
-                <h3>{deck.deck_name}</h3>
+                <h3 className="deckName">{deck.deck_name}</h3>
                 <b>Created By:</b> {currentUser?.username} <br></br>
                 <b>Class:</b> {theClass?.name} <br></br>
                 <b>Date Published:</b> {new Date(deck.published).toLocaleDateString('en-US')} <br></br>

@@ -74,10 +74,10 @@
   margin-bottom: 100px;
 }
 
-h4, h5{
+h4.deckName, h5{
   color: rgb(255, 255, 255);
 }
 
 body {
-  color: white;
+  /* color: white; */
 }
