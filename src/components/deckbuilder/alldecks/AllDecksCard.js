@@ -1,7 +1,6 @@
 import React, {useContext} from "react"
 import { useHistory } from "react-router-dom"
 import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
-import { Table } from 'reactstrap';
 
 export const AllDecksCard = ({deck}) => {
     const { playerClasses } = useContext(PlayerClassContext)

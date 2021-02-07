@@ -10,15 +10,20 @@ import { PlayerClassContext } from '../playerclass/PlayerClassProvider'
 import "./CardOptionList.css"
 import { useHistory, useParams } from "react-router-dom"
 import { DeckContext } from "../decksidebar/DeckProvider"
+import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 import { RatingContext } from "../../rating/RatingProvider"
 import "../decksidebar/DeckSideBar.css"
 
 export const CardOptionList = () => {
     
-    const { cardOptions, getCardOptions } = useContext(CardOptionContext)
-    const { getLocalCards, getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
+    const { cardOptions, getCardOptions, searchTerms } = useContext(CardOptionContext)
+    const { getLocalCards, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
     const { addRating, ratings } = useContext(RatingContext)
+    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart} = useContext(DeckCartContext)
+
+    // const [ filteredCards, setFilteredCards ] = useState([])
+
 
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const [pClass, setPClass] = useState({})
@@ -52,6 +57,30 @@ export const CardOptionList = () => {
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+    // Get the name of the player class ex: "MAGE"
+    const playerClass = pClass.name
+    let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+    let neutralClassCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
+    
+    // Sort the player class cards by mana cost
+    playerClassCards.sort((a, b) => {
+        return a.cost - b.cost
+    })
+
+    // Sort the neutral cards by mana cost
+    neutralClassCards.sort((a, b) => {
+        return a.cost - b.cost
+    })
+
+    // useEffect(() => {
+    //     if (searchTerms !== "") {
+    //         const subset = playerClassCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+    //         setFilteredCards(subset)
+    //     } else {
+    //         setFilteredCards(playerClassCards)
+    //     }
+    // }, [searchTerms, playerClassCards])
+
     useEffect(() => {
         if (cardCountForDecks === 30){
             document.getElementById("btnSave").disabled = false
@@ -59,6 +88,7 @@ export const CardOptionList = () => {
             document.getElementById("btnSave").disabled = true
         }
     }, [cardCountForDecks])
+
 
     useEffect(() => {
 
@@ -106,21 +136,6 @@ export const CardOptionList = () => {
             })
         }
     }, [deckPosted])
-
-    // Get the name of the player class ex: "MAGE"
-    const playerClass = pClass.name
-    let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
-    let neutralClassCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
-    
-    // Sort the player class cards by mana cost
-    playerClassCards.sort((a, b) => {
-        return a.cost - b.cost
-    })
-
-    // Sort the neutral cards by mana cost
-    neutralClassCards.sort((a, b) => {
-        return a.cost - b.cost
-    })
 
     const handleControlledInputChange = (event) => {
         const newDeck = { ...userCreatedDeck }
@@ -251,6 +266,7 @@ export const CardOptionList = () => {
                         <h2 className="currentDeck">Current Deck</h2>
                         <div className="cardTileHolder">
                             <div className="totalCards">Total Cards: {cardCountForDecks}</div>
+                            <br></br>
                             <div className="listContainer">
                                 <ul className="deckSideBarCards" id="deckSideBarCards">
                                 {

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react"
 import { DeckContext } from "../decksidebar/DeckProvider"
+import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 
 export const CardByHeroClassCard = ({card}) => {
     
     const userId = parseInt(localStorage.getItem("decktavern_user"))
-    const {updateDeckCart, localCards, cardCountForDecks } = useContext(DeckContext)
+    const { localCards } = useContext(DeckContext)
+    const { updateDeckCart, cardCountForDecks } = useContext(DeckCartContext)
 
     let [countCards, setCountCards] = useState(0)
 
@@ -31,6 +33,7 @@ export const CardByHeroClassCard = ({card}) => {
                 }
 
                 updateDeckCart(deckCartObj)
+
                 if(countCards === 2){
                     let theCount = document.getElementById(`${card.dbfId}`)
                     let theX = document.getElementById(`x--${card.dbfId}`)
@@ -53,7 +56,7 @@ export const CardByHeroClassCard = ({card}) => {
                     cardId: cardId,
                     carddbfId: carddbfId
                 }
-                console.log(deckCartObj)
+
                 updateDeckCart(deckCartObj)
                 
                 if(countCards === 1){
@@ -66,8 +69,6 @@ export const CardByHeroClassCard = ({card}) => {
                 }
             }
         }   
-
-        
     }
 
     return (

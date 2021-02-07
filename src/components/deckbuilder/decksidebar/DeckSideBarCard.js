@@ -1,11 +1,13 @@
 import React, { useContext } from "react"
 import { DeckContext } from './DeckProvider'
 import "./DeckSideBar.css"
+import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 
 
 export const DeckSideBarCard = ({card}) => {
     
-    const { localCards, removeDeckCartCard } = useContext(DeckContext)
+    const { localCards } = useContext(DeckContext)
+    const {removeDeckCartCard} = useContext(DeckCartContext)
     
     // Match the local cards to the card object being passed in by dbfId
     const cardObj = localCards.find(c => c.dbfId === card.carddbfId)
@@ -19,16 +21,17 @@ export const DeckSideBarCard = ({card}) => {
         theX.classList.add('isVisible')                    
 
     }
-    
+        
     return (
         <li>
             <div className="cardOptionTileImage" onClick={event => removeCard(card)}>
-                <img src={`https://art.hearthstonejson.com/v1/tiles/${cardObj?.art}.png`} className="card_TileImage" id={`${cardObj?.dbfId}`} alt={`${cardObj?.name}`}/>
-                <img src={'/images/cardMiddle.png'} className="cardMiddle"/>
-                <img src={'/images/manaText.png'} className="manaText"/>
-                <img src={'/images/cardRight.png'} className="cardRight"/>
+                <img src={`https://art.hearthstonejson.com/v1/tiles/${cardObj?.art}.png`} className="card_SideTileImage" id={`${cardObj?.dbfId}`} alt={`${cardObj?.name}`}/>
+                <img src={'/images/cardMiddle.png'} className="cardSideMiddle"/>
+                <img src={'/images/manaText.png'} className="manaSideText"/>
+                <img src={'/images/cardRight.png'} className="cardSideRight"/>
                 <div className="cardOptionTileInfo__cardName">{cardObj?.name}</div>
                 <div className="cardOptionTileInfo__cardCost">{cardObj?.cost}</div>
+                <img src={'/images/cardMask.png'} className="cardSideMask"/>
             </div>
         </li>
     )

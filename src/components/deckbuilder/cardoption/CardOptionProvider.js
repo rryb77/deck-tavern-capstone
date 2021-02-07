@@ -5,6 +5,7 @@ export const CardOptionContext = createContext()
 export const CardOptionProvider = (props) => {
     const [cardOptions, setCardOptions] = useState([])
     const [deckCards, setDeckCards] = useState([])
+    const [ searchTerms, setSearchTerms ] = useState("")
 
     const getCardOptions = () => {
         return fetch("https://api.hearthstonejson.com/v1/72661/enUS/cards.collectible.json")
@@ -14,7 +15,7 @@ export const CardOptionProvider = (props) => {
 
     return (
         <CardOptionContext.Provider value={{
-            cardOptions, getCardOptions, deckCards, setDeckCards
+            cardOptions, getCardOptions, deckCards, setDeckCards, searchTerms, setSearchTerms
         }}>
             {props.children}
         </CardOptionContext.Provider>
