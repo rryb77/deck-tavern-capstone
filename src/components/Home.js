@@ -14,9 +14,9 @@ export const Home = (props) => {
         <center>
             
             <div className="homeJumbotron">
-            <img src={'/images/jumboBanner.png'} className="jumboBanner" id={`jumboBanner`}/>
+            <img src={'/images/jumboBanner.png'} className="jumboBanner" id={`jumboBanner`} alt="jumbobanner"/>
                 <Jumbotron>
-                    <h1 className="display-3">Hello, traveler!</h1>
+                    <h1 className="display-3">Greetings, traveler!</h1>
                     <p className="lead">Join us at the table to build, view, and share decks.</p>
                     <hr className="my-2" />
                     <p>Ready to give it a go? Click below to head straight to our deck builder!</p>

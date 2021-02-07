@@ -20,8 +20,13 @@ th {
     left: 5%;
 }
 
+.newestDeckHeader {
+    color: antiquewhite;
+}
+
 .highestRatedDecks {
     width: 47%;
+    margin-top: 10%;
 }
 
 tr:nth-child(even) {background-color: #535353;}

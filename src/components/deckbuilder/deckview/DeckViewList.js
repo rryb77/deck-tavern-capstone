@@ -119,19 +119,26 @@ export const DeckViewList = () => {
     return (
         <main>
             <section className="deckContainer">
-                <div className="deckInfo">
-                <h3 className="deckName">{deck.deck_name}</h3>
-                <b>Created By:</b> {currentUser?.username} <br></br>
-                <b>Class:</b> {theClass?.name} <br></br>
-                <b>Date Published:</b> {new Date(deck.published).toLocaleDateString('en-US')} <br></br>
-                <b>Deck Info:</b> {deck.deck_info} <br></br><br></br>
-                <Button color="primary" id="delete" onClick={deleteDeck}>Delete Deck</Button>
+                <div className="topDeckContainer">
+                    <div className="deckInfo">
+                        <h3 className="deckName">{deck.deck_name}</h3>
+                        <b>Created By:</b> {currentUser?.username} <br></br>
+                        <b>Class:</b> {theClass?.name} <br></br>
+                        <b>Date Published:</b> {new Date(deck.published).toLocaleDateString('en-US')} <br></br>
+                        <b>Deck Info:</b> {deck.deck_info} <br></br><br></br>
+                        
+                    </div>
+
+                    <div className="deckPanel">
+                        <h3 className="header">Deck Admin</h3>
+                        <Button color="primary" id="delete" onClick={deleteDeck}>Delete Deck</Button>
+                    </div>
                 </div>
                 <div className="bottomDeckContainer">
                     
                     <div className="classCards">
                         <br></br>
-                        <h4>Class Cards</h4>
+                        <h4 className="header">Class Cards</h4>
                         {
                             classCards.map(card => {
                                 ++uniqueIdForClassCards
@@ -143,7 +150,7 @@ export const DeckViewList = () => {
 
                     <div className="neutralCards">
                         <br></br>
-                        <h4>Neutral Cards</h4>
+                        <h4 className="header">Neutral Cards</h4>
                         {
                             neutralCards.map(card => {
                                 ++uniqueIdForNeutralCards
@@ -155,12 +162,9 @@ export const DeckViewList = () => {
 
                     <div className="extraDetails">
                         <br></br>
-                        <h4>Extra Details</h4>
+                        <h4 className="header">Extra Details</h4>
                         <br></br>
-                        <h5>Current Rating:</h5>
-                        <div className="rating">
-                            {theRating}
-                        </div>
+                        <h5>Total Votes: {theRating}</h5>
                         <br></br>
                         <h5>Rate This Deck:</h5>
                         <ButtonGroup size="sm">

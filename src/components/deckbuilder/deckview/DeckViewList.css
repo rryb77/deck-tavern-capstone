@@ -68,14 +68,32 @@
   flex-wrap: nowrap;
 }
 
+.topDeckContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 50px;
+}
+
 .deckContainer {
   margin-top: 20px;
   margin-left: 10%;
   margin-bottom: 100px;
 }
 
-h4.deckName, h5{
+.deckName, h5, b, .header, .rating{
   color: rgb(255, 255, 255);
+}
+
+.deckInfo {
+  color: whitesmoke;
+  width: 40%;
+}
+
+.deckPanel {
+  position: absolute;
+  color: whitesmoke;
+  width: 40%;
+  left: 69.2%;
 }
 
 body {
