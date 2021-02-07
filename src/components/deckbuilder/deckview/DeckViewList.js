@@ -7,6 +7,7 @@ import "./DeckViewList.css"
 import { UserContext } from "../../user/UserProvider"
 import { Button, ButtonGroup, Tooltip } from 'reactstrap';
 import { PlayerClassContext } from "../playerclass/PlayerClassProvider"
+import { RatingContext } from "../../rating/RatingProvider"
 
 export const DeckViewList = () => {
     const { deck, getDeckById, deleteDeckById } = useContext(DeckViewContext)
@@ -16,6 +17,7 @@ export const DeckViewList = () => {
     const {deckId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
     const history = useHistory()
+    const { getRatings, ratings, addRating } = useContext(RatingContext)
     
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -27,21 +29,25 @@ export const DeckViewList = () => {
             .then(getDeckCards)
             .then(getUsers)
             .then(getPlayerClasses)
+            .then(getRatings)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if(deck.userId === userId){
             document.getElementById("delete").disabled = false;
+            document.getElementById("upvote").disabled = true;
+            document.getElementById("downvote").disabled = true;
+
         } else {
             document.getElementById("delete").disabled = true;
         }
+
     }, [deck])
-    
 
     const theClass = playerClasses.find(p => p.id === deck.playerClassId)
-    console.log(theClass)
     let currentUser = users.find(u => u.id === userId)
     let thisDeck = deckCards.filter(c => c.deckId === parseInt(deckId))
+    let ratingsForThisDeck = ratings.filter(r => r.deckId === parseInt(deckId))
 
     let theDeckCards = thisDeck.map(card => {
         let theCard = localCards.find(c => c.id === card.cardId)
@@ -70,6 +76,46 @@ export const DeckViewList = () => {
         history.push(`/`)
     }
 
+    const upvote = () => {
+        
+        let ratingObj = {
+            deckId: parseInt(deckId),
+            userId: userId,
+            rating: 1
+        }
+        addRating(ratingObj)
+    }
+
+    const downvote = () => {
+        
+        let ratingObj = {
+            deckId: parseInt(deckId),
+            userId: userId,
+            rating: -1
+        }
+        addRating(ratingObj)
+    }
+
+    let uniqueIdForClassCards = 0
+    let uniqueIdForNeutralCards = 0
+    let theRating = 0
+    
+    ratingsForThisDeck.map(rating => {
+        if (rating.rating === -1){
+            --theRating
+        } else if(rating.rating === 1){
+            ++theRating
+        }
+        return theRating
+    })
+
+    let didTheUserVote = ratingsForThisDeck.find(rating => rating.userId === userId)
+    
+    if (didTheUserVote?.userId === userId) {
+        document.getElementById("upvote").disabled = true;
+        document.getElementById("downvote").disabled = true;
+    }
+
     return (
         <main>
             <section className="deckContainer">
@@ -88,7 +134,8 @@ export const DeckViewList = () => {
                         <h4>Class Cards</h4>
                         {
                             classCards.map(card => {
-                                return <DeckCardViewCard key={card.id} 
+                                ++uniqueIdForClassCards
+                                return <DeckCardViewCard key={uniqueIdForClassCards} 
                                             card={card}/>
                             })
                         }
@@ -99,7 +146,8 @@ export const DeckViewList = () => {
                         <h4>Neutral Cards</h4>
                         {
                             neutralCards.map(card => {
-                                return <DeckCardViewCard key={card.id} 
+                                ++uniqueIdForNeutralCards
+                                return <DeckCardViewCard key={uniqueIdForNeutralCards} 
                                             card={card}/>
                             })
                         }
@@ -109,12 +157,15 @@ export const DeckViewList = () => {
                         <br></br>
                         <h4>Extra Details</h4>
                         <br></br>
-                        <h5>Current Rating: </h5>
+                        <h5>Current Rating:</h5>
+                        <div className="rating">
+                            {theRating}
+                        </div>
                         <br></br>
                         <h5>Rate This Deck:</h5>
                         <ButtonGroup size="sm">
-                            <Button>Upvote</Button>
-                            <Button>Downvote</Button>
+                            <Button id="upvote" onClick={upvote}>Upvote</Button>
+                            <Button id="downvote" onClick={downvote}>Downvote</Button>
                         </ButtonGroup>
                         <br></br>
                         <br></br>
