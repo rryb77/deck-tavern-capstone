@@ -42,6 +42,8 @@ export const DeckViewList = () => {
             document.getElementById("delete").disabled = true;
         }
 
+        userVoted()
+
     }, [deck])
 
     const theClass = playerClasses.find(p => p.id === deck.playerClassId)
@@ -111,9 +113,11 @@ export const DeckViewList = () => {
 
     let didTheUserVote = ratingsForThisDeck.find(rating => rating.userId === userId)
     
-    if (didTheUserVote?.userId === userId) {
-        document.getElementById("upvote").disabled = true;
-        document.getElementById("downvote").disabled = true;
+    const userVoted = () => {
+        if (didTheUserVote?.userId === userId) {
+            document.getElementById("upvote").disabled = true;
+            document.getElementById("downvote").disabled = true;
+        }
     }
 
     return (

@@ -48,11 +48,11 @@ fieldset {
 
 .form--login {
     background-position-x: right;
-    background-image: url(logo.png);
+    /* background-image: url(logo.png); */
     z-index: 1;
     min-height: 25rem;
     min-width: 45rem;
-    background-color: hsla(0,0%,100%,0.40);
+    /* background-color: hsla(0,0%,100%,0.40); */
     background-blend-mode: overlay;
     background-repeat: no-repeat;
 }

@@ -14,8 +14,8 @@ th {
     flex-wrap: wrap;
 }
 .newestDecks {
-    width: 47%;
-    margin-top: 10%;
+    width: 100%;
+    margin-top: 5%;
     margin-right: 50px;
     left: 5%;
 }
@@ -29,4 +29,20 @@ th {
     margin-top: 10%;
 }
 
-tr:nth-child(even) {background-color: #535353;}
+th {background-color: #701e1e;}
+td{background-color: #343a40;}
+
+tr {
+    cursor: pointer;
+        border: 0px solid #ffffff;
+}
+
+/* td:hover {
+    background-color: #701e1e;
+} */
+
+tr:hover {
+    color: rgb(0, 250, 21);
+    
+
+}
