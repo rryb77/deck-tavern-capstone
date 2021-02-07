@@ -11,6 +11,8 @@ import { DeckViewProvider } from "./deckbuilder/deckview/DeckViewProvider"
 import { UserProvider } from "./user/UserProvider"
 import { AllDeckList } from "./deckbuilder/alldecks/AllDecksList"
 import { RatingProvider } from "./rating/RatingProvider"
+import { DeckCartProvider } from "./deckbuilder/decksidebar/DeckCartProvider"
+// import {CardSearch} from "./deckbuilder/cardoption/CardSearch"
 
 export const ApplicationViews = () => {
     
@@ -33,17 +35,20 @@ export const ApplicationViews = () => {
                         <DeckViewProvider>                            
                             <UserProvider>
                                 <RatingProvider>
-                                    <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
-                                        <CardOptionList />
-                                    </Route>
+                                    <DeckCartProvider>
+                                        <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
+                                            {/* <CardSearch/> */}
+                                            <CardOptionList />
+                                        </Route>
 
-                                    <Route exact path="/decks">
-                                        <AllDeckList />
-                                    </Route>
-                                    
-                                    <Route exact path="/decks/:deckId(\d+)">
-                                        <DeckViewList />
-                                    </Route>
+                                        <Route exact path="/decks">
+                                            <AllDeckList />
+                                        </Route>
+                                        
+                                        <Route exact path="/decks/:deckId(\d+)">
+                                            <DeckViewList />
+                                        </Route>
+                                    </DeckCartProvider>
                                 </RatingProvider>
                             </UserProvider>
                         </DeckViewProvider>

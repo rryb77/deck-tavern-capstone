@@ -4,37 +4,80 @@
   left: 20%;
   font-size: 100%;
   font-weight: 800;
+  z-index: 6;
 }
 
 .cardTileInfo__cardCost {
   position: absolute;
   top: 20%;
   left: 7.5%;
+  z-index: 6;
 }
 
-  .classCards {
-    width: 33%;
-  }
+.cardMask {
+  position: absolute;
+  left: 15%;
+  top: 5%;
+  width: 290px;
+  z-index: 5;
+  height: 95%
+}
 
-  .neutralCards {
-    width: 33%;
-  }
+.manaText {
+  position: absolute;
+  height: 55px;
+  left: 0%;
+  z-index: 6;
+}
 
-  .bottomDeckContainer {
-    display: flex;
-    flex-wrap: nowrap;
-  }
+.cardMiddle {
+  position: absolute;
+  height: 55px;
+  width: 80%;
+  left: 12%;
+  top: 0%;
+  z-index: 6;
+}
 
-  .deckContainer {
-    margin-top: 20px;
-    margin-left: 10%;
-    margin-bottom: 100px;
-  }
+.cardRight {
+  position: absolute;
+  height: 55px;
+  
+  left: 80%;
+  top: 0%;
+}
 
-  h4, h5{
-    color: rgb(255, 255, 255);
-  }
+.card_TileImage {
+  position: absolute;
+  left: 15%;
+  width: 72%;
+  height: 95%;
+  z-index: 1;
+}
 
-  body {
-    color: white;
-  }
+.classCards {
+  width: 33%;
+}
+
+.neutralCards {
+  width: 33%;
+}
+
+.bottomDeckContainer {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.deckContainer {
+  margin-top: 20px;
+  margin-left: 10%;
+  margin-bottom: 100px;
+}
+
+h4, h5{
+  color: rgb(255, 255, 255);
+}
+
+body {
+  color: white;
+}

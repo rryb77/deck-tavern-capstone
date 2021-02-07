@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react"
-// import { useHistory } from "react-router-dom"
 import "./PlayerClassList.css"
 import { PlayerClassContext } from "./PlayerClassProvider"
 import { PlayerClassCard} from "./PlayerClassCard"

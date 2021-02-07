@@ -24,18 +24,19 @@
       inset 0 0 10px #fff,      
       inset 50px 0 50px rgb(9, 255, 0),   
       inset -20px 0 80px #0ff,  
-      inset 20px 0 300px rgb(120, 105, 206),  
+      inset 20px 0 300px rgb(22, 9, 94),  
       inset -20px 0 300px #0ff, 
       0 0 0px #fff,            
-      0px 0 30px rgb(9, 255, 0),  
+      0px 0 30px rgb(25, 128, 22),  
       0px 0 10px #0ff;   
 }
 
-.card_TileImage {
+.card_SideTileImage {
   position: absolute;
   left: 15%;
   width: 72%;
   height: 95%;
+  z-index: 1;
 }
 
 .tileBlackSideBar {
@@ -47,38 +48,52 @@
   border-radius: 0%;
 }
 
-.manaText {
+.manaSideText {
   position: absolute;
   height: 55px;
   left: 0%;
+  z-index: 3;
 }
 
-.cardMiddle {
+.cardSideMiddle {
   position: absolute;
   height: 55px;
   width: 80%;
   left: 12%;
   top: 0%;
+  z-index: 3;
 }
 
-.cardRight {
+.cardSideRight {
   position: absolute;
   height: 55px;
   
   left: 80%;
   top: 0%;
+  z-index: 2;
+}
+
+.cardSideMask {
+  position: absolute;
+  left: 15%;
+  top: 5%;
+  width: 290px;
+  z-index: 2;
+  height: 95%
 }
 
 .cardOptionTileInfo__cardName {
     position: absolute;
     top: 20%;
     left: 18%;
+    z-index: 3;
   }
 
 .cardOptionTileInfo__cardCost {
     position: absolute;
     top: 20%;
     left: 7.5%;
+    z-index: 3;
   }
 
 .btnSave {
