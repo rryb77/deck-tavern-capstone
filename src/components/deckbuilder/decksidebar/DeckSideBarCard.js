@@ -4,6 +4,14 @@ import "./DeckSideBar.css"
 import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 
 
+export const removeClasses = (card) => {
+    let theCount = document.getElementById(`${card.dbfId}`)
+    let theX = document.getElementById(`x--${card.dbfId}`)
+    theCount.classList.add("greyscale")
+    theX.classList.remove('isVisible')
+}
+
+
 export const DeckSideBarCard = ({card}) => {
     
     const { localCards } = useContext(DeckContext)
@@ -13,6 +21,7 @@ export const DeckSideBarCard = ({card}) => {
     const cardObj = localCards.find(c => c.dbfId === card.carddbfId)
 
     const removeCard = (cardObj) => {
+        
         removeDeckCartCard(cardObj.id)
         console.log(cardObj)
         let theCard = document.getElementById(`${cardObj.carddbfId}`)

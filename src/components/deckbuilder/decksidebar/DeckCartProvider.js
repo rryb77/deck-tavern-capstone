@@ -6,7 +6,6 @@ export const DeckCartProvider = (props) => {
     
     const [deckCart, setDeckCart] = useState([])
     let [cardCountForDecks, setCardCountForDecks] = useState(0)
-    let [cardCounting, setCardCounting] = useState(0)
 
     const getDeckCart = () => {
         return fetch(`http://localhost:8088/deckcart`)
@@ -25,12 +24,6 @@ export const DeckCartProvider = (props) => {
             body: JSON.stringify(deckCartObj)
         })
             .then(getDeckCart)
-            .then(() => {
-                let deckCounter = ++cardCountForDecks
-                let cardCounter = ++cardCounting
-                setCardCountForDecks(deckCounter)
-                setCardCounting(cardCounter)
-            })
             .then(() => {
                 let sidebar = document.getElementById("deckSideBarCards")
                     sidebar.scrollTop = sidebar.scrollHeight
@@ -62,7 +55,7 @@ export const DeckCartProvider = (props) => {
 
     return (
         <DeckCartContext.Provider value={{
-            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, removeDeckCartCard, cardCountForDecks, setCardCountForDecks, cardCounting, setCardCounting
+            deckCart, getDeckCart, updateDeckCart, destroyDeckCart, removeDeckCartCard, cardCountForDecks, setCardCountForDecks
         }}>
             {props.children}
         </DeckCartContext.Provider>

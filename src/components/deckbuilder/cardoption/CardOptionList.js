@@ -57,6 +57,11 @@ export const CardOptionList = () => {
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        let theCurrentCardCount = deckCart.length
+        setCardCountForDecks(theCurrentCardCount)
+    }, [deckCart])
+
     // Get the name of the player class ex: "MAGE"
     const playerClass = pClass.name
     let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
@@ -187,10 +192,12 @@ export const CardOptionList = () => {
         console.log(userCart)
 
         for(let entry of userCart){
+            let theCard = document.getElementById(`${entry.carddbfId}`)
+            let theX = document.getElementById(`x--${entry.carddbfId}`)
+            theCard.classList.remove("greyscale")
+            theX.classList.add("isVisible")
             destroyDeckCart(entry.id)
         }
-
-        setCardCountForDecks(0)
     }
 
     const [activeTab, setActiveTab] = useState('1');

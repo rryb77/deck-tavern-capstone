@@ -14,7 +14,6 @@ export const CardByNeutralClassCard = ({card}) => {
     useEffect(() => {
         
         let thisCard = deckCart.filter(c => c.cardId === cardFinder?.id)
-        console.log(thisCard)
         const perCardCount = thisCard.length
         setCountCards(perCardCount)      
 
@@ -24,15 +23,15 @@ export const CardByNeutralClassCard = ({card}) => {
     useEffect(() => {
         
         if(card.rarity !== "LEGENDARY" && countCards === 2){
-            let theCount = document.getElementById(`${card.dbfId}`)
+            let theCard = document.getElementById(`${card.dbfId}`)
             let theX = document.getElementById(`x--${card.dbfId}`)
-            theCount.classList.add("greyscale")
+            theCard.classList.add("greyscale")
             theX.classList.remove('isVisible')
 
         } else if (card.rarity === "LEGENDARY" && countCards === 1){
-            let theCount = document.getElementById(`${card.dbfId}`)
+            let theCard = document.getElementById(`${card.dbfId}`)
             let theX = document.getElementById(`x--${card.dbfId}`)
-            theCount.classList.add("greyscale")
+            theCard.classList.add("greyscale")
             theX.classList.remove('isVisible')
         }
 
