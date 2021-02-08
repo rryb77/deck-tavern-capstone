@@ -18,8 +18,8 @@ export const PlayerClassList = () => {
 
     return (
         <>
-            <h2>Choose Your Class</h2>
-
+            <h2 className="classheader">Choose Your Class</h2>
+            
             <div className="playerClasses">
                 {
                     playerClasses.map(playerClass => {

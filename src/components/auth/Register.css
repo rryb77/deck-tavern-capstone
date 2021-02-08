@@ -9,17 +9,23 @@ fieldset {
     border: 0;
 }
 
-.form--login {
+.form--register {
     display: inline-block;
     margin: 0 auto;
     text-align: left;
 }
 
-.form--login > fieldset > input[type="email"],
-.form--login > fieldset > input[type="password"] {
-    width: 24em;
-    margin-top: 35.5%;
+.form--register > fieldset > input[type="email"] {
+    width: 12em;
+    margin-top: 35%;
     margin-left: 23%;
+    height: 3em;
+}
+
+.form--register > fieldset > input[type="text"] {
+    width: 12em;
+    margin-top: -11.1%;
+    margin-left: 50%;
     height: 3em;
 }
 
@@ -45,11 +51,7 @@ fieldset {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.container--login {
-    text-align: center;
-}
-
-.form--login {
+.form--register {
     /* background-position-x: right; */
     background-image: url(Login.png);
     z-index: 1;
@@ -71,8 +73,8 @@ fieldset {
     min-height: 5rem;
 }
 
-.btnSubmit {
-    margin-top: 6.5%;
+.btnSubmitReg {
+    margin-top: 2.5%;
     margin-left: 38%;
     background-color: Transparent;
     background-repeat:no-repeat;

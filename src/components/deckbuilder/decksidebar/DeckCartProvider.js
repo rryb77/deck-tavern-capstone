@@ -25,10 +25,6 @@ export const DeckCartProvider = (props) => {
         })
             .then(getDeckCart)
             .then(() => {
-                let deckCounter = ++cardCountForDecks
-                setCardCountForDecks(deckCounter)
-            })
-            .then(() => {
                 let sidebar = document.getElementById("deckSideBarCards")
                     sidebar.scrollTop = sidebar.scrollHeight
             })

@@ -1,21 +1,48 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { DeckContext } from "../decksidebar/DeckProvider"
 import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 
 export const CardByNeutralClassCard = ({card}) => {
     
     const userId = parseInt(localStorage.getItem("decktavern_user"))
-    const { localCards, cardCountForDecks } = useContext(DeckContext)
-    const {updateDeckCart} = useContext(DeckCartContext)
+    const { localCards } = useContext(DeckContext)
+    const {updateDeckCart, cardCountForDecks, deckCart} = useContext(DeckCartContext)
 
     let [countCards, setCountCards] = useState(0)
+    const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
+
+    useEffect(() => {
+        
+        let thisCard = deckCart.filter(c => c.cardId === cardFinder?.id)
+        const perCardCount = thisCard.length
+        setCountCards(perCardCount)      
+
+    }, [deckCart]) // eslint-disable-line react-hooks/exhaustive-deps
+
+
+    useEffect(() => {
+        
+        if(card.rarity !== "LEGENDARY" && countCards === 2){
+            let theCard = document.getElementById(`${card.dbfId}`)
+            let theX = document.getElementById(`x--${card.dbfId}`)
+            theCard.classList.add("greyscale")
+            theX.classList.remove('isVisible')
+
+        } else if (card.rarity === "LEGENDARY" && countCards === 1){
+            let theCard = document.getElementById(`${card.dbfId}`)
+            let theX = document.getElementById(`x--${card.dbfId}`)
+            theCard.classList.add("greyscale")
+            theX.classList.remove('isVisible')
+        }
+
+    }, [countCards])
 
     const cardWasClicked = (card) => {
 
         if (card.rarity !== "LEGENDARY" && countCards < 2){
             if (cardCountForDecks < 30) {
-                const perCardCount = ++countCards
-                setCountCards(perCardCount)
+                // const perCardCount = ++countCards
+                // setCountCards(perCardCount)
                 
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
                 const carddbfId = cardFinder.dbfId
@@ -28,18 +55,18 @@ export const CardByNeutralClassCard = ({card}) => {
                 }
 
                 updateDeckCart(deckCartObj)
-                if(countCards === 2){
-                    let theCount = document.getElementById(`${card.dbfId}`)
-                    let theX = document.getElementById(`x--${card.dbfId}`)
-                    theCount.classList.add("greyscale")
-                    theX.classList.remove('isVisible')
+                // if(countCards === 2){
+                //     let theCount = document.getElementById(`${card.dbfId}`)
+                //     let theX = document.getElementById(`x--${card.dbfId}`)
+                //     theCount.classList.add("greyscale")
+                //     theX.classList.remove('isVisible')
 
-                }
+                // }
             }
         } else if (card.rarity === "LEGENDARY" && countCards < 1){
             if (cardCountForDecks < 30) {
-                const perCardCount = ++countCards
-                setCountCards(perCardCount)
+                // const perCardCount = ++countCards
+                // setCountCards(perCardCount)
 
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
                 const carddbfId = cardFinder.dbfId
@@ -52,13 +79,13 @@ export const CardByNeutralClassCard = ({card}) => {
                 }
 
                 updateDeckCart(deckCartObj)
-                if(countCards === 1){
-                    let theCount = document.getElementById(`${card.dbfId}`)
-                    let theX = document.getElementById(`x--${card.dbfId}`)
-                    theCount.classList.add("greyscale")
-                    theX.classList.remove('isVisible')
+                // if(countCards === 1){
+                //     let theCount = document.getElementById(`${card.dbfId}`)
+                //     let theX = document.getElementById(`x--${card.dbfId}`)
+                //     theCount.classList.add("greyscale")
+                //     theX.classList.remove('isVisible')
 
-                }
+                // }
             }
         }   
     }
