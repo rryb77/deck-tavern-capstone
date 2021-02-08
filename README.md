@@ -20,20 +20,15 @@ The Deck Tavern was created to allow gamers in the Hearthstone community to easi
 
 In order to get The Deck Tavern running locally please do the following in your terminal:
 
+### `git clone git@github.com:rryb77/deck-tavern-capstone.git`
+
+Once you've cloned the repo cd into the directory and use the following command to install the needed libraries and dependencies this app used:
+
+### `npm install`
+
+Once everything is installed use the following command to run it:
+
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
