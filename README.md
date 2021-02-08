@@ -1,10 +1,24 @@
-# Getting Started with Create React App
+# The Deck Tavern
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Deck Tavern was created to allow gamers in the Hearthstone community to easily create, view, and share card decks with other players. It provides unlimited space for saved decks to remove the constraint of the 15 deck limit in the client itself. Here's a breakdown of what you can do as a user:
 
-## Available Scripts
+### Deck Creators (anyone can create them!)
+* Choose a hero class that the deck will be based on
+* Create a 30 card deck with game rules built-in to avoid any mistakes
+* View saved decks that you created
+* Delete any saved decks that you created
+* Access the deck code that was generated on the decks to import it right to the game!
 
-In the project directory, you can run:
+### General Users
+* View all created decks and sort them by rating, date, and users who created them
+* Rate decks that other players have created to help the best rise to the top
+* Copy the deck code from any created deck to import and try it out in the game client
+* Visit the profile of a deck creator to see all other decks they created
+
+
+## Running The App
+
+In order to get The Deck Tavern running locally please do the following in your terminal:
 
 ### `npm start`
 
@@ -68,3 +82,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
