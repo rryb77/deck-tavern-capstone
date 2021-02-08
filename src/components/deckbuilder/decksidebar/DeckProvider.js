@@ -34,7 +34,14 @@ export const DeckProvider = (props) => {
     }
 
     const updateCardDeckTable = (theCardDeckTable) => {
-        
+        return fetch(`http://localhost:8088/deckcards/${theCardDeckTable.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(theCardDeckTable)
+        })
+          .then(getDeckCards)
     }
 
     const getLocalCards = () => {
@@ -45,7 +52,7 @@ export const DeckProvider = (props) => {
 
     return (
         <DeckContext.Provider value={{
-            getLocalCards, localCards, cardCountIndividually, setCardCountIndividually, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards
+            getLocalCards, localCards, cardCountIndividually, setCardCountIndividually, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, updateCardDeckTable
         }}>
             {props.children}
         </DeckContext.Provider>

@@ -19,7 +19,7 @@ import { DeckViewContext } from "../../deckview/DeckViewProvider";
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions, searchTerms } = useContext(CardOptionContext)
-    const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards } = useContext(DeckContext)
+    const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
     const { addRating, ratings } = useContext(RatingContext)
     const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
@@ -173,10 +173,22 @@ export const CardOptionList = () => {
             if(deckPosted > 0){
                 setEdit(false)
 
-                
-            }
-        }
+                let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeckId))
+
+
+                for (let obj of deckCart){
+                    if (obj.userId === userId){
+                            
+                        let deckCardsTable = {
+                            cardId: obj.cardId,
+                            deckId: deckPosted
+                        }
         
+                        // updateCardDeckTable(deckCardsTable)
+                    }  
+                }
+            }
+        }   
     }, [deckPosted])
 
     const handleControlledInputChange = (event) => {
