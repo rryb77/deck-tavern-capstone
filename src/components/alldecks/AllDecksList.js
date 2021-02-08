@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react"
 import { DeckViewContext } from '../deckview/DeckViewProvider'
-import { PlayerClassContext } from "../playerclass/PlayerClassProvider"
+import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvider"
 import "./AllDeckList.css"
-import { RatingContext } from "../../rating/RatingProvider"
+import { RatingContext } from "../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
 import { useHistory } from "react-router-dom"
-import { UserContext } from '../../user/UserProvider'
+import { UserContext } from '../user/UserProvider'
 
 export const AllDeckList = () => {
     
@@ -15,6 +15,8 @@ export const AllDeckList = () => {
     const { getUsers, users } = useContext(UserContext)
     
     const history = useHistory()
+
+    console.log(decks)
 
     useEffect(() => {
         getDecks()
@@ -103,18 +105,6 @@ export const AllDeckList = () => {
                         data={data}
                     />
             </section>
-            {/* <section className="highestRatedDecks">
-                <h3 className="header">Popular Decks</h3>
-                <MDBDataTable
-                        striped
-                        bordered
-                        small
-                        theadTextWhite
-                        tbodyTextWhite
-                        order={['rating', 'asc']}
-                        data={data}
-                    />
-            </section> */}
         </main>
     )
 

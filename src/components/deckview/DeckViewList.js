@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
-import { DeckContext } from "../decksidebar/DeckProvider"
+import { DeckContext } from "../deckbuilder/decksidebar/DeckProvider"
 import {DeckViewContext} from './DeckViewProvider'
 import {DeckCardViewCard} from './DeckCardViewCard'
 import "./DeckViewList.css"
-import { UserContext } from "../../user/UserProvider"
+import { UserContext } from "../user/UserProvider"
 import { Button, ButtonGroup, Tooltip } from 'reactstrap';
-import { PlayerClassContext } from "../playerclass/PlayerClassProvider"
-import { RatingContext } from "../../rating/RatingProvider"
+import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvider"
+import { RatingContext } from "../rating/RatingProvider"
 
 export const DeckViewList = () => {
     const { deck, getDeckById, deleteDeckById } = useContext(DeckViewContext)
