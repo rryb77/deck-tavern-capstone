@@ -96,6 +96,10 @@
   left: 69.2%;
 }
 
+.deckPanelInvisible {
+  display: none;
+}
+
 body {
   /* color: white; */
 }

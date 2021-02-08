@@ -10,7 +10,7 @@ import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvid
 import { RatingContext } from "../rating/RatingProvider"
 
 export const DeckViewList = () => {
-    const { deck, getDeckById, deleteDeckById } = useContext(DeckViewContext)
+    const { deck, getDeckById, deleteDeckById, setEditDeck } = useContext(DeckViewContext)
     const {getLocalCards, getDeckCards, deckCards, localCards } = useContext(DeckContext)
     const {playerClasses, getPlayerClasses } = useContext(PlayerClassContext)
     const { getUsers, users } = useContext(UserContext)
@@ -33,13 +33,20 @@ export const DeckViewList = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
+        
+        let deckPanel = document.getElementById("deckPanel")
+        let ratingPanel = document.getElementById("rating")
+        
         if(deck.userId === userId){
-            document.getElementById("delete").disabled = false;
-            document.getElementById("upvote").disabled = true;
-            document.getElementById("downvote").disabled = true;
+            
+            deckPanel?.classList.remove("deckPanelInvisible")
+            ratingPanel.classList.add("deckPanelInvisible")
 
         } else {
-            document.getElementById("delete").disabled = true;
+
+            deckPanel?.classList.add("deckPanelInvisible")
+            ratingPanel.classList.remove("deckPanelInvisible")
+
         }
 
         userVoted()
@@ -122,6 +129,11 @@ export const DeckViewList = () => {
 
     let deckAuthor = users.find(u => u.id === deck.userId)
 
+    const editTheDeck = () => {
+        history.push(`/deckbuilder/create/${theClass.id}`)
+        setEditDeck(deck.id)
+    }
+
     return (
         <main>
             <section className="deckContainer">
@@ -135,9 +147,10 @@ export const DeckViewList = () => {
                         
                     </div>
 
-                    <div className="deckPanel">
-                        <h3 className="header">Deck Admin</h3>
-                        <Button color="primary" id="delete" onClick={deleteDeck}>Delete Deck</Button>
+                    <div className="deckPanel" id="deckPanel">
+                        <h3 className="header">Deck Admin Panel</h3>
+                        <Button color="primary" id="delete" onClick={deleteDeck}>Delete Deck</Button>{' '}
+                        <Button color="primary" id="edit" onClick={editTheDeck}>Edit Deck</Button>
                     </div>
                 </div>
                 <div className="bottomDeckContainer">
@@ -172,11 +185,13 @@ export const DeckViewList = () => {
                         <br></br>
                         <h5>Total Votes: {theRating}</h5>
                         <br></br>
-                        <h5>Rate This Deck:</h5>
-                        <ButtonGroup size="sm">
-                            <Button id="upvote" onClick={upvote}>Upvote</Button>
-                            <Button id="downvote" onClick={downvote}>Downvote</Button>
-                        </ButtonGroup>
+                        <div className="rating" id="rating">
+                            <h5>Rate This Deck:</h5>
+                            <ButtonGroup size="sm">
+                                <Button id="upvote" onClick={upvote}>Upvote</Button>
+                                <Button id="downvote" onClick={downvote}>Downvote</Button>
+                            </ButtonGroup>
+                        </div>
                         <br></br>
                         <br></br>
                         <h5>Deck Code:</h5>

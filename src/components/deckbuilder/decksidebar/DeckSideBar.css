@@ -101,6 +101,11 @@
   left: 41%;
 }
 
+.btnEdit {
+  position: absolute;
+  left: 41%;
+}
+
 .btnClear {
   position: absolute;
   left: 71%;
