@@ -120,13 +120,15 @@ export const DeckViewList = () => {
         }
     }
 
+    let deckAuthor = users.find(u => u.id === deck.userId)
+
     return (
         <main>
             <section className="deckContainer">
                 <div className="topDeckContainer">
                     <div className="deckInfo">
                         <h3 className="deckName">{deck.deck_name}</h3>
-                        <b>Created By:</b> {currentUser?.username} <br></br>
+                        <b>Created By:</b> {deckAuthor?.username} <br></br>
                         <b>Class:</b> {theClass?.name} <br></br>
                         <b>Date Published:</b> {new Date(deck.published).toLocaleDateString('en-US')} <br></br>
                         <b>Deck Info:</b> {deck.deck_info} <br></br><br></br>

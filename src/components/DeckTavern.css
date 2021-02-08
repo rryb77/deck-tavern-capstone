@@ -1,8 +1,8 @@
 body {
-    background-image: url('https://www.wildtextures.com/wp-content/uploads/2012/01/wildtextures-creased-black-paper-texture.jpg');
-    background-repeat: repeat;
+    background-image: url(BG.png);
+    /* background-repeat: repeat; */
 }
-
+/* background-image: url(logo.png); */
 .homeJumbotron {
     width: 50%;
     margin-top: 2%;
@@ -10,4 +10,10 @@ body {
 
 .jumboBanner {
     width: 106%;
+}
+
+.footer {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: whitesmoke;
 }

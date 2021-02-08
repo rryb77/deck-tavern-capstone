@@ -43,6 +43,12 @@ tr {
 
 tr:hover {
     color: rgb(0, 250, 21);
-    
+}
 
+.dataTables_info {
+    color: whitesmoke;
+}
+
+.dataTables_length {
+    color: whitesmoke;
 }

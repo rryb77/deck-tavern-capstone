@@ -5,17 +5,20 @@ import "./AllDeckList.css"
 import { RatingContext } from "../../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
 import { useHistory } from "react-router-dom"
+import { UserContext } from '../../user/UserProvider'
 
 export const AllDeckList = () => {
     
     const { decks, getDecks } = useContext(DeckViewContext)
     const { getPlayerClasses, playerClasses } = useContext(PlayerClassContext)
     const { getRatings, ratings } = useContext(RatingContext)
+    const { getUsers, users } = useContext(UserContext)
     
     const history = useHistory()
 
     useEffect(() => {
         getDecks()
+            .then(getUsers)
             .then(getPlayerClasses)
             .then(getRatings)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -46,6 +49,12 @@ export const AllDeckList = () => {
                 sort: 'asc',
                 width: 150
             },
+            {
+                label: 'Author',
+                field: 'author',
+                sort: 'asc',
+                width: 150
+            }
         ],
         rows: 
             decks.map(deck => {
@@ -53,6 +62,7 @@ export const AllDeckList = () => {
                 let thisDecksRatings = ratings.filter(r => r.deckId === deck.id)
                 let theRating = 0
                 const theClass = playerClasses.find(p => p.id === deck.playerClassId)
+                let deckAuthor = users.find(u => u.id === deck.userId)
 
                 
                 thisDecksRatings.map(rating => {
@@ -72,7 +82,8 @@ export const AllDeckList = () => {
                     rating: theRating,
                     deckname: <div onClick={goToDeck}>{deck.deck_name}</div>,
                     class: theClass?.name,
-                    published: new Date(deck.published).toLocaleDateString('en-US')
+                    published: new Date(deck.published).toLocaleDateString('en-US'),
+                    author: deckAuthor?.username
                 }
 
                 return obj

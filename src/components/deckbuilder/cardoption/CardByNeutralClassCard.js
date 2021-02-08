@@ -5,8 +5,8 @@ import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 export const CardByNeutralClassCard = ({card}) => {
     
     const userId = parseInt(localStorage.getItem("decktavern_user"))
-    const { localCards, cardCountForDecks } = useContext(DeckContext)
-    const {updateDeckCart} = useContext(DeckCartContext)
+    const { localCards } = useContext(DeckContext)
+    const {updateDeckCart, cardCountForDecks} = useContext(DeckCartContext)
 
     let [countCards, setCountCards] = useState(0)
 

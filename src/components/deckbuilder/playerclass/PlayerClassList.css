@@ -10,3 +10,12 @@
     
 }
 
+.classheader {
+    margin-top: 2%;
+    color: whitesmoke;
+    text-align-last: center;
+}
+
+.hero_image:hover {
+    filter: contrast(140%);
+}
