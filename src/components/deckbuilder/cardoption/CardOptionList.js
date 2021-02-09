@@ -20,10 +20,10 @@ export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions, searchTerms } = useContext(CardOptionContext)
     const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
-    const { addRating, ratings } = useContext(RatingContext)
+    const { addRating } = useContext(RatingContext)
     const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
-    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck} = useContext(DeckViewContext)
+    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor} = useContext(DeckViewContext)
     const [ editDeckId, setEditDeckId] = useState(0)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
@@ -168,14 +168,64 @@ export const CardOptionList = () => {
                     }          
                 })
             }
-        } else if (edit === true){
+        } else if (edit === true && deckAuthor === userId){
             
             if(deckPosted > 0){
                 setEdit(false)
                 history.push(`/decks/${deckPosted}`)
                 setDeckPosted(0)
+                setDeckAuthor(0)
             }
-        }   
+        } else if (edit === true && deckAuthor !== userId){
+            if(deckPosted > 0) {
+                let userDeckTable = {
+                    deckId: deckPosted,
+                    userId: userId
+                }
+            
+            addUserDeckTable(userDeckTable)
+                .then(() => {
+                    
+                    for (let obj of deckCart){
+                        if (obj.userId === userId){
+                            
+                            let deckCardsTable = {
+                                cardId: obj.cardId,
+                                deckId: deckPosted
+                            }
+            
+                            addCardDeckTable(deckCardsTable)
+                        }  
+                    }
+                })
+                .then(() => {
+                    let ratingObj = {
+                        deckId: deckPosted,
+                        userId: userId,
+                        rating: 0
+                    }
+            
+                    addRating(ratingObj)
+                })
+                .then(() => {
+                    setCardCountForDecks(0)
+                    history.push(`/decks/${deckPosted}`)
+                    setDeckPosted(0)
+                })
+                .then(() => {
+                    let userCart = deckCart.filter(c => c.userId === userId)
+    
+                    for (let cartItem of userCart){
+                        destroyDeckCart(cartItem.id)
+                    }          
+                }).then(() => {
+                    setEdit(false)
+                    history.push(`/decks/${deckPosted}`)
+                    setDeckPosted(0)
+                    setDeckAuthor(0)
+                })
+            }
+        }
     }, [deckPosted])
 
     const handleControlledInputChange = (event) => {
@@ -219,7 +269,7 @@ export const CardOptionList = () => {
             toggleModal()
             addDeck(userCreatedDeck)
 
-        } else if (edit === true){
+        } else if (edit === true && deckAuthor === userId){
             
             toggleModal()
             updateDeck(userCreatedDeck, editDeckId)
@@ -251,6 +301,9 @@ export const CardOptionList = () => {
                         destroyDeckCart(cartItem.id)
                     }          
                 })
+        } else if(edit === true && deckAuthor !== userId){
+            toggleModal()
+            addDeck(userCreatedDeck)
         }
     }
 

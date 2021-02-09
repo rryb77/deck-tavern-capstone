@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { useHistory, useParams } from "react-router-dom"
+import { useHistory, useParams, Link } from "react-router-dom"
 import { DeckContext } from "../deckbuilder/decksidebar/DeckProvider"
 import {DeckViewContext} from './DeckViewProvider'
 import {DeckCardViewCard} from './DeckCardViewCard'
@@ -10,7 +10,7 @@ import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvid
 import { RatingContext } from "../rating/RatingProvider"
 
 export const DeckViewList = () => {
-    const { deck, getDeckById, deleteDeckById, setEditDeck } = useContext(DeckViewContext)
+    const { deck, getDeckById, deleteDeckById, setEditDeck, setDeckAuthor } = useContext(DeckViewContext)
     const {getLocalCards, getDeckCards, deckCards, localCards } = useContext(DeckContext)
     const {playerClasses, getPlayerClasses } = useContext(PlayerClassContext)
     const { getUsers, users } = useContext(UserContext)
@@ -36,17 +36,19 @@ export const DeckViewList = () => {
         
         let deckPanel = document.getElementById("deckPanel")
         let ratingPanel = document.getElementById("rating")
+        let customVersion = document.getElementById("customVersion")
         
         if(deck.userId === userId){
             
             deckPanel?.classList.remove("deckPanelInvisible")
             ratingPanel.classList.add("deckPanelInvisible")
+            customVersion.classList.add("deckPanelInvisible")
 
         } else {
 
             deckPanel?.classList.add("deckPanelInvisible")
             ratingPanel.classList.remove("deckPanelInvisible")
-
+            customVersion.classList.remove("deckPanelInvisible")
         }
 
         userVoted()
@@ -92,7 +94,6 @@ export const DeckViewList = () => {
         let deckCodeToCopy = document.getElementById("deckCode")
         deckCodeToCopy.select()
         document.execCommand("copy")
-        // alert(deckCodeToCopy.value)
 
         setTimeout(() => {
             setTooltipOpen(false)
@@ -152,6 +153,8 @@ export const DeckViewList = () => {
     const editTheDeck = () => {
         history.push(`/deckbuilder/create/${theClass.id}`)
         setEditDeck(deck.id)
+        setDeckAuthor(deckAuthor.id)
+        
     }
 
     return (
@@ -160,7 +163,7 @@ export const DeckViewList = () => {
                 <div className="topDeckContainer">
                     <div className="deckInfo">
                         <h3 className="deckName">{deck.deck_name}</h3>
-                        <b>Created By:</b> {deckAuthor?.username} <br></br>
+                        <b>Created By:</b> <Link className="profile" to={`/profile/${deckAuthor?.id}`}>{deckAuthor?.username}</Link> <br></br>
                         <b>Class:</b> {theClass?.name} <br></br>
                         <b>Date Published:</b> {new Date(deck.published).toLocaleDateString('en-US')} <br></br>
                         <b>Deck Info:</b> {deck.deck_info} <br></br><br></br>
@@ -211,9 +214,18 @@ export const DeckViewList = () => {
                                 <Button id="upvote" onClick={upvote}>Upvote</Button>
                                 <Button id="downvote" onClick={downvote}>Downvote</Button>
                             </ButtonGroup>
+                            <br></br>
+                            <br></br>
                         </div>
-                        <br></br>
-                        <br></br>
+                        
+                        <div className="customVersion" id="customVersion">
+                            <h5>Custom Version:</h5>
+                            <div className="white">Take this deck to the deckbuilder to build your own version of it!</div>
+                            <Button color="primary" id="edit" onClick={editTheDeck}>Customize</Button>
+                            <br></br>
+                            <br></br>
+                        </div>
+
                         <h5>Deck Code:</h5>
                         <textarea id="deckCode" name="deckCode" rows="2" cols="50" value={deck.deck_code} readOnly>
                         </textarea>

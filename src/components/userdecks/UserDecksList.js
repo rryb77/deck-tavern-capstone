@@ -4,7 +4,7 @@ import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvid
 import "./UserDecks.css"
 import { RatingContext } from "../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
-import { useHistory, useParams } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { UserContext } from '../user/UserProvider'
 
 export const UserDeckList = () => {
@@ -13,8 +13,6 @@ export const UserDeckList = () => {
     const { getPlayerClasses, playerClasses } = useContext(PlayerClassContext)
     const { getRatings, ratings } = useContext(RatingContext)
     const { getUsers, users } = useContext(UserContext)
-
-    const {userId} = useParams()
 
     const thisUserId = parseInt(localStorage.getItem("decktavern_user"))
 

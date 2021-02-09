@@ -7,6 +7,7 @@ export const DeckViewProvider = (props) => {
     const [deck, setDeck] = useState({})
     const [editDeck, setEditDeck] = useState(0)
     const [deckPosted, setDeckPosted] = useState(0)
+    const [deckAuthor, setDeckAuthor] = useState(0)
 
     const getDecks = () => {
         return fetch("http://localhost:8088/decks")
@@ -58,7 +59,7 @@ export const DeckViewProvider = (props) => {
 
     return (
         <DeckViewContext.Provider value={{
-            decks, setDecks, getDecks, deck, setDeck, getDeckById, deleteDeckById, editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck
+            decks, setDecks, getDecks, deck, setDeck, getDeckById, deleteDeckById, editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor
         }}>
             {props.children}
         </DeckViewContext.Provider>

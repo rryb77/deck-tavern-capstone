@@ -45,9 +45,7 @@ export const CardByHeroClassCard = ({card}) => {
 
         if (card.rarity !== "LEGENDARY" && countCards < 2){
             if (cardCountForDecks < 30) {
-                // const perCardCount = ++countCards
-                // setCountCards(perCardCount)
-                
+
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
                 const carddbfId = cardFinder?.dbfId
                 const cardId = cardFinder?.id
@@ -63,8 +61,6 @@ export const CardByHeroClassCard = ({card}) => {
             }
         } else if (card.rarity === "LEGENDARY" && countCards < 1){
             if (cardCountForDecks < 30) {
-                // const perCardCount = ++countCards
-                // setCountCards(perCardCount)
 
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
                 const carddbfId = cardFinder.dbfId
@@ -87,7 +83,7 @@ export const CardByHeroClassCard = ({card}) => {
         <section className="cardViewerOptions">
               <div className="cardImage">
                 <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardWasClicked(card)} alt={`${card?.name}`}/>
-                <img src={'/images/redx.png'} className="redx isVisible" id={`x--${card.dbfId}`}/>
+                <img src={'/images/redx.png'} className="redx isVisible" id={`x--${card.dbfId}`} alt="Red X"/>
               </div>
               <div className="cardCount" id={`${cardId}`}>Added: {countCards}</div>
         </section>
