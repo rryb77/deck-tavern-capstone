@@ -6,11 +6,13 @@ export const CardSearch = () => {
 
   return (
     <>
-      Card Search:
-      <input type="text"
-        className="input--wide"
-        onKeyUp={(event) => setSearchTerms(event.target.value)}
-        placeholder="Search for a card... " />
+      <div className="filters">
+          Card Search:
+          <input type="text"
+            className="input--wide"
+            onKeyUp={(event) => setSearchTerms(event.target.value)}
+            placeholder="Search for a card... " />
+      </div>
     </>
   )
 }

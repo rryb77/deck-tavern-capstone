@@ -103,3 +103,11 @@ li {
 .playerClassName {
     color: rgb(255, 255, 255);
 }
+
+.filters {
+    background-color: #ffffff;
+}
+
+.input--wide {
+    margin-left: 10px;
+}

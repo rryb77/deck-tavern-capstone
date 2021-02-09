@@ -93,25 +93,30 @@ export const CardOptionList = () => {
         setCardCountForDecks(theCurrentCardCount)
     }, [deckCart])
 
+    const manaSort = (arrayToSort) => {
+        arrayToSort.sort((a, b) => {
+            return a.cost - b.cost
+        })
+
+        return arrayToSort
+    }
+
     // Get the name of the player class ex: "MAGE"
     const playerClass = pClass.name
     let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
     let neutralClassCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
     
     // Sort the player class cards by mana cost
-    playerClassCards.sort((a, b) => {
-        return a.cost - b.cost
-    })
+    playerClassCards = manaSort(playerClassCards)
 
     // Sort the neutral cards by mana cost
-    neutralClassCards.sort((a, b) => {
-        return a.cost - b.cost
-    })
+    neutralClassCards = manaSort(neutralClassCards)
 
     useEffect(() => {
         if (searchTerms !== "" && activeTab === '1') {
             const classCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
-            const subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            let subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            subset = manaSort(subset)
             setFilteredCards(subset)
 
         } else if (searchTerms === "" && activeTab === '1'){
@@ -120,7 +125,8 @@ export const CardOptionList = () => {
 
         } else if (searchTerms !== "" && activeTab === '2'){
             const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
-            const subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            let subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            subset = manaSort(subset)
             setFilteredNeutralCards(subset)
 
         } else if (searchTerms === "" && activeTab === '2'){
@@ -322,7 +328,6 @@ export const CardOptionList = () => {
         }
     }
 
-    
     const toggleModal = () => setModal(!modal);
 
     const clearTheDeck = () => {
