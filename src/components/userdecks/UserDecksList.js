@@ -84,8 +84,9 @@ export const UserDeckList = () => {
                 }
 
                 let obj = {
+                    clickEvent: () => goToDeck(),
                     rating: theRating,
-                    deckname: <div onClick={goToDeck}>{deck.deck_name}</div>,
+                    deckname: deck.deck_name,
                     class: theClass?.name,
                     published: new Date(deck.published).toLocaleDateString('en-US'),
                     author: deckAuthor?.username
