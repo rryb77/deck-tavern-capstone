@@ -1,8 +1,7 @@
 body {
     background-image: url(BG.png);
-    /* background-repeat: repeat; */
 }
-/* background-image: url(logo.png); */
+
 .homeJumbotron {
     width: 50%;
     margin-top: 2%;

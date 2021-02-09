@@ -14,8 +14,6 @@ export const PlayerClassList = () => {
     
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // const history = useHistory()
-
     return (
         <>
             <h2 className="classheader">Choose Your Class</h2>

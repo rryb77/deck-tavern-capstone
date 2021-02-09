@@ -56,7 +56,6 @@ export const DeckViewList = () => {
     }, [deck])
 
     const theClass = playerClasses.find(p => p.id === deck.playerClassId)
-    let currentUser = users.find(u => u.id === userId)
     let thisDeck = deckCards.filter(c => c.deckId === parseInt(deckId))
     let ratingsForThisDeck = ratings.filter(r => r.deckId === parseInt(deckId))
 

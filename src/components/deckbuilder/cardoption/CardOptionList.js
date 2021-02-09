@@ -289,8 +289,6 @@ export const CardOptionList = () => {
                             deckId: editDeckId
                         }
 
-                        // console.log('The ID: ',theID)
-                        // console.log('The updated card obj: ', deckCardsTable)
                         updateCardDeckTable(deckCardsTable, theID)
                         ++count
                     }
