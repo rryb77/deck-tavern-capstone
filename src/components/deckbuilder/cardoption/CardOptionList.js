@@ -15,6 +15,7 @@ import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 import { RatingContext } from "../../rating/RatingProvider"
 import "../decksidebar/DeckSideBar.css"
 import { DeckViewContext } from "../../deckview/DeckViewProvider";
+import {CardSearch} from './CardSearch'
 
 export const CardOptionList = () => {
     
@@ -29,6 +30,10 @@ export const CardOptionList = () => {
     const {playerClassId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
     const [edit, setEdit] = useState(false)
+    const [filteredCards, setFilteredCards] = useState([])
+    const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
+    const [activeTab, setActiveTab] = useState('1');
+
 
     const history = useHistory()
 
@@ -103,14 +108,26 @@ export const CardOptionList = () => {
         return a.cost - b.cost
     })
 
-    // useEffect(() => {
-    //     if (searchTerms !== "") {
-    //         const subset = playerClassCards.filter(card => card.name.toLowerCase().includes(searchTerms))
-    //         setFilteredCards(subset)
-    //     } else {
-    //         setFilteredCards(playerClassCards)
-    //     }
-    // }, [searchTerms, playerClassCards])
+    useEffect(() => {
+        if (searchTerms !== "" && activeTab === '1') {
+            const classCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+            const subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            setFilteredCards(subset)
+
+        } else if (searchTerms === "" && activeTab === '1'){
+            setFilteredCards(playerClassCards)
+            setFilteredNeutralCards(neutralClassCards)
+
+        } else if (searchTerms !== "" && activeTab === '2'){
+            const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
+            const subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            setFilteredNeutralCards(subset)
+
+        } else if (searchTerms === "" && activeTab === '2'){
+            setFilteredCards(playerClassCards)
+            setFilteredNeutralCards(neutralClassCards)
+        }
+    }, [searchTerms, cardOptions, activeTab])
 
     useEffect(() => {
         if (cardCountForDecks === 30){
@@ -322,8 +339,6 @@ export const CardOptionList = () => {
         setEdit(false)
     }
 
-    const [activeTab, setActiveTab] = useState('1');
-
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
     }
@@ -355,12 +370,13 @@ export const CardOptionList = () => {
                         </NavItem>
                     </Nav>
                     <TabContent activeTab={activeTab}>
+                        <CardSearch/>
                         <TabPane tabId="1">
                         <Row>
                             <Col sm="12">
                             <div className="cardViewer">
                                 {
-                                    playerClassCards.map(card => {
+                                    filteredCards.map(card => {
                                         return <CardByHeroClassCard key={card.dbfId} 
                                                     card={card}/>
                                     })
@@ -374,7 +390,7 @@ export const CardOptionList = () => {
                             <Col sm="12">
                             <div className="neutralCardViewer">
                                 {
-                                    neutralClassCards.map(card => {
+                                    filteredNeutralCards.map(card => {
                                         return <CardByNeutralClassCard key={card.dbfId} 
                                                     card={card}/>
                                     })
