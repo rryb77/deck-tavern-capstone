@@ -52,3 +52,7 @@ tr:hover {
 .dataTables_length {
     color: whitesmoke;
 }
+
+.table {
+    background-color: aqua;
+}

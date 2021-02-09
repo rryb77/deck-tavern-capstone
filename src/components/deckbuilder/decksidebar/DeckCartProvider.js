@@ -14,7 +14,6 @@ export const DeckCartProvider = (props) => {
     }
 
     const updateDeckCart = (deckCartObj) => {
-        console.log(deckCartObj)
         if(deckCartObj.carddbfId !== undefined){
             return fetch("http://localhost:8088/deckcart", {
             method: "POST",

@@ -4,7 +4,7 @@ import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvid
 import "./AllDeckList.css"
 import { RatingContext } from "../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import { UserContext } from '../user/UserProvider'
 
 export const AllDeckList = () => {
@@ -81,8 +81,9 @@ export const AllDeckList = () => {
                 }
 
                 let obj = {
+                    clickEvent: () => goToDeck(),
                     rating: theRating,
-                    deckname: <div onClick={goToDeck}>{deck.deck_name}</div>,
+                    deckname: deck.deck_name,
                     class: theClass?.name,
                     published: new Date(deck.published).toLocaleDateString('en-US'),
                     author: deckAuthor?.username
@@ -102,6 +103,7 @@ export const AllDeckList = () => {
                         small
                         theadTextWhite
                         tbodyTextWhite
+                        table
                         data={data}
                     />
             </section>

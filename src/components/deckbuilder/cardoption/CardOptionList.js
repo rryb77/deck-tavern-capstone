@@ -14,26 +14,27 @@ import { DeckCartContext } from "../decksidebar/DeckCartProvider"
 import { DeckSideBarCard } from "../decksidebar/DeckSideBarCard"
 import { RatingContext } from "../../rating/RatingProvider"
 import "../decksidebar/DeckSideBar.css"
+import { DeckViewContext } from "../../deckview/DeckViewProvider";
 
 export const CardOptionList = () => {
     
     const { cardOptions, getCardOptions, searchTerms } = useContext(CardOptionContext)
-    const { getLocalCards, addDeck, deckPosted, setDeckPosted, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards } = useContext(DeckContext)
-    const { addRating, ratings } = useContext(RatingContext)
-    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart} = useContext(DeckCartContext)
-
-    // const [ filteredCards, setFilteredCards ] = useState([])
-
-
+    const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
+    const { addRating } = useContext(RatingContext)
+    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
+    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor} = useContext(DeckViewContext)
+    const [ editDeckId, setEditDeckId] = useState(0)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
     const userId = parseInt(localStorage.getItem("decktavern_user"))
+    const [edit, setEdit] = useState(false)
 
     const history = useHistory()
 
     // modal state
     const [modal, setModal] = useState(false);
+
 
     // Initialize the deck info and populate as needed below
     const [userCreatedDeck, setUserCreatedDeck] = useState({
@@ -56,6 +57,31 @@ export const CardOptionList = () => {
             .then(getDeckCart)
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        
+        if(editDeck > 0){
+            let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeck))
+
+            let theDeckCards = thisDeck.map(card => {
+                let theCard = localCards.find(c => c.id === card.cardId)
+                return theCard
+            })
+            for (let card of theDeckCards){
+                            
+                let deckCartObj = {
+                    userId: userId,
+                    cardId: card.id,
+                    carddbfId: card.dbfId
+                }
+                updateDeckCart(deckCartObj)
+                
+            }
+                setEdit(true)    
+                setEditDeckId(editDeck)
+                setEditDeck(0)
+        }
+    }, [editDeck])
 
     useEffect(() => {
         let theCurrentCardCount = deckCart.length
@@ -97,48 +123,108 @@ export const CardOptionList = () => {
 
     useEffect(() => {
 
-        if(deckPosted > 0) {
-            let userDeckTable = {
-                deckId: deckPosted,
-                userId: userId
-            }
-        
-        addUserDeckTable(userDeckTable)
-            .then(() => {
-                
-                for (let obj of deckCart){
-                    if (obj.userId === userId){
-                        
-                        let deckCardsTable = {
-                            cardId: obj.cardId,
-                            deckId: deckPosted
-                        }
-        
-                        addCardDeckTable(deckCardsTable)
-                    }  
-                }
-            })
-            .then(() => {
-                let ratingObj = {
+        if( edit === false) {
+            
+            if(deckPosted > 0) {
+                let userDeckTable = {
                     deckId: deckPosted,
-                    userId: userId,
-                    rating: 0
+                    userId: userId
                 }
-        
-                addRating(ratingObj)
-            })
-            .then(() => {
-                setCardCountForDecks(0)
+            
+            addUserDeckTable(userDeckTable)
+                .then(() => {
+                    
+                    for (let obj of deckCart){
+                        if (obj.userId === userId){
+                            
+                            let deckCardsTable = {
+                                cardId: obj.cardId,
+                                deckId: deckPosted
+                            }
+            
+                            addCardDeckTable(deckCardsTable)
+                        }  
+                    }
+                })
+                .then(() => {
+                    let ratingObj = {
+                        deckId: deckPosted,
+                        userId: userId,
+                        rating: 0
+                    }
+            
+                    addRating(ratingObj)
+                })
+                .then(() => {
+                    setCardCountForDecks(0)
+                    history.push(`/decks/${deckPosted}`)
+                    setDeckPosted(0)
+                })
+                .then(() => {
+                    let userCart = deckCart.filter(c => c.userId === userId)
+    
+                    for (let cartItem of userCart){
+                        destroyDeckCart(cartItem.id)
+                    }          
+                })
+            }
+        } else if (edit === true && deckAuthor === userId){
+            
+            if(deckPosted > 0){
+                setEdit(false)
                 history.push(`/decks/${deckPosted}`)
                 setDeckPosted(0)
-            })
-            .then(() => {
-                let userCart = deckCart.filter(c => c.userId === userId)
-
-                for (let cartItem of userCart){
-                    destroyDeckCart(cartItem.id)
-                }          
-            })
+                setDeckAuthor(0)
+            }
+        } else if (edit === true && deckAuthor !== userId){
+            if(deckPosted > 0) {
+                let userDeckTable = {
+                    deckId: deckPosted,
+                    userId: userId
+                }
+            
+            addUserDeckTable(userDeckTable)
+                .then(() => {
+                    
+                    for (let obj of deckCart){
+                        if (obj.userId === userId){
+                            
+                            let deckCardsTable = {
+                                cardId: obj.cardId,
+                                deckId: deckPosted
+                            }
+            
+                            addCardDeckTable(deckCardsTable)
+                        }  
+                    }
+                })
+                .then(() => {
+                    let ratingObj = {
+                        deckId: deckPosted,
+                        userId: userId,
+                        rating: 0
+                    }
+            
+                    addRating(ratingObj)
+                })
+                .then(() => {
+                    setCardCountForDecks(0)
+                    history.push(`/decks/${deckPosted}`)
+                    setDeckPosted(0)
+                })
+                .then(() => {
+                    let userCart = deckCart.filter(c => c.userId === userId)
+    
+                    for (let cartItem of userCart){
+                        destroyDeckCart(cartItem.id)
+                    }          
+                }).then(() => {
+                    setEdit(false)
+                    history.push(`/decks/${deckPosted}`)
+                    setDeckPosted(0)
+                    setDeckAuthor(0)
+                })
+            }
         }
     }, [deckPosted])
 
@@ -150,8 +236,6 @@ export const CardOptionList = () => {
 
     const saveTheDeck = () => {
         
-        toggleModal()
-
         const deck = {
             cards: [], // [dbfId, count] pairs
             heroes: [pClass.classId], // hero id
@@ -180,8 +264,47 @@ export const CardOptionList = () => {
         userCreatedDeck.deck_code = deckstring
         userCreatedDeck.dust_cost = 0
 
-        addDeck(userCreatedDeck)
-        
+        if(edit === false) {
+           
+            toggleModal()
+            addDeck(userCreatedDeck)
+
+        } else if (edit === true && deckAuthor === userId){
+            
+            toggleModal()
+            updateDeck(userCreatedDeck, editDeckId)
+                .then(() => {
+
+                    let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeckId))
+                    let thisUserDeckCart = deckCart.filter(c => c.userId === userId)
+
+                    let count = 0
+
+                    for (let obj of thisUserDeckCart){
+                        
+                        let theID = thisDeck[count].id
+
+                        let deckCardsTable = {
+                            cardId: obj.cardId,
+                            deckId: editDeckId
+                        }
+
+                        // console.log('The ID: ',theID)
+                        // console.log('The updated card obj: ', deckCardsTable)
+                        updateCardDeckTable(deckCardsTable, theID)
+                        ++count
+                    }
+                }).then(() => {
+                    let userCart = deckCart.filter(c => c.userId === userId)
+    
+                    for (let cartItem of userCart){
+                        destroyDeckCart(cartItem.id)
+                    }          
+                })
+        } else if(edit === true && deckAuthor !== userId){
+            toggleModal()
+            addDeck(userCreatedDeck)
+        }
     }
 
     
@@ -189,15 +312,16 @@ export const CardOptionList = () => {
 
     const clearTheDeck = () => {
         let userCart = deckCart.filter(u => u.userId === userId)
-        console.log(userCart)
 
         for(let entry of userCart){
             let theCard = document.getElementById(`${entry.carddbfId}`)
             let theX = document.getElementById(`x--${entry.carddbfId}`)
-            theCard.classList.remove("greyscale")
-            theX.classList.add("isVisible")
+            theCard?.classList.remove("greyscale")
+            theX?.classList.add("isVisible")
             destroyDeckCart(entry.id)
         }
+
+        setEdit(false)
     }
 
     const [activeTab, setActiveTab] = useState('1');
@@ -206,7 +330,6 @@ export const CardOptionList = () => {
         if(activeTab !== tab) setActiveTab(tab);
     }
     
-
     return (
         <>
             <main className="container">
@@ -284,10 +407,9 @@ export const CardOptionList = () => {
                                 }
                                 </ul>
                             </div>
-                            <div>
-                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>Save</Button>{' '} <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
-                            </div>
-                           
+                            <div className="savePanel" id="savePanel">
+                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>{edit ? 'Save Edit' : 'Save'}</Button>{' '} <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
+                            </div>                           
                         </div>
                     </div>
 
@@ -302,7 +424,7 @@ export const CardOptionList = () => {
                         <Input type="textarea" id="deck_info" onChange={handleControlledInputChange} placeholder="Enter any relevant information about your deck such as midrange aggro, etc.." value={userCreatedDeck.deck_info} rows={5}/>
                       </ModalBody>
                       <ModalFooter>
-                          <Button color="primary" onClick={saveTheDeck}>Save</Button>{' '}
+                          <Button color="primary" onClick={saveTheDeck}> Save </Button>{' '}
                           <Button color="secondary" onClick={toggleModal}>Cancel</Button>
                       </ModalFooter>
                   </Modal>
