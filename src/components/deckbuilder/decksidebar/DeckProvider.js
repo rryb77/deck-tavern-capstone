@@ -33,8 +33,8 @@ export const DeckProvider = (props) => {
         })
     }
 
-    const updateCardDeckTable = (theCardDeckTable) => {
-        return fetch(`http://localhost:8088/deckcards/${theCardDeckTable.id}`, {
+    const updateCardDeckTable = (theCardDeckTable, id) => {
+        return fetch(`http://localhost:8088/deckcards/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"

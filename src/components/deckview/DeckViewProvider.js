@@ -42,8 +42,8 @@ export const DeckViewProvider = (props) => {
             .then(getDecks)
     }
 
-    const updateDeck = (deckObj) => {
-        return fetch(`http://localhost:8088/decks/${deckObj.id}`, {
+    const updateDeck = (deckObj, id) => {
+        return fetch(`http://localhost:8088/decks/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"
@@ -51,7 +51,7 @@ export const DeckViewProvider = (props) => {
           body: JSON.stringify(deckObj)
         })
             .then(()=> {
-                setDeckPosted(deckObj.id)
+                setDeckPosted(id)
             })
             .then(getDecks)
     }

@@ -63,8 +63,28 @@ export const DeckViewList = () => {
         return theCard
     })
 
+    // Sort by mana cost, and if mana cost is equal sort by name
+    theDeckCards.sort((a,b) => {
+        
+        if(a.cost < b.cost){
+            return -1
+        } else if(a.cost > b.cost){
+            return 1
+        }
+
+        if(a.name < b.name){
+            return -1
+        } else if(a.name > b.name){
+            return 1
+        }
+
+        return 0
+    })
+
     let classCards = theDeckCards.filter(c => c.cardClass !== "NEUTRAL")
+
     let neutralCards = theDeckCards.filter(c => c.cardClass === "NEUTRAL")
+    
 
     const copyText = () => {
         toggle()

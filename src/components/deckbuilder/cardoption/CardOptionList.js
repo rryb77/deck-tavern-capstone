@@ -168,25 +168,12 @@ export const CardOptionList = () => {
                     }          
                 })
             }
-        } else {
+        } else if (edit === true){
             
             if(deckPosted > 0){
                 setEdit(false)
-
-                let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeckId))
-
-
-                for (let obj of deckCart){
-                    if (obj.userId === userId){
-                            
-                        let deckCardsTable = {
-                            cardId: obj.cardId,
-                            deckId: deckPosted
-                        }
-        
-                        // updateCardDeckTable(deckCardsTable)
-                    }  
-                }
+                history.push(`/decks/${deckPosted}`)
+                setDeckPosted(0)
             }
         }   
     }, [deckPosted])
@@ -199,75 +186,71 @@ export const CardOptionList = () => {
 
     const saveTheDeck = () => {
         
-        console.log(editDeck)
+        const deck = {
+            cards: [], // [dbfId, count] pairs
+            heroes: [pClass.classId], // hero id
+            format: 1, // or 1 for Wild, 2 for Standard
+        }
+
+        for (let card of deckCart){
+            
+            let cardChosen = deck.cards.find(c => c[0] === card.carddbfId)
+            let cardIndex = deck.cards.indexOf(cardChosen)
+            
+            if (cardChosen !== undefined) {
+                if (cardChosen[1] === 1) {
+                    deck.cards[cardIndex] = [card.carddbfId, 2]
+                }
+            } else {
+                deck.cards.push([card.carddbfId, 1])
+            }
+        }
+
+        let deckstring = encode(deck)
+
+        userCreatedDeck.published = Date.now()
+        userCreatedDeck.userId = userId
+        userCreatedDeck.playerClassId = parseInt(playerClassId)
+        userCreatedDeck.deck_code = deckstring
+        userCreatedDeck.dust_cost = 0
 
         if(edit === false) {
+           
             toggleModal()
-
-            const deck = {
-                cards: [], // [dbfId, count] pairs
-                heroes: [pClass.classId], // hero id
-                format: 1, // or 1 for Wild, 2 for Standard
-            }
-
-            for (let card of deckCart){
-                
-                let cardChosen = deck.cards.find(c => c[0] === card.carddbfId)
-                let cardIndex = deck.cards.indexOf(cardChosen)
-                
-                if (cardChosen !== undefined) {
-                    if (cardChosen[1] === 1) {
-                        deck.cards[cardIndex] = [card.carddbfId, 2]
-                    }
-                } else {
-                    deck.cards.push([card.carddbfId, 1])
-                }
-            }
-
-            let deckstring = encode(deck)
-
-            userCreatedDeck.published = Date.now()
-            userCreatedDeck.userId = userId
-            userCreatedDeck.playerClassId = parseInt(playerClassId)
-            userCreatedDeck.deck_code = deckstring
-            userCreatedDeck.dust_cost = 0
-
             addDeck(userCreatedDeck)
 
         } else if (edit === true){
             
             toggleModal()
+            updateDeck(userCreatedDeck, editDeckId)
+                .then(() => {
 
-            const deck = {
-                cards: [], // [dbfId, count] pairs
-                heroes: [pClass.classId], // hero id
-                format: 1, // or 1 for Wild, 2 for Standard
-            }
+                    let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeckId))
+                    let thisUserDeckCart = deckCart.filter(c => c.userId === userId)
 
-            for (let card of deckCart){
-                
-                let cardChosen = deck.cards.find(c => c[0] === card.carddbfId)
-                let cardIndex = deck.cards.indexOf(cardChosen)
-                
-                if (cardChosen !== undefined) {
-                    if (cardChosen[1] === 1) {
-                        deck.cards[cardIndex] = [card.carddbfId, 2]
+                    let count = 0
+
+                    for (let obj of thisUserDeckCart){
+                        
+                        let theID = thisDeck[count].id
+
+                        let deckCardsTable = {
+                            cardId: obj.cardId,
+                            deckId: editDeckId
+                        }
+
+                        // console.log('The ID: ',theID)
+                        // console.log('The updated card obj: ', deckCardsTable)
+                        updateCardDeckTable(deckCardsTable, theID)
+                        ++count
                     }
-                } else {
-                    deck.cards.push([card.carddbfId, 1])
-                }
-            }
-
-            let deckstring = encode(deck)
-
-            userCreatedDeck.published = Date.now()
-            userCreatedDeck.userId = userId
-            userCreatedDeck.playerClassId = parseInt(playerClassId)
-            userCreatedDeck.deck_code = deckstring
-            userCreatedDeck.dust_cost = 0
-
-            updateDeck(userCreatedDeck)
-
+                }).then(() => {
+                    let userCart = deckCart.filter(c => c.userId === userId)
+    
+                    for (let cartItem of userCart){
+                        destroyDeckCart(cartItem.id)
+                    }          
+                })
         }
     }
 

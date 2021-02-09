@@ -102,6 +102,7 @@ export const AllDeckList = () => {
                         small
                         theadTextWhite
                         tbodyTextWhite
+                        table
                         data={data}
                     />
             </section>
