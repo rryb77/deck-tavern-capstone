@@ -5,8 +5,6 @@ import { useHistory } from "react-router-dom"
 export const Home = (props) => {
     
     const history = useHistory()
-    const userId = parseInt(localStorage.getItem("decktavern_user"))
-
 
     const deckbuilder = () => {
         history.push(`/deckbuilder`)

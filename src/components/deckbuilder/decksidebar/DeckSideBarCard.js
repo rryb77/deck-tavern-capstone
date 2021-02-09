@@ -35,12 +35,12 @@ export const DeckSideBarCard = ({card}) => {
         <li>
             <div className="cardOptionTileImage" onClick={event => removeCard(card)}>
                 <img src={`https://art.hearthstonejson.com/v1/tiles/${cardObj?.art}.png`} className="card_SideTileImage" id={`${cardObj?.dbfId}`} alt={`${cardObj?.name}`}/>
-                <img src={'/images/cardMiddle.png'} className="cardSideMiddle"/>
-                <img src={'/images/manaText.png'} className="manaSideText"/>
-                <img src={'/images/cardRight.png'} className="cardSideRight"/>
+                <img src={'/images/cardMiddle.png'} className="cardSideMiddle" alt="side tile piece"/>
+                <img src={'/images/manaText.png'} className="manaSideText" alt="side tile piece"/>
+                <img src={'/images/cardRight.png'} className="cardSideRight" alt="side tile piece"/>
                 <div className="cardOptionTileInfo__cardName">{cardObj?.name}</div>
                 <div className="cardOptionTileInfo__cardCost">{cardObj?.cost}</div>
-                <img src={'/images/cardMask.png'} className="cardSideMask"/>
+                <img src={'/images/cardMask.png'} className="cardSideMask" alt="side tile piece"/>
             </div>
         </li>
     )

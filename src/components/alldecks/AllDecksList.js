@@ -4,7 +4,7 @@ import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvid
 import "./AllDeckList.css"
 import { RatingContext } from "../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
-import { useHistory, Link } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { UserContext } from '../user/UserProvider'
 
 export const AllDeckList = () => {
