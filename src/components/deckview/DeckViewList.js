@@ -8,6 +8,8 @@ import { UserContext } from "../user/UserProvider"
 import { Button, ButtonGroup, Tooltip } from 'reactstrap';
 import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvider"
 import { RatingContext } from "../rating/RatingProvider"
+import { Chart } from "react-google-charts";
+
 
 export const DeckViewList = () => {
     const { deck, getDeckById, deleteDeckById, setEditDeck, setDeckAuthor } = useContext(DeckViewContext)
@@ -156,6 +158,16 @@ export const DeckViewList = () => {
         
     }
 
+    
+    let zeroMana = theDeckCards.filter(c => c.cost === 0).length
+    let oneMana = theDeckCards.filter(c => c.cost === 1).length
+    let twoMana = theDeckCards.filter(c => c.cost === 2).length
+    let threeMana = theDeckCards.filter(c => c.cost === 3).length
+    let fourMana = theDeckCards.filter(c => c.cost === 4).length
+    let fiveMana = theDeckCards.filter(c => c.cost === 5).length
+    let sixMana = theDeckCards.filter(c => c.cost === 6).length
+    let sevenPlusMana = theDeckCards.filter(c => c.cost > 6).length
+
     return (
         <main>
             <section className="deckContainer">
@@ -204,8 +216,7 @@ export const DeckViewList = () => {
                     <div className="extraDetails">
                         <br></br>
                         <h4 className="header">Extra Details</h4>
-                        <br></br>
-                        <h5>Total Votes: {theRating}</h5>
+                        <h5>Deck Score: {theRating}</h5>
                         <br></br>
                         <div className="rating" id="rating">
                             <h5>Rate This Deck:</h5>
@@ -224,16 +235,83 @@ export const DeckViewList = () => {
                             <br></br>
                             <br></br>
                         </div>
-
-                        <h5>Deck Code:</h5>
-                        <textarea id="deckCode" name="deckCode" rows="2" cols="50" value={deck.deck_code} readOnly>
-                        </textarea>
+                        <div className="deckCodeDiv">
+                            <h5>Deck Code:</h5>
+                            <textarea id="deckCode" name="deckCode" rows="2" cols="50" value={deck.deck_code} readOnly>
+                            </textarea>
+                            <br></br>
+                            <Button color="primary" id={"btnCopy"} onClick={copyText}>Copy Deck Code</Button>
+                            <Tooltip placement="bottom" isOpen={tooltipOpen} autohide={false} target="btnCopy" trigger="click">
+                                Copied Deck Code!
+                            </Tooltip>
+                           
+                        </div>
+                        <div className="manacurvechart">
                         <br></br>
-                        <Button color="primary" id={"btnCopy"} onClick={copyText}>Copy Deck Code</Button>
-                        <Tooltip placement="bottom" isOpen={tooltipOpen} autohide={false} target="btnCopy" trigger="click">
-                            Copied Deck Code!
-                        </Tooltip>
-                        
+                            <Chart className="manaCurveChartDisplay"
+                                    width={350}
+                                    height={200}
+                                    chartType="ColumnChart"
+                                    loader={<div>Loading Mana Curve</div>}
+                                    data={[
+                                    ['Card Amount', 'Card Count: ', { role: 'style' }],
+                                    ['0', zeroMana, 'gold'],
+                                    ['1', oneMana, 'gold'],
+                                    ['2', twoMana, 'gold'],
+                                    ['3', threeMana, 'gold'],
+                                    ['4', fourMana, 'gold'],
+                                    ['5', fiveMana, 'gold'],
+                                    ['6', sixMana, 'gold'],
+                                    ['7+', sevenPlusMana, 'gold'],
+                                    ]}
+                                    options={{
+                                    backgroundColor: '#000000',
+                                    
+                                    title: 'Mana Curve',
+                                    titleTextStyle: {
+                                        color: '#ffffff'
+                                    },
+                                    legend: {
+                                        textStyle: {
+                                            color: '#ffffff'
+                                        }
+                                    },
+                                    chartArea: { 
+                                        width: '100%',
+                                        backgroundColor: {
+                                            stroke: '#133',
+                                            strokeWidth: 3
+                                        }
+                                    },
+                                    hAxis: {
+                                        title: 'Mana Cost',
+                                        minValue: 0,
+                                        titleTextStyle: {
+                                            color: '#ffffff'
+                                        },
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                    },
+                                    yAxis: {
+                                        titleTextStyle: {
+                                            color: '#ffffff'
+                                        },
+                                    },
+                                    vAxis: {
+                                        gridlines: {
+                                            color: '#000000'
+                                        },
+                                    },
+                                    animation: {
+                                        startup: true,
+                                        easing: 'linear',
+                                        duration: 1500,
+                                      },
+                                    }}
+                                    legendToggle
+                            />
+                            </div> 
                     </div>
 
                 </div>

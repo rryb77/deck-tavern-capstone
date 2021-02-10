@@ -84,8 +84,9 @@ export const CardByHeroClassCard = ({card}) => {
               <div className="cardImage">
                 <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardWasClicked(card)} alt={`${card?.name}`}/>
                 <img src={'/images/redx.png'} className="redx isVisible" id={`x--${card.dbfId}`} alt="Red X"/>
+                <div className="cardCount" id={`${cardId}`}>Added: {countCards}</div>
               </div>
-              <div className="cardCount" id={`${cardId}`}>Added: {countCards}</div>
+              
         </section>
         
     )

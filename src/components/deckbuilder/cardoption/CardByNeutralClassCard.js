@@ -59,8 +59,8 @@ export const CardByNeutralClassCard = ({card}) => {
             if (cardCountForDecks < 30) {
 
                 const cardFinder = localCards.find(c => c.dbfId === card.dbfId)
-                const carddbfId = cardFinder.dbfId
-                const cardId = cardFinder.id
+                const carddbfId = cardFinder?.dbfId
+                const cardId = cardFinder?.id
                 
                 let deckCartObj = {
                     userId: userId,
@@ -79,8 +79,9 @@ export const CardByNeutralClassCard = ({card}) => {
               <div className="cardImage">
                 <img src={`https://art.hearthstonejson.com/v1/render/latest/enUS/256x/${card.id}.png`} className="card_image" id={`${card?.dbfId}`} onClick={event => cardWasClicked(card)} alt={`${card?.name}`}/>
                 <img src={'/images/redx.png'} className="redx isVisible" id={`x--${card.dbfId}`} alt="Red X"/>
+                <div className="cardCount" id={`${card.name}`}>Added: {countCards}</div>
               </div>
-              <div className="cardCount" id={`${card.name}`}>Added: {countCards}</div>
+              
         </section>
         
     )

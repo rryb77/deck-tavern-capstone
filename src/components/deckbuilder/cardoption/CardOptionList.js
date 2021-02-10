@@ -16,6 +16,8 @@ import { RatingContext } from "../../rating/RatingProvider"
 import "../decksidebar/DeckSideBar.css"
 import { DeckViewContext } from "../../deckview/DeckViewProvider";
 import {CardSearch} from './CardSearch'
+import { Chart } from "react-google-charts";
+import { Spinner } from 'reactstrap';
 
 export const CardOptionList = () => {
     
@@ -33,6 +35,8 @@ export const CardOptionList = () => {
     const [filteredCards, setFilteredCards] = useState([])
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
     const [activeTab, setActiveTab] = useState('1');
+    const [scroll, setScroll] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     const history = useHistory()
@@ -62,6 +66,17 @@ export const CardOptionList = () => {
             .then(getDeckCart)
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(()=> {
+        let theSpinner = document.getElementById("spinner")
+
+        if(isLoading === true){
+            theSpinner.classList.remove("visually-hidden")
+        } else {
+            theSpinner.classList.add("visually-hidden")
+        }
+    }, [isLoading])
+
 
     useEffect(() => {
         
@@ -93,25 +108,30 @@ export const CardOptionList = () => {
         setCardCountForDecks(theCurrentCardCount)
     }, [deckCart])
 
+    const manaSort = (arrayToSort) => {
+        arrayToSort.sort((a, b) => {
+            return a.cost - b.cost
+        })
+
+        return arrayToSort
+    }
+
     // Get the name of the player class ex: "MAGE"
     const playerClass = pClass.name
     let playerClassCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
     let neutralClassCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
     
     // Sort the player class cards by mana cost
-    playerClassCards.sort((a, b) => {
-        return a.cost - b.cost
-    })
+    playerClassCards = manaSort(playerClassCards)
 
     // Sort the neutral cards by mana cost
-    neutralClassCards.sort((a, b) => {
-        return a.cost - b.cost
-    })
+    neutralClassCards = manaSort(neutralClassCards)
 
     useEffect(() => {
         if (searchTerms !== "" && activeTab === '1') {
             const classCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
-            const subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            let subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            subset = manaSort(subset)
             setFilteredCards(subset)
 
         } else if (searchTerms === "" && activeTab === '1'){
@@ -120,7 +140,8 @@ export const CardOptionList = () => {
 
         } else if (searchTerms !== "" && activeTab === '2'){
             const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
-            const subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            let subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            subset = manaSort(subset)
             setFilteredNeutralCards(subset)
 
         } else if (searchTerms === "" && activeTab === '2'){
@@ -322,11 +343,12 @@ export const CardOptionList = () => {
         }
     }
 
-    
     const toggleModal = () => setModal(!modal);
 
     const clearTheDeck = () => {
         let userCart = deckCart.filter(u => u.userId === userId)
+
+        setIsLoading(true)
 
         for(let entry of userCart){
             let theCard = document.getElementById(`${entry.carddbfId}`)
@@ -336,8 +358,33 @@ export const CardOptionList = () => {
             destroyDeckCart(entry.id)
         }
 
+        zeroMana = 0
+        oneMana = 0
+        twoMana = 0
+        threeMana = 0
+        fourMana = 0
+        fiveMana = 0
+        sixMana = 0
+        sevenPlusMana = 0
+
         setEdit(false)
+        setIsLoading(false)
     }
+
+    let cardsFromDeckCart = deckCart.map(c => {
+        let finder = localCards.find(card => card.id === c.cardId)
+        return finder
+    })
+
+    let zeroMana = cardsFromDeckCart.filter(c => c.cost === 0).length
+    let oneMana = cardsFromDeckCart.filter(c => c.cost === 1).length
+    let twoMana = cardsFromDeckCart.filter(c => c.cost === 2).length
+    let threeMana = cardsFromDeckCart.filter(c => c.cost === 3).length
+    let fourMana = cardsFromDeckCart.filter(c => c.cost === 4).length
+    let fiveMana = cardsFromDeckCart.filter(c => c.cost === 5).length
+    let sixMana = cardsFromDeckCart.filter(c => c.cost === 6).length
+    let sevenPlusMana = cardsFromDeckCart.filter(c => c.cost > 6).length
+    
 
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
@@ -374,6 +421,8 @@ export const CardOptionList = () => {
                         <TabPane tabId="1">
                         <Row>
                             <Col sm="12">
+                            <div class="spinner-border text-primary visually-hidden" role="status" id="spinner"></div>
+                            
                             <div className="cardViewer">
                                 {
                                     filteredCards.map(card => {
@@ -410,7 +459,7 @@ export const CardOptionList = () => {
                         <h2 className="currentDeck">Current Deck</h2>
                         <div className="cardTileHolder">
                             <div className="totalCards">Total Cards: {cardCountForDecks}</div>
-                            <br></br>
+                            <br></br>  
                             <div className="listContainer">
                                 <ul className="deckSideBarCards" id="deckSideBarCards">
                                 {
@@ -422,9 +471,74 @@ export const CardOptionList = () => {
                                 </ul>
                             </div>
                             <div className="savePanel" id="savePanel">
-                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>{edit ? 'Save Edit' : 'Save'}</Button>{' '} <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
-                            </div>                           
+                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>{edit ? 'Save Edit' : 'Save'}</Button><Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
+                            </div>                        
                         </div>
+                        <div className="manacurvechart">
+                            <Chart className="manaCurveChartDisplayOptions"
+                                    width={350}
+                                    height={200}
+                                    chartType="ColumnChart"
+                                    loader={<div>Loading Mana Curve</div>}
+                                    data={[
+                                    ['Card Amount', 'Card Count: ', { role: 'style' }],
+                                    ['0', zeroMana, 'gold'],
+                                    ['1', oneMana, 'gold'],
+                                    ['2', twoMana, 'gold'],
+                                    ['3', threeMana, 'gold'],
+                                    ['4', fourMana, 'gold'],
+                                    ['5', fiveMana, 'gold'],
+                                    ['6', sixMana, 'gold'],
+                                    ['7+', sevenPlusMana, 'gold'],
+                                    ]}
+                                    options={{
+                                    backgroundColor: '#000000',
+                                    
+                                    title: 'Mana Curve',
+                                    titleTextStyle: {
+                                        color: '#ffffff'
+                                    },
+                                    legend: {
+                                        textStyle: {
+                                            color: '#ffffff'
+                                        }
+                                    },
+                                    chartArea: { 
+                                        width: '100%',
+                                        backgroundColor: {
+                                            stroke: '#133',
+                                            strokeWidth: 3
+                                        }
+                                    },
+                                    hAxis: {
+                                        title: 'Mana Cost',
+                                        minValue: 0,
+                                        titleTextStyle: {
+                                            color: '#ffffff'
+                                        },
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                    },
+                                    yAxis: {
+                                        titleTextStyle: {
+                                            color: '#ffffff'
+                                        },
+                                    },
+                                    vAxis: {
+                                        gridlines: {
+                                            color: '#000000'
+                                        },
+                                    },
+                                    animation: {
+                                        startup: true,
+                                        easing: 'linear',
+                                        duration: 1500,
+                                      },
+                                    }}
+                                    legendToggle
+                            />
+                            </div> 
                     </div>
 
                 </section>

@@ -97,8 +97,8 @@
   }
 
 .btnSave {
-  position: absolute;
-  left: 41%;
+  width: 120px;
+  margin-right: 10px;
 }
 
 .btnEdit {
@@ -107,8 +107,7 @@
 }
 
 .btnClear {
-  position: absolute;
-  left: 71%;
+  width: 120px;
 }
 
 .totalCards {
@@ -144,4 +143,10 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.manaCurveChartDisplayOptions {
+  position: absolute;
+  left: 29%;
+  top: 80%;
 }

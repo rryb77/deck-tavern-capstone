@@ -1,8 +1,8 @@
 .cardTileInfo__cardName {
   position: absolute;
-  top: 20%;
-  left: 20%;
-  font-size: 100%;
+  top: 25%;
+  left: 18%;
+  font-size: 90%;
   font-weight: 800;
   z-index: 6;
 }
@@ -18,7 +18,7 @@
   position: absolute;
   left: 15%;
   top: 5%;
-  width: 290px;
+  width: 293px;
   z-index: 5;
   height: 95%
 }
@@ -45,12 +45,13 @@
   
   left: 80%;
   top: 0%;
+  z-index: 6;
 }
 
 .card_TileImage {
   position: absolute;
   left: 15%;
-  width: 72%;
+  width: 75%;
   height: 95%;
   z-index: 1;
 }
@@ -66,6 +67,7 @@
 .bottomDeckContainer {
   display: flex;
   flex-wrap: nowrap;
+  margin-bottom: 270px;
 }
 
 .topDeckContainer {
@@ -102,4 +104,22 @@
 
 .white {
   color: whitesmoke;
+}
+
+.card_imagehover {
+  position: absolute;
+  z-index: 99;
+  display: none;
+  top: -80%;
+  left: 96%;
+}
+
+
+
+.cardOptionTileImage:hover>.card_imagehover {
+  display: block;
+}
+
+.manaCurveChartDisplay {
+  background-color: black;
 }
