@@ -33,6 +33,7 @@ export const CardOptionList = () => {
     const [filteredCards, setFilteredCards] = useState([])
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
     const [activeTab, setActiveTab] = useState('1');
+    const [scroll, setScroll] = useState(false)
 
 
     const history = useHistory()
