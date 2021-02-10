@@ -67,7 +67,7 @@
 .bottomDeckContainer {
   display: flex;
   flex-wrap: nowrap;
-  margin-bottom: 300px;
+  margin-bottom: 270px;
 }
 
 .topDeckContainer {
@@ -118,4 +118,8 @@
 
 .cardOptionTileImage:hover>.card_imagehover {
   display: block;
+}
+
+.manaCurveChartDisplay {
+  background-color: black;
 }

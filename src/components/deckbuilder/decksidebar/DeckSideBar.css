@@ -96,20 +96,19 @@
     z-index: 3;
   }
 
-/* .btnSave {
-  position: absolute;
-  left: 41%;
-} */
+.btnSave {
+  width: 120px;
+  margin-right: 10px;
+}
 
 .btnEdit {
   position: absolute;
   left: 41%;
 }
 
-/* .btnClear {
-  position: absolute;
-  left: 71%;
-} */
+.btnClear {
+  width: 120px;
+}
 
 .totalCards {
   position: relative;
@@ -144,4 +143,10 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.manaCurveChartDisplayOptions {
+  position: absolute;
+  left: 29%;
+  top: 80%;
 }

@@ -111,19 +111,13 @@ li {
     margin-left: 10px;
 }
 
-.manacurvechart {
-    position: absolute;
-    left: 29%;
-    top: 115%;
-}
-
 .savePanel {
     position: absolute;
-    top: 102%;
-    left: 60%;
+    top: 70%;
+    left: 45%;
+    width: 100%;
 }
 
-.manaCurveChartDisplay {
-    background-color: black;
-    color: aqua;
+.visually-hidden{
+    display: none;
 }

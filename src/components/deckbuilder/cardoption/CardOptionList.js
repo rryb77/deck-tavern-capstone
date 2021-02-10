@@ -17,6 +17,7 @@ import "../decksidebar/DeckSideBar.css"
 import { DeckViewContext } from "../../deckview/DeckViewProvider";
 import {CardSearch} from './CardSearch'
 import { Chart } from "react-google-charts";
+import { Spinner } from 'reactstrap';
 
 export const CardOptionList = () => {
     
@@ -35,6 +36,7 @@ export const CardOptionList = () => {
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
     const [activeTab, setActiveTab] = useState('1');
     const [scroll, setScroll] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     const history = useHistory()
@@ -64,6 +66,17 @@ export const CardOptionList = () => {
             .then(getDeckCart)
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(()=> {
+        let theSpinner = document.getElementById("spinner")
+
+        if(isLoading === true){
+            theSpinner.classList.remove("visually-hidden")
+        } else {
+            theSpinner.classList.add("visually-hidden")
+        }
+    }, [isLoading])
+
 
     useEffect(() => {
         
@@ -335,6 +348,8 @@ export const CardOptionList = () => {
     const clearTheDeck = () => {
         let userCart = deckCart.filter(u => u.userId === userId)
 
+        setIsLoading(true)
+
         for(let entry of userCart){
             let theCard = document.getElementById(`${entry.carddbfId}`)
             let theX = document.getElementById(`x--${entry.carddbfId}`)
@@ -353,6 +368,7 @@ export const CardOptionList = () => {
         sevenPlusMana = 0
 
         setEdit(false)
+        setIsLoading(false)
     }
 
     let cardsFromDeckCart = deckCart.map(c => {
@@ -405,6 +421,8 @@ export const CardOptionList = () => {
                         <TabPane tabId="1">
                         <Row>
                             <Col sm="12">
+                            <div class="spinner-border text-primary visually-hidden" role="status" id="spinner"></div>
+                            
                             <div className="cardViewer">
                                 {
                                     filteredCards.map(card => {
@@ -453,11 +471,11 @@ export const CardOptionList = () => {
                                 </ul>
                             </div>
                             <div className="savePanel" id="savePanel">
-                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>{edit ? 'Save Edit' : 'Save'}</Button>{' '} <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
+                                <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>{edit ? 'Save Edit' : 'Save'}</Button><Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
                             </div>                        
                         </div>
                         <div className="manacurvechart">
-                            <Chart className="manaCurveChartDisplay"
+                            <Chart className="manaCurveChartDisplayOptions"
                                     width={350}
                                     height={200}
                                     chartType="ColumnChart"
