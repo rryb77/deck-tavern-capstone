@@ -43,12 +43,12 @@ body {
     text-align: center;
     top: 89%;
     left: 36%;
-    color: burlywood
+    color: #deb887
 }
 
 .deckSideBarCards {
     list-style-type:none;
-    height: 500px;
+    height: 340px;
     width: 420px;
     overflow-y: scroll;
     text-align-last: left;
@@ -109,4 +109,21 @@ li {
 
 .input--wide {
     margin-left: 10px;
+}
+
+.manacurvechart {
+    position: absolute;
+    left: 29%;
+    top: 115%;
+}
+
+.savePanel {
+    position: absolute;
+    top: 102%;
+    left: 60%;
+}
+
+.manaCurveChartDisplay {
+    background-color: black;
+    color: aqua;
 }

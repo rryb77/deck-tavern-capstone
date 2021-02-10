@@ -96,20 +96,20 @@
     z-index: 3;
   }
 
-.btnSave {
+/* .btnSave {
   position: absolute;
   left: 41%;
-}
+} */
 
 .btnEdit {
   position: absolute;
   left: 41%;
 }
 
-.btnClear {
+/* .btnClear {
   position: absolute;
   left: 71%;
-}
+} */
 
 .totalCards {
   position: relative;

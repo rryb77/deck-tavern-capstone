@@ -16,6 +16,7 @@ import { RatingContext } from "../../rating/RatingProvider"
 import "../decksidebar/DeckSideBar.css"
 import { DeckViewContext } from "../../deckview/DeckViewProvider";
 import {CardSearch} from './CardSearch'
+import { Chart } from "react-google-charts";
 
 export const CardOptionList = () => {
     
@@ -342,8 +343,32 @@ export const CardOptionList = () => {
             destroyDeckCart(entry.id)
         }
 
+        zeroMana = 0
+        oneMana = 0
+        twoMana = 0
+        threeMana = 0
+        fourMana = 0
+        fiveMana = 0
+        sixMana = 0
+        sevenPlusMana = 0
+
         setEdit(false)
     }
+
+    let cardsFromDeckCart = deckCart.map(c => {
+        let finder = localCards.find(card => card.id === c.cardId)
+        return finder
+    })
+
+    let zeroMana = cardsFromDeckCart.filter(c => c.cost === 0).length
+    let oneMana = cardsFromDeckCart.filter(c => c.cost === 1).length
+    let twoMana = cardsFromDeckCart.filter(c => c.cost === 2).length
+    let threeMana = cardsFromDeckCart.filter(c => c.cost === 3).length
+    let fourMana = cardsFromDeckCart.filter(c => c.cost === 4).length
+    let fiveMana = cardsFromDeckCart.filter(c => c.cost === 5).length
+    let sixMana = cardsFromDeckCart.filter(c => c.cost === 6).length
+    let sevenPlusMana = cardsFromDeckCart.filter(c => c.cost > 6).length
+    
 
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
@@ -416,7 +441,7 @@ export const CardOptionList = () => {
                         <h2 className="currentDeck">Current Deck</h2>
                         <div className="cardTileHolder">
                             <div className="totalCards">Total Cards: {cardCountForDecks}</div>
-                            <br></br>
+                            <br></br>  
                             <div className="listContainer">
                                 <ul className="deckSideBarCards" id="deckSideBarCards">
                                 {
@@ -429,8 +454,73 @@ export const CardOptionList = () => {
                             </div>
                             <div className="savePanel" id="savePanel">
                                 <Button color="success" className="btnSave" id="btnSave" onClick={toggleModal}>{edit ? 'Save Edit' : 'Save'}</Button>{' '} <Button color="danger" className="btnClear" onClick={clearTheDeck}>Clear</Button>
-                            </div>                           
+                            </div>                        
                         </div>
+                        <div className="manacurvechart">
+                            <Chart className="manaCurveChartDisplay"
+                                    width={350}
+                                    height={200}
+                                    chartType="ColumnChart"
+                                    loader={<div>Loading Mana Curve</div>}
+                                    data={[
+                                    ['Card Amount', 'Card Count: ', { role: 'style' }],
+                                    ['0', zeroMana, 'gold'],
+                                    ['1', oneMana, 'gold'],
+                                    ['2', twoMana, 'gold'],
+                                    ['3', threeMana, 'gold'],
+                                    ['4', fourMana, 'gold'],
+                                    ['5', fiveMana, 'gold'],
+                                    ['6', sixMana, 'gold'],
+                                    ['7+', sevenPlusMana, 'gold'],
+                                    ]}
+                                    options={{
+                                    backgroundColor: '#000000',
+                                    
+                                    title: 'Mana Curve',
+                                    titleTextStyle: {
+                                        color: '#ffffff'
+                                    },
+                                    legend: {
+                                        textStyle: {
+                                            color: '#ffffff'
+                                        }
+                                    },
+                                    chartArea: { 
+                                        width: '100%',
+                                        backgroundColor: {
+                                            stroke: '#133',
+                                            strokeWidth: 3
+                                        }
+                                    },
+                                    hAxis: {
+                                        title: 'Mana Cost',
+                                        minValue: 0,
+                                        titleTextStyle: {
+                                            color: '#ffffff'
+                                        },
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                    },
+                                    yAxis: {
+                                        titleTextStyle: {
+                                            color: '#ffffff'
+                                        },
+                                    },
+                                    vAxis: {
+                                        gridlines: {
+                                            color: '#000000'
+                                        },
+                                    },
+                                    animation: {
+                                        startup: true,
+                                        easing: 'linear',
+                                        duration: 1500,
+                                      },
+                                    }}
+                                    legendToggle
+                            />
+                            </div> 
                     </div>
 
                 </section>
