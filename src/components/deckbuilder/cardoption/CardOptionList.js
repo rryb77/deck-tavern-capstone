@@ -21,7 +21,7 @@ import { Spinner } from 'reactstrap';
 
 export const CardOptionList = () => {
     
-    const { cardOptions, getCardOptions, searchTerms } = useContext(CardOptionContext)
+    const { cardOptions, getCardOptions, searchTerms, filter, setFilter } = useContext(CardOptionContext)
     const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
     const { addRating } = useContext(RatingContext)
     const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
@@ -128,6 +128,8 @@ export const CardOptionList = () => {
     neutralClassCards = manaSort(neutralClassCards)
 
     useEffect(() => {
+        
+        
         if (searchTerms !== "" && activeTab === '1') {
             const classCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
             let subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
@@ -148,7 +150,33 @@ export const CardOptionList = () => {
             setFilteredCards(playerClassCards)
             setFilteredNeutralCards(neutralClassCards)
         }
+
     }, [searchTerms, cardOptions, activeTab])
+
+
+    useEffect(() => {
+        
+        let theClassFilters = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+
+        if(filter.mana !== "ALL"){
+            theClassFilters = theClassFilters.filter(c => c.cost === parseInt(filter.mana))
+            setFilteredCards(theClassFilters)
+        } else {
+            setFilteredCards(playerClassCards)
+        }
+        
+        if(filter.rarity !== "ALL"){
+            theClassFilters = theClassFilters.filter(c => c.rarity === filter.rarity)
+
+            setFilteredCards(theClassFilters)
+        }
+
+        if(filter.type !== "ALL"){
+            theClassFilters = theClassFilters.filter(c => c.type === filter.type)
+            setFilteredCards(theClassFilters)
+        }
+                
+    }, [filter])
 
     useEffect(() => {
         if (cardCountForDecks === 30){
@@ -396,7 +424,7 @@ export const CardOptionList = () => {
 
                 <section className="leftContainer">
                     
-                    <h2 className="playerClassName">{playerClass}</h2>
+                    <h2 className="playerClassName">{playerClass} DECK</h2>
                     <div>
                     <Nav tabs>
                         <NavItem>

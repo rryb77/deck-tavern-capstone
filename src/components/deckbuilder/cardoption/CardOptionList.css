@@ -105,10 +105,13 @@ li {
 
 .filters {
     background-color: #ffffff;
+    /* display: flex;
+    flex-wrap: nowrap; */
 }
 
 .input--wide {
     margin-left: 10px;
+    margin-right: 10px;
 }
 
 .savePanel {
