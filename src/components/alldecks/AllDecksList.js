@@ -40,8 +40,8 @@ export const AllDeckList = () => {
                 width: 150
             },
             {
-                label: 'Class',
-                field: 'class',
+                label: 'Player Class',
+                field: 'playerclass',
                 sort: 'asc',
                 width: 150
             },
@@ -84,7 +84,7 @@ export const AllDeckList = () => {
                     clickEvent: () => goToDeck(),
                     rating: theRating,
                     deckname: deck.deck_name,
-                    class: theClass?.name,
+                    playerclass: theClass?.name,
                     published: new Date(deck.published).toLocaleDateString('en-US'),
                     author: deckAuthor?.username
                 }

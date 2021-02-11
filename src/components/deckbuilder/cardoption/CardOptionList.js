@@ -17,7 +17,6 @@ import "../decksidebar/DeckSideBar.css"
 import { DeckViewContext } from "../../deckview/DeckViewProvider";
 import {CardSearch} from './CardSearch'
 import { Chart } from "react-google-charts";
-import { Spinner } from 'reactstrap';
 import {NoCardsFound} from './NoCardsFoundCard'
 
 export const CardOptionList = () => {
@@ -27,7 +26,7 @@ export const CardOptionList = () => {
     const { addRating } = useContext(RatingContext)
     const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
-    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor} = useContext(DeckViewContext)
+    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor, getDeckById, deck} = useContext(DeckViewContext)
     const [ editDeckId, setEditDeckId] = useState(0)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
@@ -36,8 +35,6 @@ export const CardOptionList = () => {
     const [filteredCards, setFilteredCards] = useState([])
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
     const [activeTab, setActiveTab] = useState('1');
-    const [activeTabTwo, setActiveTabTwo] = useState('1')
-    const [scroll, setScroll] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [classCardsWereFound, setClassCardsWereFound] = useState(true)
     const [neutralCardsWereFound, setNeutralCardsWereFound] = useState(true)
@@ -81,6 +78,13 @@ export const CardOptionList = () => {
         }
     }, [isLoading])
 
+    useEffect(() => {
+        if (deckAuthor === userId) {
+            userCreatedDeck.deck_name = deck.deck_name
+            userCreatedDeck.deck_info = deck.deck_info
+        }
+        
+    }, [deck])
 
     useEffect(() => {
         
@@ -103,8 +107,10 @@ export const CardOptionList = () => {
             }
                 setEdit(true)    
                 setEditDeckId(editDeck)
+                getDeckById(editDeck)
                 setEditDeck(0)
         }
+        
     }, [editDeck])
 
     useEffect(() => {
@@ -139,21 +145,16 @@ export const CardOptionList = () => {
         
         if (searchTerms !== "") {
             const classCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+            const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
             let subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            let nSubset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            
+            nSubset = manaSort(nSubset)
+            setFilteredNeutralCards(nSubset)
             subset = manaSort(subset)
             setFilteredCards(subset)
 
-        } else if (searchTerms === ""){
-            setFilteredCards(playerClassCards)
-            setFilteredNeutralCards(neutralClassCards)
-
-        } else if (searchTerms !== ""){
-            const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
-            let subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
-            subset = manaSort(subset)
-            setFilteredNeutralCards(subset)
-
-        } else if (searchTerms === ""){
+        } else {
             setFilteredCards(playerClassCards)
             setFilteredNeutralCards(neutralClassCards)
         }
@@ -653,9 +654,9 @@ export const CardOptionList = () => {
                   <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog" unmountOnClose={false}>
                       <ModalHeader toggle={toggleModal}>Save Your Deck</ModalHeader>
                       <ModalBody>
-                      <Label for="deckname">Deck Name:</Label>
+                      <Label htmlFor="deckname">Deck Name:</Label>
                       <Input type="text" id="deck_name" placeholder="Enter a deck name here" onChange={handleControlledInputChange} className="form-control" value={userCreatedDeck.deck_name} rows={5}/>
-                        <Label for="deckinfo">Deck Info:</Label>
+                        <Label htmlFor="deckinfo">Deck Info:</Label>
                         <Input type="textarea" id="deck_info" onChange={handleControlledInputChange} placeholder="Enter any relevant information about your deck such as midrange aggro, etc.." value={userCreatedDeck.deck_info} rows={5}/>
                       </ModalBody>
                       <ModalFooter>

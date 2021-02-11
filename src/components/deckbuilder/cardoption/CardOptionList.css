@@ -129,3 +129,7 @@ li {
     margin-top: 50px;
     width: 256px;
 }
+
+.modal-title {
+    color: black;
+}

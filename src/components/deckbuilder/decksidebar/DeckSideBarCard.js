@@ -27,7 +27,7 @@ export const DeckSideBarCard = ({card}) => {
         let theCard = document.getElementById(`${cardObj.carddbfId}`)
         let theX = document.getElementById(`x--${cardObj.carddbfId}`)
         theCard.classList.remove("greyscale")
-        theX.classList.add('isVisible')                    
+        theX.classList?.add('isVisible')                    
 
     }
         
