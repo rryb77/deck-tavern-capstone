@@ -153,28 +153,63 @@ export const CardOptionList = () => {
 
     }, [searchTerms, cardOptions, activeTab])
 
+    let noCardsFound = [
+        {
+            artist: "N/A",
+            attack: 3,
+            cardClass: "NOCARDS",
+            collectible: true,
+            cost: 2,
+            dbfId: 999999,
+            flavor: "NOCARDS",
+            health: 2,
+            id: "NOCARDS",
+            mechanics: ["NOCARDS"],
+            name: "NOCARDS",
+            race: "NOCARDS",
+            rarity: "NOCARDS",
+            set: "TGT",
+            text: "<b>Battlecry:</b> Disappoint user with no results",
+            type: "NOCARDS"
+        }
+    ]
 
     useEffect(() => {
         
         let theClassFilters = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+        let theNeutralFilters = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
 
         if(filter.mana !== "ALL"){
             theClassFilters = theClassFilters.filter(c => c.cost === parseInt(filter.mana))
+            theNeutralFilters = theNeutralFilters.filter(c => c.cost === parseInt(filter.mana))
+            manaSort(theClassFilters)
+            manaSort(theNeutralFilters)
             setFilteredCards(theClassFilters)
+            // create a neutralCards filter as well in state, in the cardoptionprovider
         } else {
-            setFilteredCards(playerClassCards)
+            manaSort(theClassFilters)
+            setFilteredCards(theClassFilters)
         }
         
         if(filter.rarity !== "ALL"){
             theClassFilters = theClassFilters.filter(c => c.rarity === filter.rarity)
-
+            manaSort(theClassFilters)
+            setFilteredCards(theClassFilters)
+        } else {
+            manaSort(theClassFilters)
             setFilteredCards(theClassFilters)
         }
 
         if(filter.type !== "ALL"){
             theClassFilters = theClassFilters.filter(c => c.type === filter.type)
+            manaSort(theClassFilters)
+            setFilteredCards(theClassFilters)
+        } else {
+            manaSort(theClassFilters)
             setFilteredCards(theClassFilters)
         }
+
+
                 
     }, [filter])
 

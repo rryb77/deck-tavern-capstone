@@ -34,7 +34,6 @@ export const CardSearch = () => {
 
             </NavbarBrand>
             
-            
             <Collapse isOpen={!collapsed} navbar>
               <Nav navbar>               
                 <NavItem>
