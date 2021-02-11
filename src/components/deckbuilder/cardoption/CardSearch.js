@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import { CardOptionContext } from "./CardOptionProvider"
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 import "./CardSearch.css"
 
 export const CardSearch = () => {
@@ -11,12 +11,29 @@ export const CardSearch = () => {
 
 
   
+  const clearFilters = () => {
+    let manaDropDown = document.getElementById("mana")
+    let rarityDropDown = document.getElementById("rarity")
+    let typeDropDown = document.getElementById("type")
 
+    manaDropDown.selectedIndex = 0;
+    rarityDropDown.selectedIndex = 0;
+    typeDropDown.selectedIndex = 0;
+
+    let filterReset = {
+      mana: "ALL",
+      rarity: "ALL",
+      type: "ALL"
+    }
+    setFilter(filterReset)
+  }
 
   const handleControlledInputChange = (event) => {
     const newFilter = { ...filter }
     newFilter[event.target.id] = event.target.value
     setFilter(newFilter)
+    let searchBar = document.getElementById("searchbar")
+    searchBar.value = ""
   }
 
   return (
@@ -29,6 +46,7 @@ export const CardSearch = () => {
             Card Search:
               <input type="text"
                 className="input--wide"
+                id="searchbar"
                 onKeyUp={(event) => setSearchTerms(event.target.value)}
                 placeholder="Search for a card... " />
 
@@ -71,6 +89,9 @@ export const CardSearch = () => {
                   <option value="SPELL">Spell</option>
                   <option value="WEAPON">Weapon</option>
                 </select>
+                </NavItem>
+                <NavItem>
+                    <Button color="info" onClick={clearFilters}>Clear Filters</Button>
                 </NavItem>
               </Nav>
             </Collapse>

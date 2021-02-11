@@ -111,7 +111,7 @@ li {
 
 .input--wide {
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 40px;
 }
 
 .savePanel {
@@ -123,4 +123,9 @@ li {
 
 .visually-hidden{
     display: none;
+}
+
+.nocardsfound {
+    margin-top: 50px;
+    width: 256px;
 }
