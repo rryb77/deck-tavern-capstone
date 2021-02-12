@@ -37,10 +37,6 @@ tr {
         border: 0px solid #ffffff;
 }
 
-/* td:hover {
-    background-color: #701e1e;
-} */
-
 tr:hover {
     color: rgb(0, 250, 21);
 }

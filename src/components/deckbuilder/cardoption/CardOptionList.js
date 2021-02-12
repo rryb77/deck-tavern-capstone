@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { encode, decode, FormatType } from "deckstrings";
+import { encode } from "deckstrings";
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label } from 'reactstrap';
 import classnames from 'classnames';
@@ -21,10 +21,10 @@ import {NoCardsFound} from './NoCardsFoundCard'
 
 export const CardOptionList = () => {
     
-    const { cardOptions, getCardOptions, searchTerms, filter, setFilter } = useContext(CardOptionContext)
+    const { cardOptions, getCardOptions, searchTerms, filter } = useContext(CardOptionContext)
     const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
     const { addRating } = useContext(RatingContext)
-    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
+    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart, setIsLoading} = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
     const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor, getDeckById, deck} = useContext(DeckViewContext)
     const [ editDeckId, setEditDeckId] = useState(0)
@@ -35,7 +35,6 @@ export const CardOptionList = () => {
     const [filteredCards, setFilteredCards] = useState([])
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
     const [activeTab, setActiveTab] = useState('1');
-    const [isLoading, setIsLoading] = useState(false)
     const [classCardsWereFound, setClassCardsWereFound] = useState(true)
     const [neutralCardsWereFound, setNeutralCardsWereFound] = useState(true)
 
@@ -67,16 +66,6 @@ export const CardOptionList = () => {
             .then(getDeckCart)
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(()=> {
-        let theSpinner = document.getElementById("spinner")
-
-        if(isLoading === true){
-            theSpinner.classList.remove("visually-hidden")
-        } else {
-            theSpinner.classList.add("visually-hidden")
-        }
-    }, [isLoading])
 
     useEffect(() => {
         if (deckAuthor === userId) {
@@ -160,24 +149,6 @@ export const CardOptionList = () => {
         }
 
     }, [searchTerms, cardOptions])
-
-
-    const resetFilter = () => {
-        let manaDropDown = document.getElementById("mana")
-        let rarityDropDown = document.getElementById("rarity")      
-        let typeDropDown = document.getElementById("type")
-
-        manaDropDown.selectedIndex = 0;
-        rarityDropDown.selectedIndex = 0;
-        typeDropDown.selectedIndex = 0;
-        
-        let filterReset = {
-        mana: "ALL",
-        rarity: "ALL",
-        type: "ALL"
-        }
-        setFilter(filterReset)
-    }
 
 
     useEffect(() => {
@@ -518,9 +489,7 @@ export const CardOptionList = () => {
                         <CardSearch/>
                         <TabPane tabId="1">
                         <Row>
-                            <Col sm="12">
-                            <div class="spinner-border text-primary visually-hidden" role="status" id="spinner"></div>
-                            
+                            <Col sm="12">                          
                             <div className="cardViewer">
                                 
                                 {classCardsWereFound ?            

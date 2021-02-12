@@ -55,7 +55,7 @@ export const CardSearch = () => {
             <Collapse isOpen={!collapsed} navbar>
               <Nav navbar>               
                 <NavItem>
-                      <label for="mana">Filter By Mana:</label>
+                      <label htmlFor="mana">Filter By Mana:</label>
 
                       <select name="mana" id="mana" onChange={handleControlledInputChange}>
                         <option value="ALL">All</option>
@@ -70,7 +70,7 @@ export const CardSearch = () => {
                       </select>
                 </NavItem>
                 <NavItem>
-                <label for="rarity">Filter By Rarity:</label>
+                <label htmlFor="rarity">Filter By Rarity:</label>
 
                 <select name="rarity" id="rarity" onChange={handleControlledInputChange}>
                   <option value="ALL">All</option>
@@ -81,7 +81,7 @@ export const CardSearch = () => {
                 </select>
                 </NavItem>
                 <NavItem>
-                <label for="type">Filter By Type:</label>
+                <label htmlFor="type">Filter By Type:</label>
 
                 <select name="type" id="type" onChange={handleControlledInputChange}>
                 <option value="ALL">All</option>
