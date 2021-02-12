@@ -15,6 +15,9 @@ The Deck Tavern was created to allow gamers in the Hearthstone community to easi
 * Copy the deck code from any created deck to import and try it out in the game client
 * Visit the profile of a deck creator to see all other decks they created
 
+## See It In Action
+
+
 
 ## Running The App
 
