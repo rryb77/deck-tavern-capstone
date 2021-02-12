@@ -25,11 +25,11 @@ In order to get The Deck Tavern running locally please do the following in your 
 
 ### `git clone git@github.com:rryb77/deck-tavern-capstone.git`
 
-Once you've cloned the repo cd into the directory and use the following command to install the needed libraries and dependencies this app used:
+Once you've cloned the repo cd into the directory and use the following command to install the needed libraries and dependencies this app uses:
 
 ### `npm install`
 
-This project also relies on the JSON database on port 8088 which can be found here:
+This project also relies on the JSON database running on port 8088 which can be found here:
 
 ### `git clone git@github.com:rryb77/deck-tavern-api.git`
 
