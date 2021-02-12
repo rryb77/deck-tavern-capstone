@@ -417,8 +417,6 @@ export const CardOptionList = () => {
     const clearTheDeck = () => {
         let userCart = deckCart.filter(u => u.userId === userId)
 
-        setIsLoading(true)
-
         for(let entry of userCart){
             let theCard = document.getElementById(`${entry.carddbfId}`)
             let theX = document.getElementById(`x--${entry.carddbfId}`)
@@ -437,7 +435,6 @@ export const CardOptionList = () => {
         sevenPlusMana = 0
 
         setEdit(false)
-        setIsLoading(false)
     }
 
     let cardsFromDeckCart = deckCart.map(c => {
