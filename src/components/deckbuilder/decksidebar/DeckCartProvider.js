@@ -27,10 +27,7 @@ export const DeckCartProvider = (props) => {
                 let sidebar = document.getElementById("deckSideBarCards")
                     sidebar.scrollTop = sidebar.scrollHeight
             })
-        } else {
-            console.log("Card was undefined...?", deckCartObj)
-        }
-        
+        }        
     }
 
     const destroyDeckCart = (id) => {

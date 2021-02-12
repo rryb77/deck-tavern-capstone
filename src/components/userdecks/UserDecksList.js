@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react"
 import { DeckViewContext } from '../deckview/DeckViewProvider'
 import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvider"
-import "./UserDecks.css"
 import { RatingContext } from "../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
 import { useHistory, useParams } from "react-router-dom"

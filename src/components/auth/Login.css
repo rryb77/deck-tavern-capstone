@@ -50,13 +50,10 @@ fieldset {
 }
 
 .form--login {
-    /* background-position-x: right; */
     background-image: url(Login.png);
     z-index: 1;
     min-height: 35rem;
     min-width: 45rem;
-    /* background-color: hsla(0,0%,100%,0.40);
-    background-blend-mode: overlay; */
     background-repeat: no-repeat;
     margin-top: 5%;
 }
