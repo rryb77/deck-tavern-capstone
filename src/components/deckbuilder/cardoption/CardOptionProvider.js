@@ -6,6 +6,11 @@ export const CardOptionProvider = (props) => {
     const [cardOptions, setCardOptions] = useState([])
     const [deckCards, setDeckCards] = useState([])
     const [ searchTerms, setSearchTerms ] = useState("")
+    const [filter, setFilter] = useState({
+        mana: "ALL",
+        rarity: "ALL",
+        type: "ALL",
+      });
 
     const getCardOptions = () => {
         return fetch("https://api.hearthstonejson.com/v1/72661/enUS/cards.collectible.json")
@@ -15,7 +20,7 @@ export const CardOptionProvider = (props) => {
 
     return (
         <CardOptionContext.Provider value={{
-            cardOptions, getCardOptions, deckCards, setDeckCards, searchTerms, setSearchTerms
+            cardOptions, getCardOptions, deckCards, setDeckCards, searchTerms, setSearchTerms, filter, setFilter
         }}>
             {props.children}
         </CardOptionContext.Provider>

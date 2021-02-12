@@ -25,8 +25,7 @@ export const Home = (props) => {
                     </p>
                 </Jumbotron>
             </div>
-
-            <div className="footer">Footer</div>
+            
         </center>
 
       );

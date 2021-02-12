@@ -17,16 +17,16 @@ import "../decksidebar/DeckSideBar.css"
 import { DeckViewContext } from "../../deckview/DeckViewProvider";
 import {CardSearch} from './CardSearch'
 import { Chart } from "react-google-charts";
-import { Spinner } from 'reactstrap';
+import {NoCardsFound} from './NoCardsFoundCard'
 
 export const CardOptionList = () => {
     
-    const { cardOptions, getCardOptions, searchTerms } = useContext(CardOptionContext)
+    const { cardOptions, getCardOptions, searchTerms, filter, setFilter } = useContext(CardOptionContext)
     const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
     const { addRating } = useContext(RatingContext)
     const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart} = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
-    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor} = useContext(DeckViewContext)
+    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor, getDeckById, deck} = useContext(DeckViewContext)
     const [ editDeckId, setEditDeckId] = useState(0)
     const [pClass, setPClass] = useState({})
     const {playerClassId} = useParams()
@@ -35,8 +35,9 @@ export const CardOptionList = () => {
     const [filteredCards, setFilteredCards] = useState([])
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
     const [activeTab, setActiveTab] = useState('1');
-    const [scroll, setScroll] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [classCardsWereFound, setClassCardsWereFound] = useState(true)
+    const [neutralCardsWereFound, setNeutralCardsWereFound] = useState(true)
 
 
     const history = useHistory()
@@ -77,6 +78,13 @@ export const CardOptionList = () => {
         }
     }, [isLoading])
 
+    useEffect(() => {
+        if (deckAuthor === userId) {
+            userCreatedDeck.deck_name = deck.deck_name
+            userCreatedDeck.deck_info = deck.deck_info
+        }
+        
+    }, [deck])
 
     useEffect(() => {
         
@@ -99,8 +107,10 @@ export const CardOptionList = () => {
             }
                 setEdit(true)    
                 setEditDeckId(editDeck)
+                getDeckById(editDeck)
                 setEditDeck(0)
         }
+        
     }, [editDeck])
 
     useEffect(() => {
@@ -128,27 +138,115 @@ export const CardOptionList = () => {
     neutralClassCards = manaSort(neutralClassCards)
 
     useEffect(() => {
-        if (searchTerms !== "" && activeTab === '1') {
+        
+        setClassCardsWereFound(true)
+        setNeutralCardsWereFound(true)
+        
+        
+        if (searchTerms !== "") {
             const classCards = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+            const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
             let subset = classCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            let nSubset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
+            
+            nSubset = manaSort(nSubset)
+            setFilteredNeutralCards(nSubset)
             subset = manaSort(subset)
             setFilteredCards(subset)
 
-        } else if (searchTerms === "" && activeTab === '1'){
-            setFilteredCards(playerClassCards)
-            setFilteredNeutralCards(neutralClassCards)
-
-        } else if (searchTerms !== "" && activeTab === '2'){
-            const neutralCards = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
-            let subset = neutralCards.filter(card => card.name.toLowerCase().includes(searchTerms))
-            subset = manaSort(subset)
-            setFilteredNeutralCards(subset)
-
-        } else if (searchTerms === "" && activeTab === '2'){
+        } else {
             setFilteredCards(playerClassCards)
             setFilteredNeutralCards(neutralClassCards)
         }
-    }, [searchTerms, cardOptions, activeTab])
+
+    }, [searchTerms, cardOptions])
+
+
+    const resetFilter = () => {
+        let manaDropDown = document.getElementById("mana")
+        let rarityDropDown = document.getElementById("rarity")      
+        let typeDropDown = document.getElementById("type")
+
+        manaDropDown.selectedIndex = 0;
+        rarityDropDown.selectedIndex = 0;
+        typeDropDown.selectedIndex = 0;
+        
+        let filterReset = {
+        mana: "ALL",
+        rarity: "ALL",
+        type: "ALL"
+        }
+        setFilter(filterReset)
+    }
+
+
+    useEffect(() => {
+        
+        let theClassFilters = cardOptions.filter(c => c.cardClass === playerClass && c.type !== "HERO")
+        let theNeutralFilters = cardOptions.filter(c => c.cardClass === "NEUTRAL" && c.type !== "HERO")
+
+        if(filter.mana !== "ALL" && filter.mana < 7 && activeTab === '1'){
+            theClassFilters = theClassFilters.filter(c => c.cost === parseInt(filter.mana))
+            theNeutralFilters = theNeutralFilters.filter(c => c.cost === parseInt(filter.mana))
+            
+        
+        } else if (filter.mana !== "ALL" && filter.mana >= 7 && activeTab === '1') {
+            theClassFilters = theClassFilters.filter(c => c.cost >= parseInt(filter.mana))
+            theNeutralFilters = theNeutralFilters.filter(c => c.cost >= parseInt(filter.mana))
+          
+            
+        } else if (filter.mana !== "ALL" && filter.mana < 7 && activeTab === '2') {
+            theClassFilters = theClassFilters.filter(c => c.cost >= parseInt(filter.mana))
+            theNeutralFilters = theNeutralFilters.filter(c => c.cost >= parseInt(filter.mana))
+ 
+            
+        } else if (filter.mana !== "ALL" && filter.mana >= 7 && activeTab === '2') {
+            theClassFilters = theClassFilters.filter(c => c.cost >= parseInt(filter.mana))
+            theNeutralFilters = theNeutralFilters.filter(c => c.cost >= parseInt(filter.mana))
+            
+        }
+        
+        if(filter.rarity !== "ALL" && activeTab === '1'){
+            theClassFilters = theClassFilters.filter(c => c.rarity === filter.rarity)
+            theNeutralFilters = theNeutralFilters.filter(c => c.rarity === filter.rarity)
+
+        } else if (filter.rarity !== "ALL" && activeTab === '2') {
+            theClassFilters = theClassFilters.filter(c => c.rarity === filter.rarity)
+            theNeutralFilters = theNeutralFilters.filter(c => c.rarity === filter.rarity)
+        }
+
+        if(filter.type !== "ALL" && activeTab === '1'){
+            theClassFilters = theClassFilters.filter(c => c.type === filter.type)
+            theNeutralFilters = theNeutralFilters.filter(c => c.type === filter.type)
+
+        } else if (filter.type !== "ALL" && activeTab === '2') {
+            theClassFilters = theClassFilters.filter(c => c.type === filter.type)
+            theNeutralFilters = theNeutralFilters.filter(c => c.type === filter.type)
+        }
+
+        manaSort(theClassFilters)
+        manaSort(theNeutralFilters)
+        setFilteredCards(theClassFilters)
+        setFilteredNeutralCards(theNeutralFilters)
+
+        setClassCardsWereFound(true)
+        setNeutralCardsWereFound(true)
+                
+    }, [filter, activeTab])
+
+
+    useEffect(() => {
+        if (filteredCards.length < 1){
+            setClassCardsWereFound(false)
+        }
+    }, [filteredCards])
+
+
+    useEffect(() => {
+        if (filteredNeutralCards.length < 1 ){
+            setNeutralCardsWereFound(false)
+        }
+    }, [filteredNeutralCards])
 
     useEffect(() => {
         if (cardCountForDecks === 30){
@@ -396,7 +494,7 @@ export const CardOptionList = () => {
 
                 <section className="leftContainer">
                     
-                    <h2 className="playerClassName">{playerClass}</h2>
+                    <h2 className="playerClassName">{playerClass} DECK</h2>
                     <div>
                     <Nav tabs>
                         <NavItem>
@@ -412,7 +510,7 @@ export const CardOptionList = () => {
                             className={classnames({ active: activeTab === '2' })}
                             onClick={() => { toggle('2'); }}
                         >
-                            Neutral
+                            NEUTRAL
                         </NavLink>
                         </NavItem>
                     </Nav>
@@ -424,12 +522,17 @@ export const CardOptionList = () => {
                             <div class="spinner-border text-primary visually-hidden" role="status" id="spinner"></div>
                             
                             <div className="cardViewer">
-                                {
+                                
+                                {classCardsWereFound ?            
+                                
                                     filteredCards.map(card => {
                                         return <CardByHeroClassCard key={card.dbfId} 
                                                     card={card}/>
                                     })
-                                }
+                                
+                                : 
+                                <NoCardsFound/>
+                                } 
                             </div>
                             </Col>
                         </Row>
@@ -438,11 +541,16 @@ export const CardOptionList = () => {
                         <Row>
                             <Col sm="12">
                             <div className="neutralCardViewer">
-                                {
-                                    filteredNeutralCards.map(card => {
-                                        return <CardByNeutralClassCard key={card.dbfId} 
-                                                    card={card}/>
-                                    })
+                                
+                                {neutralCardsWereFound ?
+                                    
+                                        filteredNeutralCards.map(card => {
+                                            return <CardByNeutralClassCard key={card.dbfId} 
+                                                        card={card}/>
+                                        })
+                                    :
+
+                                    <NoCardsFound />
                                 }
                             </div>
                             </Col>
@@ -546,9 +654,9 @@ export const CardOptionList = () => {
                   <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog" unmountOnClose={false}>
                       <ModalHeader toggle={toggleModal}>Save Your Deck</ModalHeader>
                       <ModalBody>
-                      <Label for="deckname">Deck Name:</Label>
+                      <Label htmlFor="deckname">Deck Name:</Label>
                       <Input type="text" id="deck_name" placeholder="Enter a deck name here" onChange={handleControlledInputChange} className="form-control" value={userCreatedDeck.deck_name} rows={5}/>
-                        <Label for="deckinfo">Deck Info:</Label>
+                        <Label htmlFor="deckinfo">Deck Info:</Label>
                         <Input type="textarea" id="deck_info" onChange={handleControlledInputChange} placeholder="Enter any relevant information about your deck such as midrange aggro, etc.." value={userCreatedDeck.deck_info} rows={5}/>
                       </ModalBody>
                       <ModalFooter>

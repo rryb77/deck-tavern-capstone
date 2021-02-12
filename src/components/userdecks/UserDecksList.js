@@ -4,7 +4,7 @@ import { PlayerClassContext } from "../deckbuilder/playerclass/PlayerClassProvid
 import "./UserDecks.css"
 import { RatingContext } from "../rating/RatingProvider"
 import { MDBDataTable} from 'mdbreact';
-import { useHistory } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { UserContext } from '../user/UserProvider'
 
 export const UserDeckList = () => {
@@ -13,13 +13,11 @@ export const UserDeckList = () => {
     const { getPlayerClasses, playerClasses } = useContext(PlayerClassContext)
     const { getRatings, ratings } = useContext(RatingContext)
     const { getUsers, users } = useContext(UserContext)
-
-    const thisUserId = parseInt(localStorage.getItem("decktavern_user"))
-
+    const {userId} = useParams()
     
     const history = useHistory()
-
-    let myDecks = decks.filter(d => d.userId === thisUserId)
+    
+    let myDecks = decks.filter(d => d.userId === parseInt(userId))
 
     useEffect(() => {
         getDecks()
@@ -43,8 +41,8 @@ export const UserDeckList = () => {
                 width: 150
             },
             {
-                label: 'Class',
-                field: 'class',
+                label: 'Player Class',
+                field: 'playerclass',
                 sort: 'asc',
                 width: 150
             },
@@ -87,7 +85,7 @@ export const UserDeckList = () => {
                     clickEvent: () => goToDeck(),
                     rating: theRating,
                     deckname: deck.deck_name,
-                    class: theClass?.name,
+                    playerclass: theClass?.name,
                     published: new Date(deck.published).toLocaleDateString('en-US'),
                     author: deckAuthor?.username
                 }
