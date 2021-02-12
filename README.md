@@ -37,3 +37,6 @@ Once everything is installed use the following command to run it:
 
 ### `npm start`
 
+## ERD
+
+![](ERD.png)
