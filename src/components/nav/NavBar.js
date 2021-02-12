@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext, useEffect } from "react"
 import "./NavBar.css"
 import {
     Navbar,
@@ -9,13 +9,10 @@ import {
     NavbarText
   } from 'reactstrap';
 
-
 export const NavBar = (props) => {
     
     const thisUserId = parseInt(localStorage.getItem("decktavern_user"))
-
-
-    
+     
     return (
         
         <Navbar color="dark" className="navbar" dark expand="md">
@@ -34,7 +31,6 @@ export const NavBar = (props) => {
                 <NavLink href="/deckbuilder">Deck Builder</NavLink>
               </NavItem>
             </Nav>
-
             <NavbarText><NavLink href="/login" onClick={logout}>Logout</NavLink></NavbarText>
         </Navbar>
     )

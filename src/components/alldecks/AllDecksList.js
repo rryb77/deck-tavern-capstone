@@ -16,8 +16,6 @@ export const AllDeckList = () => {
     
     const history = useHistory()
 
-    console.log(decks)
-
     useEffect(() => {
         getDecks()
             .then(getUsers)
@@ -103,7 +101,7 @@ export const AllDeckList = () => {
                         small
                         theadTextWhite
                         tbodyTextWhite
-                        table
+                        table="true"
                         data={data}
                     />
             </section>

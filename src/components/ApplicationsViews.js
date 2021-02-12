@@ -13,7 +13,6 @@ import { AllDeckList } from "./alldecks/AllDecksList"
 import { RatingProvider } from "./rating/RatingProvider"
 import { DeckCartProvider } from "./deckbuilder/decksidebar/DeckCartProvider"
 import { UserDeckList} from "./userdecks/UserDecksList"
-// import {CardSearch} from "./deckbuilder/cardoption/CardSearch"
 
 export const ApplicationViews = () => {
     
@@ -37,21 +36,8 @@ export const ApplicationViews = () => {
                                 <RatingProvider>
                                     <DeckCartProvider>
                                         <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
-                                            {/* <CardSearch/> */}
                                             <CardOptionList />
-                                        </Route>
-
-                                        <Route exact path="/decks">
-                                            <AllDeckList />
-                                        </Route>
-                                        
-                                        <Route exact path="/decks/:deckId(\d+)">
-                                            <DeckViewList />
-                                        </Route>
-
-                                        <Route exact path="/profile/:userId(\d+)">
-                                            <UserDeckList/>
-                                        </Route>
+                                        </Route>   
                                     </DeckCartProvider>
                                 </RatingProvider>
                             </UserProvider>
@@ -59,6 +45,30 @@ export const ApplicationViews = () => {
                     </DeckProvider>
                 </PlayerClassProvider>
             </CardOptionProvider>
+
+
+            <DeckViewProvider>
+                <PlayerClassProvider>
+                    <RatingProvider>
+                        <UserProvider>
+                            <CardOptionProvider>
+                            <Route exact path="/decks">
+                                    <AllDeckList />
+                            </Route>
+                                <DeckProvider>
+                                    <Route exact path="/decks/:deckId(\d+)">
+                                        <DeckViewList />
+                                    </Route>
+
+                                    <Route exact path="/profile/:userId(\d+)">
+                                            <UserDeckList/>
+                                        </Route>
+                                </DeckProvider>
+                            </CardOptionProvider>
+                        </UserProvider>
+                    </RatingProvider>
+                </PlayerClassProvider>
+            </DeckViewProvider>
         </>
     )
 }

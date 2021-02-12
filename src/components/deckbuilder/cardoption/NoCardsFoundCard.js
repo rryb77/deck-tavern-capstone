@@ -5,7 +5,7 @@ export const NoCardsFound = () => {
 
     return (
         
-        <section className="cardViewerOptions" neutralCardsWereFound={false}>
+        <section className="cardViewerOptions">
             <div className="cardImage">
                 <img src={'/images/nocardsfound.png'} className="nocardsfound" id={`x`} alt="No Cards Found"/>                               
             </div>
