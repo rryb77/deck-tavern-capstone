@@ -26,6 +26,7 @@ export const CardSearch = () => {
       type: "ALL"
     }
     setFilter(filterReset)
+    toggleNavbar()
   }
 
   const handleControlledInputChange = (event) => {
