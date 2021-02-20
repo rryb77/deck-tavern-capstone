@@ -68,6 +68,9 @@ export const CardOptionList = () => {
             .then(() => {
                 console.log(editDeck)
             })
+            .then(() => {
+                setEditDeck(editDeck)
+            })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -80,9 +83,10 @@ export const CardOptionList = () => {
 
     useEffect(() => {
         
+        console.log(editDeck)
+
         if(editDeck > 0){
             let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeck))
-            console.log('hey')
             let theDeckCards = thisDeck.map(card => {
                 let theCard = localCards.find(c => c.id === card.cardId)
                 return theCard
@@ -439,6 +443,7 @@ export const CardOptionList = () => {
         sevenPlusMana = 0
 
         setEdit(false)
+        console.log(editDeck)
     }
 
     let cardsFromDeckCart = deckCart.map(c => {
