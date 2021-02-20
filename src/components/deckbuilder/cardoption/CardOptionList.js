@@ -65,12 +65,6 @@ export const CardOptionList = () => {
             .then(getLocalCards)
             .then(getDeckCart)
             .then(getDeckCards)
-            .then(() => {
-                console.log(editDeck)
-            })
-            .then(() => {
-                setEditDeck(editDeck)
-            })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {

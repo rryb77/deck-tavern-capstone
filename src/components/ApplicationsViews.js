@@ -52,10 +52,11 @@ export const ApplicationViews = () => {
                     <RatingProvider>
                         <UserProvider>
                             <CardOptionProvider>
-                            <Route exact path="/decks">
-                                    <AllDeckList />
-                            </Route>
-                                <DeckProvider>
+                            <DeckProvider>
+                                    <Route exact path="/decks">
+                                            <AllDeckList />
+                                    </Route>
+                                
                                     <Route exact path="/decks/:deckId(\d+)">
                                         <DeckViewList />
                                     </Route>
