@@ -37,7 +37,19 @@ export const ApplicationViews = () => {
                                     <DeckCartProvider>
                                         <Route exact path="/deckbuilder/create/:playerClassId(\d+)">
                                             <CardOptionList />
-                                        </Route>   
+                                        </Route>
+
+                                        <Route exact path="/decks">
+                                            <AllDeckList />
+                                        </Route>
+                                        
+                                        <Route exact path="/decks/:deckId(\d+)">
+                                            <DeckViewList />
+                                        </Route>
+
+                                        <Route exact path="/profile/:userId(\d+)">
+                                            <UserDeckList/>
+                                        </Route>
                                     </DeckCartProvider>
                                 </RatingProvider>
                             </UserProvider>
@@ -45,31 +57,6 @@ export const ApplicationViews = () => {
                     </DeckProvider>
                 </PlayerClassProvider>
             </CardOptionProvider>
-
-
-            <DeckViewProvider>
-                <PlayerClassProvider>
-                    <RatingProvider>
-                        <UserProvider>
-                            <CardOptionProvider>
-                            <DeckProvider>
-                                    <Route exact path="/decks">
-                                            <AllDeckList />
-                                    </Route>
-                                
-                                    <Route exact path="/decks/:deckId(\d+)">
-                                        <DeckViewList />
-                                    </Route>
-
-                                    <Route exact path="/profile/:userId(\d+)">
-                                            <UserDeckList/>
-                                        </Route>
-                                </DeckProvider>
-                            </CardOptionProvider>
-                        </UserProvider>
-                    </RatingProvider>
-                </PlayerClassProvider>
-            </DeckViewProvider>
         </>
     )
 }
