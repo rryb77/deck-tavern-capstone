@@ -154,8 +154,7 @@ export const DeckViewList = () => {
     const editTheDeck = () => {
         history.push(`/deckbuilder/create/${theClass.id}`)
         setEditDeck(deck.id)
-        setDeckAuthor(deckAuthor.id)
-        
+        setDeckAuthor(deckAuthor.id)        
     }
 
     
