@@ -19,6 +19,15 @@ The Deck Tavern was created to allow gamers in the Hearthstone community to easi
 
 GIFs coming soon!
 
+## Technologies Used
+
+* React
+* MDBootstrap
+* React-strap
+* Google Developers Charts
+* JSON Server
+* HearthSim API
+
 ## Running The App
 
 In order to get The Deck Tavern running locally please do the following in your terminal:
