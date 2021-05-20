@@ -17,7 +17,16 @@ The Deck Tavern was created to allow gamers in the Hearthstone community to easi
 
 ## See It In Action
 
-Images go here
+GIFs coming soon!
+
+## Technologies Used
+
+* React
+* MDBootstrap
+* React-strap
+* Google Developers Charts
+* JSON Server
+* HearthSim API
 
 ## Running The App
 
