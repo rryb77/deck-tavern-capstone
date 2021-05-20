@@ -21,31 +21,51 @@ import {NoCardsFound} from './NoCardsFoundCard'
 
 export const CardOptionList = () => {
     
+    // Context Providers
     const { cardOptions, getCardOptions, searchTerms, filter } = useContext(CardOptionContext)
     const { getLocalCards, addUserDeckTable, addCardDeckTable, getDeckCards, deckCards, localCards, updateCardDeckTable } = useContext(DeckContext)
     const { addRating } = useContext(RatingContext)
-    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart, setIsLoading} = useContext(DeckCartContext)
+    const {getDeckCart, deckCart, cardCountForDecks, setCardCountForDecks, destroyDeckCart, updateDeckCart } = useContext(DeckCartContext)
     const { getPlayerClassById } = useContext(PlayerClassContext)
-    const { editDeck, setEditDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor, getDeckById, deck} = useContext(DeckViewContext)
+    const { editDeck, addDeck, deckPosted, setDeckPosted, updateDeck, deckAuthor, setDeckAuthor, getDeckById, deck} = useContext(DeckViewContext)
+
+    // Edit deck ID (Only set if a user is editing a deck)
     const [ editDeckId, setEditDeckId] = useState(0)
-    const [pClass, setPClass] = useState({})
-    const {playerClassId} = useParams()
-    const userId = parseInt(localStorage.getItem("decktavern_user"))
+
+    // The state of whether a deck is being edited or not
     const [edit, setEdit] = useState(false)
+    
+    // Player class
+    const [pClass, setPClass] = useState({})
+
+    // Use params capturing the player class ID
+    const {playerClassId} = useParams()
+
+    // User ID from session storage
+    const userId = parseInt(localStorage.getItem("decktavern_user"))
+    
+    // Cards filtered by player class
     const [filteredCards, setFilteredCards] = useState([])
+
+    // Cards filtered by neutral class
     const [filteredNeutralCards, setFilteredNeutralCards] = useState([])
+
+    // Tab state, tracking which tab is currently active
     const [activeTab, setActiveTab] = useState('1');
+
+    // State tracking whether cards were found or not
     const [classCardsWereFound, setClassCardsWereFound] = useState(true)
     const [neutralCardsWereFound, setNeutralCardsWereFound] = useState(true)
 
 
+    // Use history to push the user to the proper views of the website
     const history = useHistory()
 
     // modal state
     const [modal, setModal] = useState(false);
 
 
-    // Initialize the deck info and populate as needed below
+    // Initialize the deck info object and populate as needed below
     const [userCreatedDeck, setUserCreatedDeck] = useState({
         deck_name: "",
         deck_info: "",
@@ -66,25 +86,34 @@ export const CardOptionList = () => {
             .then(getDeckCart)
             .then(getDeckCards)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    
 
     useEffect(() => {
         if (deckAuthor === userId) {
-            userCreatedDeck.deck_name = deck.deck_name
-            userCreatedDeck.deck_info = deck.deck_info
+            
+            const tempDeckObj = {...userCreatedDeck}
+
+            tempDeckObj.deck_name = deck.deck_name
+            tempDeckObj.deck_info = deck.deck_info
+
+            setUserCreatedDeck(tempDeckObj)
+
+            // userCreatedDeck.deck_name = deck.deck_name
+            // userCreatedDeck.deck_info = deck.deck_info
         }
         
     }, [deck])
 
     useEffect(() => {
         
-        console.log(editDeck)
-
         if(editDeck > 0){
+
             let thisDeck = deckCards.filter(c => c.deckId === parseInt(editDeck))
             let theDeckCards = thisDeck.map(card => {
-                let theCard = localCards.find(c => c.id === card.cardId)
+            let theCard = localCards.find(c => c.id === card.cardId)
                 return theCard
             })
+            
             for (let card of theDeckCards){
                             
                 let deckCartObj = {
@@ -92,17 +121,14 @@ export const CardOptionList = () => {
                     cardId: card.id,
                     carddbfId: card.dbfId
                 }
-                updateDeckCart(deckCartObj)
-                
+                updateDeckCart(deckCartObj)      
             }
                 setEdit(true)    
                 setEditDeckId(editDeck)
-                getDeckById(editDeck)
-                
+                getDeckById(editDeck)      
         }
-        
-        
     }, [editDeck])
+
 
     useEffect(() => {
         let theCurrentCardCount = deckCart.length
@@ -437,7 +463,6 @@ export const CardOptionList = () => {
         sevenPlusMana = 0
 
         setEdit(false)
-        console.log(editDeck)
     }
 
     let cardsFromDeckCart = deckCart.map(c => {
