@@ -17,7 +17,7 @@ The Deck Tavern was created to allow gamers in the Hearthstone community to easi
 
 ## See It In Action
 
-GIFs coming soon!
+![alt text](https://github.com/rryb77/deck-tavern-capstone/blob/main/public/images/X8cnEqBMFS.gif "The Deck Tavern")
 
 ## Technologies Used
 
